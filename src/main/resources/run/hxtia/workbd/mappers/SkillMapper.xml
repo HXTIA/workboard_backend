@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="run.hxtia.workbd.mappers.SkillMapper">
+
+    <!--
+        1、若mybatis-plus不能满足需求
+        2、请在这自己手动书写映射文件
+        3、按照这个目录结构，会自动扫描
+        4、下面是一个简单的例子
+     -->
+    <select id="testMapper" resultType="Skill">
+        SELECT * FROM `skill`
+    </select>
+
+</mapper>

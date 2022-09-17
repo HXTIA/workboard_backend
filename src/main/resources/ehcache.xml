@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xsi:schemaLocation="http://www.ehcache.org/v3
+        http://www.ehcache.org/schema/ehcache-core.xsd">
+
+    <cache-template name="common">
+        <key-type>java.lang.Object</key-type>
+        <value-type>java.lang.Object</value-type>
+        <resources>
+            <!-- 将缓存放入Jvm -->
+            <heap>10000</heap>
+        </resources>
+    </cache-template>
+
+
+    <!-- 存放token的缓存：只要7天内没有访问过，就失效 -->
+    <cache alias="token" uses-template="common">
+        <expiry>
+            <tti unit="days">7</tti>
+        </expiry>
+        <!-- 缓存监听器 -->
+        <listeners>
+            <listener>
+                <class>run.hxtia.workbd.common.cache.TokenListener</class>
+                <!-- 触发方式【异步、同步】 -->
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <!-- 事件触发是否有序 -->
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <!-- 什么事件会触发监听器 -->
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+                <events-to-fire-on>REMOVED</events-to-fire-on>
+            </listener>
+        </listeners>
+
+    </cache>
+
+    <!-- 默认缓存：永不过期 -->
+    <cache alias="default" uses-template="common">
+        <expiry>
+            <none/>
+        </expiry>
+    </cache>
+</config>

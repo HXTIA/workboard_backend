@@ -19,7 +19,7 @@ spring:
 # 1、mybatis-plus 配置
 # 2、https://github.com/baomidou/mybatis-plus
 mybatis-plus:
-  type-aliases-package: run.hxtia.pubwork.pojo
+  type-aliases-package: run.hxtia.workbd.pojo
   configuration:
     use-generated-keys: true
   global-config:
