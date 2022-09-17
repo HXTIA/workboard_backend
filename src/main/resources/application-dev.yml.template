@@ -1,11 +1,12 @@
 # 这是一个配置模板
 # 一定要加上自己的配置！！！
 # 也可以将此模板的 .template去掉
+# 开发环境
 spring:
   datasource:
-    username: ${pubwork.mysql-cfg.user}
-    password: ${pubwork.mysql-cfg.psd}
-    url: jdbc:mysql://${pubwork.mysql-cfg.db-ip}:3306/${work-board.mysql-cfg.db-name}?characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: ${work-board.mysql-cfg.user}
+    password: ${work-board.mysql-cfg.psd}
+    url: jdbc:mysql://${work-board.mysql-cfg.db-ip}:3306/${work-board.mysql-cfg.db-name}?characterEncoding=UTF-8&serverTimezone=GMT%2B8
     druid:
       max-wait: 5000
       max-active: 50
