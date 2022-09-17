@@ -1,0 +1,32 @@
+# 用于统一编辑器风格的 EditorConfig 配置
+# 语法参考： https://EditorConfig.org
+
+# 表明该配置文件为顶层配置
+# 子目录还可以单独放置 .editorconfig 文件以配置
+root = true
+
+# 为所有文件指定规则
+# 换行符设置是提示编辑器的，与 .gitattributes 不冲突
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# 为特定文件指定缩进
+[.travis.yml]
+indent_style = space
+indent_size = 2
+
+# 按扩展名指定缩进
+[*.{java,kt}]
+indent_style = space
+indent_size = 4
+
+[*.json]
+indent_style = space
+indent_size = 2
+
+# 文档类文件，不自动剪除行尾空格
+[*.{md,adoc}]
+trim_trailing_whitespace = false
