@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controllers;
+package run.hxtia.workbd.controllers.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -16,7 +16,7 @@ import run.hxtia.workbd.pojo.po.Skill;
 import run.hxtia.workbd.pojo.vo.request.save.SkillReqVo;
 import run.hxtia.workbd.pojo.vo.response.SkillVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
-import run.hxtia.workbd.services.SkillService;
+import run.hxtia.workbd.services.admin.SkillService;
 
 import java.util.List;
 import java.util.function.Function;
@@ -24,7 +24,7 @@ import java.util.function.Function;
 @RestController
 @Api(tags = "SkillController")
 @Tag(name = "SkillController", description = "技巧模块")
-@RequestMapping("/skills")
+@RequestMapping("/admin/skills")
 @RequiredArgsConstructor
 public class SkillController extends BaseController<Skill, SkillReqVo> {
 

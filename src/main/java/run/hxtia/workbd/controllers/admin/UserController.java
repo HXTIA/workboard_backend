@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controllers;
+package run.hxtia.workbd.controllers.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -20,7 +20,7 @@ import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import run.hxtia.workbd.pojo.vo.result.LoginVo;
-import run.hxtia.workbd.services.UserService;
+import run.hxtia.workbd.services.admin.UserService;
 
 import java.util.List;
 import java.util.function.Function;
@@ -28,7 +28,7 @@ import java.util.function.Function;
 @RestController
 @Api(tags = "UserController")
 @Tag(name = "UserController", description = "用户模块")
-@RequestMapping("/users")
+@RequestMapping("/admin/users")
 public class UserController extends BaseController<User, UserReqVo> {
 
     private final UserService userService;

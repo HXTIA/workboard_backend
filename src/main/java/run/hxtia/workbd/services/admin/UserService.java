@@ -1,4 +1,4 @@
-package run.hxtia.workbd.services;
+package run.hxtia.workbd.services.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;

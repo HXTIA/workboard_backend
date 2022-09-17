@@ -39,12 +39,12 @@ public class ShiroConfig {
         Map<String, String> uriMap = new LinkedHashMap<>();
 
         // 放行登录接口
-        uriMap.put("/users/login", "anon");
+        uriMap.put("/admin/users/login", "anon");
 
         // 放行Swagger文档
         uriMap.put("/swagger*/**", "anon");
         uriMap.put("/v3/api-docs/**", "anon");
-        uriMap.put("/wx/users/**", "anon");
+        uriMap.put("/wx/users/getSessionId", "anon");
 
         // 放行获取静态资源的URI
         uriMap.put("/" + properties.getUpload().getUploadPath() + "**", "anon");

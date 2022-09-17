@@ -1,4 +1,4 @@
-package run.hxtia.workbd.services.impl;
+package run.hxtia.workbd.services.admin.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,7 +13,7 @@ import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.LoginReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.LoginVo;
-import run.hxtia.workbd.services.UserService;
+import run.hxtia.workbd.services.admin.UserService;
 
 import java.util.Date;
 import java.util.UUID;

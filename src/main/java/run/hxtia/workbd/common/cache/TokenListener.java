@@ -11,6 +11,8 @@ public class TokenListener implements CacheEventListener<Object, Object> {
 
         switch (cacheEvent.getType()) {
             case CREATED: {
+                if (((String) cacheEvent.getKey()).startsWith("wx:")) return;
+                System.out.println();
                 User user = (User) cacheEvent.getNewValue();
                 Caches.put(user.getId(), token);
                 break;

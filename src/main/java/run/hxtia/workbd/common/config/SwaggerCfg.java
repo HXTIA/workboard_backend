@@ -43,21 +43,30 @@ public class SwaggerCfg implements InitializingBean {
     private boolean enable;
 
     @Bean
-    public Docket userDocket() {
+    public Docket adminUserDocket() {
         return groupDocket(
-            "01_用户",              // 分组模块
-            "/users.*",             // 正则表达式，想要的模块。
+            "01_用户【管理】",              // 分组模块
+            "/admin/users.*",             // 正则表达式，想要的模块。
             "用户模块文档",          // 模块标题
             "测试文档");        // 描述信息
     }
 
     @Bean
-    public Docket skillDocket() {
+    public Docket adminSkillDocket() {
         return groupDocket(
-                "02_技巧",
-                "/skills.*",
+                "02_技巧【管理】",
+                "/admin/skills.*",
                 "技巧模块文档",
                 "测试文档");
+    }
+
+    @Bean
+    public Docket wxUserDocket() {
+        return groupDocket(
+            "03_用户【小程序】",
+            "/wx/users.*",
+            "小程序用户模块文档",
+            "小程序用户文档");
     }
 
     // 构建分组模块

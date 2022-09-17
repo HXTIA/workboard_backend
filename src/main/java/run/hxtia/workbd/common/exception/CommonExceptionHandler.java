@@ -1,6 +1,8 @@
 package run.hxtia.workbd.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.error.WxError;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
@@ -38,6 +40,8 @@ public class CommonExceptionHandler {
             return handle((ConstraintViolationException) t);
         } else if (t instanceof MethodArgumentNotValidException) {
             return handle((MethodArgumentNotValidException) t);
+        } else if (t instanceof WxErrorException) {
+            return handle((WxErrorException) t);
         }
         // 其他想要处理的异常，继续 else if 拓展异常类即可
 
@@ -78,6 +82,12 @@ public class CommonExceptionHandler {
         List<String> msgs = Streams.map(mae.getBindingResult().getAllErrors(), ObjectError::getDefaultMessage);
         String msg = StringUtils.collectionToDelimitedString(msgs, ", ");
         return JsonVos.error(msg);
+    }
+
+    // 处理后端验证【MethodArgumentNotValidException】异常
+    private JsonVo handle(WxErrorException mae) {
+        WxError error = mae.getError();
+        return JsonVos.error(error.getErrorCode(), error.getErrorMsg());
     }
 
 }
