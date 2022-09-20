@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.utils.JsonVos;
+import run.hxtia.workbd.common.utils.MiniApps;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.services.miniapp.WxUserService;

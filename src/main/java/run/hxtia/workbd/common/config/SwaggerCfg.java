@@ -69,6 +69,14 @@ public class SwaggerCfg implements InitializingBean {
             "小程序用户文档");
     }
 
+    @Bean
+    public Docket wxMsgDocket() {
+        return groupDocket(
+            "03_消息【小程序】",
+            "/wx/messages.*",
+            "小程序消息模块文档",
+            "小程序消息文档");
+    }
     // 构建分组模块
     private Docket groupDocket(String group,
                                String regex,

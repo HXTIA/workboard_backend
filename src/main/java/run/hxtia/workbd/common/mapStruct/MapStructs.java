@@ -1,10 +1,12 @@
 package run.hxtia.workbd.common.mapStruct;
 
+import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.po.Skill;
 import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.SkillReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 import run.hxtia.workbd.pojo.vo.response.SkillVo;
@@ -49,5 +51,8 @@ public interface MapStructs {
    // reqVo -> po  【用来做数据库保存】
    Skill reqVo2po(SkillReqVo reqVo);
    User reqVo2po(UserReqVo reqVo);
+
+   // reqVo -> wxSdk
+    WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);
 
 }

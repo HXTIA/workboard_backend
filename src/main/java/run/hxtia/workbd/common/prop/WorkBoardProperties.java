@@ -27,6 +27,14 @@ public class WorkBoardProperties implements ApplicationContextAware {
     public static WorkBoardProperties getProperties() {
         return properties;
     }
+
+    /**
+     * 给没有放入Bean的获取 Wx 的配置
+     * @return 装载的 Wx 配置
+     */
+    public static Wx getNotBeanWx() {
+        return properties.getWx();
+    }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         properties = this;
@@ -78,6 +86,11 @@ public class WorkBoardProperties implements ApplicationContextAware {
          * 消息格式，XML或者JSON
          */
         private String msgDataFormat;
+
+        /**
+         * 消息模板ID
+         */
+        private String templateId;
     }
 
 }
