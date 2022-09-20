@@ -10,7 +10,9 @@ import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class CommonException extends RuntimeException {
-
+    /**
+     * 状态码
+     */
     private int code;
 
     public CommonException() {

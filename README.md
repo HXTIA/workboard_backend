@@ -13,7 +13,7 @@ work-board:
     # 跨域相关配置
     cors-origins:
       - http://localhost:8080
-      - 课继续像上面一样配置跨域
+      - 可继续像上面一样配置跨域
 
   # 文件上传路径【可以修改路径，不要修改前面的key】
   upload:
@@ -27,7 +27,8 @@ work-board:
     user: 你的mysql用户
     psd: 你的mysql密码
     db-ip: 你的mysql服务器IP
-    db-name: work_board_test
+    db-name: work_board_test【数据库名字】
+    port: 你的端口
 
   # Redis 数据库相关信息
   redis-cfg:
@@ -57,7 +58,7 @@ work-board:
        ├── application-prod.yml  # 生产环境
        ├── application.yml       # 主配置
        ├── ehcache.xml
-       └── run.hxtia.workbd.mappers
+       └── run.hxtia.workbd.mapper
            └── SkillMapper.xml
 ```
 
@@ -68,16 +69,18 @@ work-board:
 ```text
 # Eg：
 ├── java.run.hxtia.workbd
-│   └── mappers
+│   └── mapper
 │       ├── SkillMapper.java
 # 与上面SkillMapper.java 的位置保持一致
 
 └── resources
-    └── run.hxtia.workbd.mappers
+    └── run.hxtia.workbd.mapper
         └── SkillMapper.xml
 ```
 * 定义通用配置、工具 —— 请在Common模块定义
 * 内部集成了Swagger文档，若添加了新模块 —— 请到`SwaggerCfg.java`中配置新模块
+* 项目启动后：[📝接口文档访问地址](http://localhost:8888/swagger-ui/index.html)
+* PS：项目 URL + /swagger-ui/index.html
 ```java
     // 参照文件中前两个配置
     @Bean
@@ -97,22 +100,22 @@ work-board:
 work-board.src.main
 ├── java.run.hxtia.workbd
 │   ├── common                   # 集成第三方库、工具
-│   │   ├── baseController       # 提供增删改查功能
+│   │   ├── commoncontroller       # 提供增删改查功能
 │   │   ├── cache                # 集成 Ehcache
 │   │   ├── config               # 一些配置类
 │   │   ├── exception            # 统一异常处理
 │   │   ├── filter               # 拦截器
-│   │   ├── mapStruct            # POJO转换
+│   │   ├── mapstruct            # POJO转换
 │   │   ├── prop                 # 读取项目配置
 │   │   ├── redis                # 集成 Redis
 │   │   ├── shiro                # 集成 Shiro
 │   │   ├── upload               # 文件上传【支持多文件编辑】
-│   │   ├── utils                # 工具类
+│   │   ├── util                # 工具类
 │   │   └── validator            # 后端校验
-│   ├── controllers              # 网络接口层
+│   ├── controller              # 网络接口层
 │   │   ├── admin                # 管理模块
 │   │   └── miniapp              # 小程序模块
-│   ├── mappers                  # 持久层
+│   ├── mapper                  # 持久层
 │   ├── pojo                     # POJO对象
 │   │   ├── dto
 │   │   ├── po                   # 数据库字段类
@@ -122,7 +125,7 @@ work-board.src.main
 │   │       │   └── save   
 │   │       ├── response         # 响应
 │   │       └── result           # 自定义返回结果
-│   └── services                 # 业务层
+│   └── service                 # 业务层
 │       ├── admin.impl           # 后台管理模块
 │       └── miniapp.impl         # 小程序模块
 └── resources                    # 放置资源、配置文件

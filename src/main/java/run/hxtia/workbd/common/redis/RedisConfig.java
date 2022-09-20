@@ -23,6 +23,11 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Redis 配置类
+ * Q：为什么不将配置文件放入 config包中？
+ * A：因为与 redis关联较为密切，所以直接放入redis 的包中，并且以为后缀Config
+ */
 @Slf4j
 @Configuration
 @EnableCaching

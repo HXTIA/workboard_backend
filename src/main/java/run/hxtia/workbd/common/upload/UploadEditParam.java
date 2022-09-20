@@ -11,10 +11,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UploadEditParam {
-    // 新传的文件数据
+    /**
+     * 新传的文件数据
+     */
     private MultipartFile[] newFiles;
-    // 以前文件的对标索引
+    /**
+     * 以前文件的对标索引
+     */
     private List<Integer> matchIndex;
-    // 以前文件存数据库的路径
+    /**
+     * 以前文件存数据库的路径
+     */
     private String oldFilesPath;
 }

@@ -10,13 +10,19 @@ import java.net.URL;
 
 public class Caches {
 
-    // 缓存构造器
+    /**
+     * 缓存构造器
+     */
     private static final CacheManager MNG;
 
-    // 默认缓存
+    /**
+     * 默认缓存
+     */
     private static final Cache<Object, Object> DEFAULT_CACHE;
 
-    // Token 缓存
+    /**
+     * Token 缓存
+     */
     private static final Cache<Object, Object> TOKEN_CACHE;
 
     static {
@@ -34,45 +40,76 @@ public class Caches {
 
     }
 
-    // 将数据放入缓存中 【key value 形式】
+    /**
+     * 将数据放入缓存中 【key value 形式】
+     * @param key：键
+     * @param value：值
+     */
     public static void put(Object key, Object value) {
         if (key == null || value == null) return;
         DEFAULT_CACHE.put(key, value);
     }
 
-    // 通过Key清除缓存
+    /**
+     * 通过Key清除缓存
+     * @param key：键
+     */
     public static void remove(Object key) {
         if (key == null) return;
         DEFAULT_CACHE.remove(key);
     }
 
-    // 通过Key读取缓存
+    /**
+     * 通过Key读取缓存
+     * @param key：键
+     * @param <T>：返回的参数类型
+     * @return ：具体缓存的数据
+     */
     public static <T> T get(Object key) {
         if (key == null) return null;
         return (T) DEFAULT_CACHE.get(key);
     }
 
-    // 清除所有缓存
+    /**
+     * 清除所有缓存
+     */
     public static void clear() {
         DEFAULT_CACHE.clear();
     }
 
-    // Token缓存
+    /**
+     * Token缓存
+     * @param key：键
+     * @param value：值
+     */
     public static void putToken(Object key, Object value) {
         if (key == null || value == null) return;
         TOKEN_CACHE.put(key, value);
     }
 
+    /**
+     * 通过key清除Token缓存
+     * @param key：键
+     */
     public static void removeToken(Object key) {
         if (key == null) return;
         TOKEN_CACHE.remove(key);
     }
 
+    /**
+     * 获取Token缓存
+     * @param key：键
+     * @param <T>：缓存的数据类型
+     * @return ：具体内容
+     */
     public static <T> T getToken(Object key) {
         if (key == null) return null;
         return (T) TOKEN_CACHE.get(key);
     }
 
+    /**
+     * 清除所有的 Token缓存
+     */
     public static void clearToken() {
         TOKEN_CACHE.clear();
     }

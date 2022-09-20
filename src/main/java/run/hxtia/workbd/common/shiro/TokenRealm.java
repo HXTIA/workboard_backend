@@ -10,8 +10,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 /**
- *  自定义Realm
- *  Realm类似于一个shiro用户
+ *  自定义Shiro数据源Realm
  */
 @Slf4j
 public class TokenRealm extends AuthorizingRealm {

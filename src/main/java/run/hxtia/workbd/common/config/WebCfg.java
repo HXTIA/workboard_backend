@@ -12,6 +12,11 @@ import run.hxtia.workbd.common.prop.WorkBoardProperties;
 
 import javax.servlet.Filter;
 
+/**
+ * Web应用配置
+ * 1、跨域配置
+ * 2、注册自定义拦截器
+ */
 @Configuration
 @RequiredArgsConstructor
 public class WebCfg implements WebMvcConfigurer {

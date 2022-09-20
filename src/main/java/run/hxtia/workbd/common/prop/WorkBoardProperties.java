@@ -7,6 +7,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * 读取yml中 work-board 的配置选项
+ */
 @Data
 @Component
 @ConfigurationProperties("work-board")
