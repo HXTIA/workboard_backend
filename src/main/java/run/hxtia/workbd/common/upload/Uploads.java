@@ -24,7 +24,11 @@ public class Uploads {
         UPLOAD = WorkBoardProperties.getProperties().getUpload();
     }
 
-    // 单图片上传
+    /**
+     * 单图片上传
+     * @param multipartFile：图片数据
+     * @return ：保存文件的相对路径【upload/....】
+     */
     public static String uploadImage(MultipartFile multipartFile) throws Exception {
         // 获取图片相对目录
         String relativeDir = UPLOAD.getImageDir();

@@ -13,6 +13,11 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Q：为什么不放在 util 包中
+ * Redis的工具类，与普通的工具类不太一样。不是静态方法，是需要注入依赖使用的
+ * 所以没有放在 util包中。
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor

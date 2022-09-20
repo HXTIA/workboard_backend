@@ -15,15 +15,27 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Configuration
+/**
+ * Shiro配置类
+ * 将此配置文件单拎出来，和redis一样的原因
+ */
 @Slf4j
+@Configuration
 public class ShiroConfig {
 
+    /**
+     * 将自定义的Realm放入IOC容器中
+     */
     @Bean
     public Realm realm() {
         return new TokenRealm(new TokenMatcher());
     }
 
+    /**
+     * Shiro过滤器工厂
+     * @param realm：Shiro数据源
+     * @param properties：项目配置
+     */
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(Realm realm, WorkBoardProperties properties) {
         ShiroFilterFactoryBean filterBean = new ShiroFilterFactoryBean();

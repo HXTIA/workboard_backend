@@ -11,25 +11,30 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import run.hxtia.workbd.common.utils.JsonVos;
-import run.hxtia.workbd.common.utils.Streams;
+import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
+/**
+ * 统一拦截并且处理异常【这里的异常是来自必须是来自Controller|自定义异常】
+ */
 @Slf4j
 @RestControllerAdvice
 public class CommonExceptionHandler {
 
-    // 拦截所有异常。
+    /**
+     * 拦截所有异常
+     */
     @SuppressWarnings("ConstantConditions")
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public JsonVo handle(Throwable t) {
         // 先将日志打印了
-        log.error("handle：", t);
+        log.error("Handle：======== 自定义异常", t);
 
         // 判断是什么异常。自定义对应的处理方案
         if (t instanceof CommonException) {
@@ -53,12 +58,16 @@ public class CommonExceptionHandler {
         return JsonVos.error();
     }
 
-    // 处理自定义异常
+    /**
+     * 处理自定义【CommonException】异常
+     */
     private JsonVo handle(CommonException ce) {
         return JsonVos.error(ce.getCode(), ce.getMessage());
     }
 
-    // 处理后端验证【BindException】异常
+    /**
+     * 处理后端验证【BindException】异常
+     */
     private JsonVo handle(BindException be) {
         List<ObjectError> errors = be.getBindingResult().getAllErrors();
         /*
@@ -70,21 +79,27 @@ public class CommonExceptionHandler {
         return JsonVos.error(msg);
     }
 
-    // 处理后端验证【ConstraintViolationException】异常
+    /**
+     * 处理后端验证【ConstraintViolationException】异常
+     */
     private JsonVo handle(ConstraintViolationException cve) {
         List<String> msgs = Streams.map(cve.getConstraintViolations(), ConstraintViolation::getMessage);
         String msg = StringUtils.collectionToDelimitedString(msgs, ", ");
         return JsonVos.error(msg);
     }
 
-    // 处理后端验证【MethodArgumentNotValidException】异常
+    /**
+     * 处理后端验证【MethodArgumentNotValidException】异常
+     */
     private JsonVo handle(MethodArgumentNotValidException mae) {
         List<String> msgs = Streams.map(mae.getBindingResult().getAllErrors(), ObjectError::getDefaultMessage);
         String msg = StringUtils.collectionToDelimitedString(msgs, ", ");
         return JsonVos.error(msg);
     }
 
-    // 处理后端验证【MethodArgumentNotValidException】异常
+    /**
+     * 处理后端验证【MethodArgumentNotValidException】异常
+     */
     private JsonVo handle(WxErrorException mae) {
         WxError error = mae.getError();
         return JsonVos.error(error.getErrorCode(), error.getErrorMsg());

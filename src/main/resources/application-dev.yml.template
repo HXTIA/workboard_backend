@@ -1,12 +1,12 @@
 # 这是一个配置模板
 # 一定要加上自己的配置！！！
-# 也可以将此模板的 .template去掉
+# 也可以将此模板复制，将后缀 .template去掉，然后修改成你自己的配置
 # 开发环境
 spring:
   datasource:
     username: ${work-board.mysql-cfg.user}
     password: ${work-board.mysql-cfg.psd}
-    url: jdbc:mysql://${work-board.mysql-cfg.db-ip}:3306/${work-board.mysql-cfg.db-name}?characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://${work-board.mysql-cfg.db-ip}:${work-board.mysql-cfg.port}/${work-board.mysql-cfg.db-name}?characterEncoding=UTF-8&serverTimezone=GMT%2B8
     druid:
       max-wait: 5000
       max-active: 50
@@ -61,7 +61,8 @@ work-board:
     user: 你的mysql用户
     psd: 你的mysql密码
     db-ip: 你的mysql服务器IP
-    db-name: work_board_test
+    db-name: work_board_test【数据库名称】
+    port: 3306【端口号】
 
   # Redis 数据库相关信息
   redis-cfg:

@@ -5,6 +5,9 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 
+/**
+ * 自定义Shiro密码认证规则
+ */
 @Slf4j
 public class TokenMatcher implements CredentialsMatcher {
     @Override

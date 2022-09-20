@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * 使用MybatisPlus，额外配置
  */
 @Configuration
-@MapperScan("run.hxtia.workbd.mappers")
+@MapperScan("run.hxtia.workbd.mapper")
 public class MybatisPlusCfg {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {

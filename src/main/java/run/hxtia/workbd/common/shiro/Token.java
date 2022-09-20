@@ -9,7 +9,10 @@ import org.apache.shiro.authc.AuthenticationToken;
 @Data
 public class Token implements AuthenticationToken {
 
-    private final String token;
+    /**
+     * 自定义的Token令牌类型
+     */
+    private String token;
 
     public Token(String token) {
         this.token = token;

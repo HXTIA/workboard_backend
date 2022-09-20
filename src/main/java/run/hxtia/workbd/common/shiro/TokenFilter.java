@@ -4,13 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import run.hxtia.workbd.common.cache.Caches;
-import run.hxtia.workbd.common.utils.JsonVos;
+import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 自定义Shiro拦截器
+ */
 @Slf4j
 public class TokenFilter extends AccessControlFilter {
 
