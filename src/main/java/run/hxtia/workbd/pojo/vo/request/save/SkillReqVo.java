@@ -1,6 +1,7 @@
 package run.hxtia.workbd.pojo.vo.request.save;
 
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Data
+@ApiModel("【添加 & 编辑】技巧信息")
 public class SkillReqVo {
 
     @ApiModelProperty("id【大于0代表编辑，否则代表添加】")

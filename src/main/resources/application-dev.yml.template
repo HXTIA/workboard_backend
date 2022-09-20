@@ -73,5 +73,6 @@ work-board:
   wx:
     app-id: 你的小程序appId
     secret: 你的小程序secret
+    template-id: 消息订阅的模板
     msgDataFormat: JSON
 

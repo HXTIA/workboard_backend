@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "all"})
-public class RedisUtil {
+public class Redises {
 
     private final RedisTemplate<Object, Object> redisTemplate;
 

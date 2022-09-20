@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.baseController.BaseController;
 import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.mapStruct.MapStructs;
-import run.hxtia.workbd.common.redis.RedisUtil;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.shiro.TokenFilter;
 import run.hxtia.workbd.common.utils.JsonVos;
 import run.hxtia.workbd.common.utils.Streams;
@@ -33,20 +33,20 @@ public class UserController extends BaseController<User, UserReqVo> {
 
     private final UserService userService;
 
-    private final RedisUtil redisUtil;
+    private final Redises redises;
 
     @Autowired
-    UserController(UserService userService, RedisUtil redisUtil) {
+    UserController(UserService userService, Redises redises) {
         this.userService = userService;
-        this.redisUtil = redisUtil;
+        this.redises = redises;
     }
 
     @PostMapping("/login")
     @ApiOperation("登录")
     public DataJsonVo<LoginVo> login(@RequestBody LoginReqVo reqVo) {
-        LoginVo user = (LoginVo) redisUtil.get("user");
+        LoginVo user = (LoginVo) redises.get("user");
         System.out.println(user + "+++++++++++++\n");
-        redisUtil.del("user");
+        redises.del("user");
         return JsonVos.ok(userService.login(reqVo));
     }
 
