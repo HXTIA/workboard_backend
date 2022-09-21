@@ -8,28 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.cache.Caches;
-import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.shiro.TokenFilter;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.po.entity.User;
-import run.hxtia.workbd.pojo.vo.request.LoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
-import run.hxtia.workbd.pojo.vo.response.UserVo;
-import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
-import run.hxtia.workbd.pojo.vo.result.LoginVo;
 import run.hxtia.workbd.service.admin.UserService;
 
-import java.util.List;
-import java.util.function.Function;
 
 @RestController
 @Api(tags = "UserController")
 @Tag(name = "UserController", description = "用户模块")
 @RequestMapping("/admin/users")
-public class UserController extends BaseController<User, UserReqVo> {
+public class UserController {
 
     private final UserService userService;
 
@@ -41,14 +31,14 @@ public class UserController extends BaseController<User, UserReqVo> {
         this.redises = redises;
     }
 
-    @PostMapping("/login")
+/*    @PostMapping("/login")
     @ApiOperation("登录")
     public DataJsonVo<LoginVo> login(@RequestBody LoginReqVo reqVo) {
         LoginVo user = (LoginVo) redises.get("user");
         System.out.println(user + "+++++++++++++\n");
         redises.del("user");
         return JsonVos.ok(userService.login(reqVo));
-    }
+    }*/
 
     @PostMapping("/logout")
     @ApiOperation("退出登录")
@@ -58,19 +48,4 @@ public class UserController extends BaseController<User, UserReqVo> {
         return JsonVos.ok();
     }
 
-    @GetMapping("/list")
-    @ApiOperation("查询所有的用户")
-    public DataJsonVo<List<UserVo>> list() {
-        return JsonVos.ok(Streams.map(userService.list(), MapStructs.INSTANCE::po2vo));
-    }
-
-    @Override
-    protected IService<User> getService() {
-        return userService;
-    }
-
-    @Override
-    protected Function<UserReqVo, User> getFunction() {
-        return MapStructs.INSTANCE::reqVo2po;
-    }
 }

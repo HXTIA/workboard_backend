@@ -1,4 +1,4 @@
-package run.hxtia.workbd.test;
+package run.hxtia.workbd.test.common;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringBootConfiguration;

@@ -1,5 +1,6 @@
 package run.hxtia.workbd.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,12 +13,13 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-public class UsersWorks implements Serializable {
+@TableName("users_works")
+public class UserWork implements Serializable {
     private static final long serialVersionUID = 714852878467288369L;
     /**
      * 用户ID
      */
-    private Long uid;
+    private Long userId;
     /**
      * 作业ID
      */
@@ -30,7 +32,9 @@ public class UsersWorks implements Serializable {
      * 是否完成【0：未完成，1：已完成】
      */
     private Short workPin;
-
+    /**
+     * 查看次数
+     */
     private Integer times;
     /**
      * 创建时间

@@ -1,5 +1,6 @@
 package run.hxtia.workbd.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +12,8 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-public class WorksTags implements Serializable {
+@TableName("works_tags")
+public class WorkTag implements Serializable {
     private static final long serialVersionUID = 764923653489272375L;
     /**
      * 作业ID

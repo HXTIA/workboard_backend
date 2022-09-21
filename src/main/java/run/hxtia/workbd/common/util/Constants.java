@@ -14,5 +14,11 @@ public class Constants {
         public static final int ENABLE = 1;
     }
 
+    /**
+     * 微信小程序常量
+     */
+    public static class WxMiniApp {
+        public static final String TOKEN_PREFIX = "wx:user:";
+    }
 
 }

@@ -1,5 +1,6 @@
 package run.hxtia.workbd.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,12 +12,13 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-public class CoursesClazz implements Serializable {
+@TableName("courses_clazz")
+public class CourseClazz implements Serializable {
     private static final long serialVersionUID = 967203935724250859L;
     /**
      * 课程ID
      */
-    private Integer courseId;
+    private Integer id;
     /**
      * 班级ID
      */

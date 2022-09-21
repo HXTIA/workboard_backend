@@ -1,5 +1,6 @@
 package run.hxtia.workbd.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,12 +12,13 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-public class Users implements Serializable {
+@TableName("users")
+public class User implements Serializable {
     private static final long serialVersionUID = 140800167149720290L;
     /**
      * 用户ID
      */
-    private Long uid;
+    private Long id;
     /**
      * 用户微信openID
      */
@@ -28,7 +30,7 @@ public class Users implements Serializable {
     /**
      * 用户姓名
      */
-    private String studentName;
+    private String nickname;
     /**
      * 学号
      */

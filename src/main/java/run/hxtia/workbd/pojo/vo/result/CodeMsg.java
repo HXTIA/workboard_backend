@@ -23,6 +23,7 @@ public enum CodeMsg {
     UPLOAD_IMG_ERROR(40004, "图片上传失败"),
     USER_INFO_ERROR(40005, "用户信息校验失败"),
     SUB_MSG_ERROR(40006, "消息订阅失败"),
+    AUTHORIZED_ERROR(40007, "微信授权失败"),
 
     WRONG_USERNAME(50001, "邮箱不存在"),
     WRONG_PASSWORD(50002, "密码错误"),
