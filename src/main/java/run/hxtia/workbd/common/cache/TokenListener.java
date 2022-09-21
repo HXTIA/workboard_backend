@@ -2,7 +2,7 @@ package run.hxtia.workbd.common.cache;
 
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.CacheEventListener;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.entity.User;
 
 /**
  * Token缓存监听器

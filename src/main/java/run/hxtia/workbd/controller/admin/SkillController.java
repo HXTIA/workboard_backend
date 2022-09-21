@@ -12,7 +12,7 @@ import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.po.Skill;
+import run.hxtia.workbd.pojo.po.entity.Skill;
 import run.hxtia.workbd.pojo.vo.request.save.SkillReqVo;
 import run.hxtia.workbd.pojo.vo.response.SkillVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;

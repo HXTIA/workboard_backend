@@ -9,7 +9,7 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Md5s;
 import run.hxtia.workbd.mapper.UserMapper;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.entity.User;
 import run.hxtia.workbd.pojo.vo.request.LoginReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.LoginVo;

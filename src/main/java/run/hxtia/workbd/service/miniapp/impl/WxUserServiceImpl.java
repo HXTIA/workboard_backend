@@ -13,7 +13,7 @@ import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.mapper.UserMapper;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.entity.User;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.miniapp.WxUserService;

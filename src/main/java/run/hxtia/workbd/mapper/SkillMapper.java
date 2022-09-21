@@ -2,7 +2,7 @@ package run.hxtia.workbd.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
-import run.hxtia.workbd.pojo.po.Skill;
+import run.hxtia.workbd.pojo.po.entity.Skill;
 
 import java.util.List;
 

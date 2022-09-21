@@ -13,7 +13,7 @@ import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.shiro.TokenFilter;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.entity.User;
 import run.hxtia.workbd.pojo.vo.request.LoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;

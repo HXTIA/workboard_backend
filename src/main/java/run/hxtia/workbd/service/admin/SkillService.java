@@ -2,7 +2,7 @@ package run.hxtia.workbd.service.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
-import run.hxtia.workbd.pojo.po.Skill;
+import run.hxtia.workbd.pojo.po.entity.Skill;
 
 import java.util.List;
 

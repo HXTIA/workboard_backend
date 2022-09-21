@@ -1,4 +1,4 @@
-package run.hxtia.workbd.pojo.po;
+package run.hxtia.workbd.pojo.po.entity;
 
 
 import lombok.Data;
