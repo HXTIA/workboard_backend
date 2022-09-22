@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import run.hxtia.workbd.common.filter.ErrorFilter;
 import run.hxtia.workbd.common.prop.WorkBoardProperties;
+import run.hxtia.workbd.common.util.Constants;
 
 import javax.servlet.Filter;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class ShiroConfig {
         uriMap.put("/" + properties.getUpload().getUploadPath() + "**", "anon");
 
         // 放行处理Filter内部异常的请求
-        uriMap.put(ErrorFilter.ERROR_URI, "anon");
+        uriMap.put(Constants.Web.ERROR_URI, "anon");
 
         // 其他 URI 使用自定义的 filter
         uriMap.put("/**", "token");

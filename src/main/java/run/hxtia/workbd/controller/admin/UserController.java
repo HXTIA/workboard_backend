@@ -10,6 +10,7 @@ import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.shiro.TokenFilter;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import run.hxtia.workbd.service.admin.UserService;
@@ -42,7 +43,7 @@ public class UserController {
 
     @PostMapping("/logout")
     @ApiOperation("退出登录")
-    public JsonVo logout(@RequestHeader(TokenFilter.HEADER_TOKEN) String token) {
+    public JsonVo logout(@RequestHeader(Constants.Web.HEADER_TOKEN) String token) {
         // 清空缓存中的token就可以了
         Caches.remove(token);
         return JsonVos.ok();

@@ -25,6 +25,7 @@ import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.miniapp.WxUserService;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -44,10 +45,8 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
         MiniApps.checkAppId(wxMaService);
         try {
             WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
-            //TODO: 将session放入redis中
             String token = UUID.randomUUID().toString().replace("-", "");
-            redises.set(Constants.WxMiniApp.TOKEN_PREFIX + token, session);
-            Caches.putToken(token, session);
+            redises.set(Constants.WxMiniApp.TOKEN_PREFIX, token, session, 7, TimeUnit.DAYS);
             return  token;
         } finally {
             //清理ThreadLocal
