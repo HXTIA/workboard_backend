@@ -1,22 +1,10 @@
 package run.hxtia.workbd.service.admin.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import run.hxtia.workbd.common.cache.Caches;
-import run.hxtia.workbd.common.mapstruct.MapStructs;
-import run.hxtia.workbd.common.util.Constants;
-import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.common.util.Md5s;
 import run.hxtia.workbd.mapper.UserMapper;
 import run.hxtia.workbd.pojo.po.User;
-import run.hxtia.workbd.pojo.vo.request.LoginReqVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.LoginVo;
 import run.hxtia.workbd.service.admin.UserService;
-
-import java.util.Date;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl
@@ -26,7 +14,7 @@ public class UserServiceImpl
      * 用户登录
      * @param reqVo：登录数据
      * @return ：LoginVo
-     */
+     *//*
     @Override
     public LoginVo login(LoginReqVo reqVo) {
 
@@ -64,5 +52,5 @@ public class UserServiceImpl
         vo.setToken(token);
 
         return vo;
-    }
+    }*/
 }

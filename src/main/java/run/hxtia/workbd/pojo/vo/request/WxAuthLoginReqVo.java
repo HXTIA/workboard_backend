@@ -16,6 +16,4 @@ public class WxAuthLoginReqVo {
     private String rawData;
     @ApiModelProperty(value = "签名密钥【用于验签】", required = true)
     private String signature;
-    @ApiModelProperty(hidden = true)
-    private String token;
 }

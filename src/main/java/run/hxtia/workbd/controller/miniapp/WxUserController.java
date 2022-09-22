@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.dto.UserInfoDto;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.service.miniapp.WxUserService;
@@ -30,8 +31,7 @@ public class WxUserController {
 
     @PostMapping("/authLogin")
     @ApiOperation("获取微信用户的数据")
-    public DataJsonVo<WxMaUserInfo> authLogin(@RequestBody WxAuthLoginReqVo wxAuth, HttpServletRequest request) {
-        wxAuth.setToken(request.getHeader("Token"));
-        return JsonVos.ok(wxUserService.authLogin(wxAuth));
+    public DataJsonVo<UserInfoDto> authLogin(@RequestBody WxAuthLoginReqVo wxAuth, HttpServletRequest request) {
+        return JsonVos.ok(wxUserService.authLogin(wxAuth, request.getHeader("Token")));
     }
 }

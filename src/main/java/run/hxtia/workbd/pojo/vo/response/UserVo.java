@@ -10,26 +10,16 @@ import lombok.Data;
 @ApiModel("用户信息")
 public class UserVo {
 
+    @ApiModelProperty("用户ID")
+    private Long id;
 
-    @ApiModelProperty("用户id")
-    private Integer id;
+    @ApiModelProperty("头像地址")
+    private String avatarUrl;
 
-    @ApiModelProperty("注册时间")
-    private Long createdTime;
-
-    @ApiModelProperty("上次登录时间")
-    private Long loginTime;
-
-    @ApiModelProperty(value = "用户邮箱")
-    private String email;
-
-
-    @ApiModelProperty("用户用户昵称")
+    @ApiModelProperty("用户姓名")
     private String nickname;
 
-
-    @ApiModelProperty("用户状态【1：可用；0：禁用】")
-    private Short state;
-
+    @ApiModelProperty("学号")
+    private String studentId;
 
 }

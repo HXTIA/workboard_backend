@@ -1,39 +1,44 @@
 package run.hxtia.workbd.pojo.po;
 
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.util.Date;
+import java.io.Serializable;
 
-
+/**
+ * 用户表(Users)实体类
+ *
+ * @author ZhiYan
+ * @since 2022-09-21 10:23:51
+ */
 @Data
-public class User {
+@TableName("users")
+public class User implements Serializable {
+    private static final long serialVersionUID = 140800167149720290L;
     /**
-     * 用户id
+     * 用户ID
      */
-    private Integer id;
+    private Long id;
     /**
-     * 创建时间
+     * 用户微信openID
      */
-    private Date createdTime;
+    private String openid;
     /**
-     * 用户最后一次登录时间
+     * 用户头像地址
      */
-    private Date loginTime;
+    private String avatarUrl;
     /**
-     * 用户邮箱
-     */
-    private String email;
-    /**
-     * 用户邮箱
-     */
-    private String password;
-    /**
-     * 用户用户昵称
+     * 用户姓名
      */
     private String nickname;
     /**
-     * 用户状态【1：可用；0：禁用】
+     * 学号
      */
-    private Short state;
+    private String studentId;
+    /**
+     * 班级ID
+     */
+    private Long classId;
+
 }
+
