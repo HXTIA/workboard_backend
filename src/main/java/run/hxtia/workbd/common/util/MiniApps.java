@@ -26,7 +26,7 @@ public class MiniApps {
     /**
      * 拿到 Redis 工具类
      */
-    private static final Redises redises = Redises.getRedises();
+    private static final Redises REDISES = Redises.getRedises();
 
     /**
      * 检查appId
@@ -106,7 +106,7 @@ public class MiniApps {
      */
     public static WxMaJscode2SessionResult getSession(String prefix, String token) {
         if (!StringUtils.hasLength(token)) return null;
-        return (WxMaJscode2SessionResult) redises.get(prefix + token);
+        return (WxMaJscode2SessionResult) REDISES.get(prefix + token);
     }
 
 }

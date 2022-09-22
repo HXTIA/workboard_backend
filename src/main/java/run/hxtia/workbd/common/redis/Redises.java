@@ -79,7 +79,22 @@ public class Redises implements ApplicationContextAware {
      * @return 时间(秒) 返回0代表为永久有效
      */
     public long getExpire(Object key) {
-        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
+        return getExpire("", key);
+    }
+
+    /**
+     * 根据 key 获取时间【还有多久过期】
+     *
+     * @param key 键 不能为null
+     * @return 时间(秒) 返回0代表为永久有效
+     */
+    public long getExpire(String prefix, Object key) {
+        String sb = (String) new StringBuilder(prefix).append(key).toString();
+        Long expire = redisTemplate.getExpire(sb, TimeUnit.SECONDS);
+        log.debug("--------------------------------------------");
+        log.debug(new StringBuilder(sb).append("的过期时间：").append(expire).toString());
+        log.debug("--------------------------------------------");
+        return expire;
     }
 
     /**
@@ -132,7 +147,19 @@ public class Redises implements ApplicationContextAware {
      * @return 值
      */
     public Object get(String key) {
-        return key == null ? null : redisTemplate.opsForValue().get(key);
+        return get("", key);
+    }
+
+    /**
+     * 普通缓存获取
+     *
+     * @param prefix 前缀
+     * @param key 键
+     * @return 值
+     */
+    public Object get(String prefix, String key) {
+        return key == null ? null : redisTemplate.opsForValue().
+            get(new StringBuilder(prefix).append(key).toString());
     }
 
     /**
@@ -147,6 +174,18 @@ public class Redises implements ApplicationContextAware {
     }
 
     /**
+     * 普通缓存放入
+     *
+     * @param prefix 前缀
+     * @param key   键
+     * @param value 值
+     * @return true成功 false失败
+     */
+    public boolean set(String prefix, String key, Object value) {
+        return set(prefix, key, value, 0);
+    }
+
+    /**
      * 普通缓存放入并设置时间
      *
      * @param key   键
@@ -155,7 +194,19 @@ public class Redises implements ApplicationContextAware {
      * @return true成功 false 失败
      */
     public boolean set(String key, Object value, long time) {
-        return set(key, value, time, TimeUnit.SECONDS);
+        return set("", key, value, time);
+    }
+
+    /**
+     * 普通缓存放入并设置时间
+     *
+     * @param key   键
+     * @param value 值
+     * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
+     * @return true成功 false 失败
+     */
+    public boolean set(String prefix, String key, Object value, long time) {
+        return set(prefix, key, value, time, TimeUnit.SECONDS);
     }
 
     /**
@@ -167,8 +218,9 @@ public class Redises implements ApplicationContextAware {
      * @param timeUnit 类型
      * @return true成功 false 失败
      */
-    public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
+    public boolean set(String prefix, String key, Object value, long time, TimeUnit timeUnit) {
         try {
+            key = new StringBuilder(prefix).append(key).toString();
             if (time > 0) {
                 redisTemplate.opsForValue().set(key, value, time, timeUnit);
             } else {

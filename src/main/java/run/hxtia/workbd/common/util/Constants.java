@@ -21,4 +21,12 @@ public class Constants {
         public static final String TOKEN_PREFIX = "wx:user:";
     }
 
+    /**
+     * Web 应用常量
+     */
+    public static class Web {
+        public static final String HEADER_TOKEN = "Token";
+        public static final String ERROR_URI = "/handleError";
+    }
+
 }

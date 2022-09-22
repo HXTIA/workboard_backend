@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import run.hxtia.workbd.common.shiro.TokenFilter;
+import run.hxtia.workbd.common.util.Constants;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -96,7 +97,7 @@ public class SwaggerCfg implements InitializingBean {
     private Docket baseDocket() {
         // 每个接口都要传token
         RequestParameter token = new RequestParameterBuilder()
-                .name(TokenFilter.HEADER_TOKEN)
+                .name(Constants.Web.HEADER_TOKEN)
                 .description("用户登录令牌")
                 .in(ParameterType.HEADER)
                 .build();
