@@ -7,7 +7,7 @@ import lombok.Data;
 
 
 @Data
-@ApiModel("用户信息")
+@ApiModel("C端用户信息")
 public class UserVo {
 
     @ApiModelProperty("用户ID")
@@ -21,5 +21,8 @@ public class UserVo {
 
     @ApiModelProperty("学号")
     private String studentId;
+
+    @ApiModelProperty("组织ID")
+    private String orgId;
 
 }
