@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 用户表(Users)实体类
+ * C端用户表(Users)实体类
  *
  * @author ZhiYan
  * @since 2022-09-21 10:23:51
@@ -39,6 +39,10 @@ public class User implements Serializable {
      * 班级ID
      */
     private Long classId;
+    /**
+     * 组织ID
+     */
+    private Long orgId;
 
 }
 

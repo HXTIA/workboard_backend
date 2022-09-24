@@ -23,6 +23,10 @@ public class CourseClazz implements Serializable {
      * 班级ID
      */
     private Integer classId;
+    /**
+     * 组织ID
+     */
+    private Long orgId;
 
 }
 

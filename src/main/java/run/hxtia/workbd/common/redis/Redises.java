@@ -61,9 +61,21 @@ public class Redises implements ApplicationContextAware {
      * @param timeUnit 单位
      */
     public boolean expire(String key, long time, TimeUnit timeUnit) {
+        return expire("", key, time, timeUnit);
+    }
+
+    /**
+     * 指定缓存失效时间
+     * @param prefix   前缀
+     * @param key      键
+     * @param time     时间(秒)
+     * @param timeUnit 单位
+     */
+    public boolean expire(String prefix, String key, long time, TimeUnit timeUnit) {
+        String sb = new StringBuilder(prefix).append(key).toString();
         try {
             if (time > 0) {
-                redisTemplate.expire(key, time, timeUnit);
+                redisTemplate.expire(sb, time, timeUnit);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -89,7 +101,7 @@ public class Redises implements ApplicationContextAware {
      * @return 时间(秒) 返回0代表为永久有效
      */
     public long getExpire(String prefix, Object key) {
-        String sb = (String) new StringBuilder(prefix).append(key).toString();
+        String sb = new StringBuilder(prefix).append(key).toString();
         Long expire = redisTemplate.getExpire(sb, TimeUnit.SECONDS);
         log.debug("--------------------------------------------");
         log.debug(new StringBuilder(sb).append("的过期时间：").append(expire).toString());
@@ -207,6 +219,19 @@ public class Redises implements ApplicationContextAware {
      */
     public boolean set(String prefix, String key, Object value, long time) {
         return set(prefix, key, value, time, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 普通缓存放入并设置时间
+     *
+     * @param key      键
+     * @param value    值
+     * @param time     时间
+     * @param timeUnit 类型
+     * @return true成功 false 失败
+     */
+    public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
+        return set("", key, value, time, TimeUnit.SECONDS);
     }
 
     /**

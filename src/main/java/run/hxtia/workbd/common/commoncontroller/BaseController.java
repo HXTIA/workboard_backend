@@ -44,14 +44,27 @@ public abstract class BaseController<Po, ReqVo> {
     }
 
     @PostMapping("/save")
-    @ApiOperation("添加或者更新")
+    @ApiOperation("添加")
     public JsonVo save(@Valid @RequestBody ReqVo reqVo) {
         // 将ReqVo -> Po
         Po po = getFunction().apply(reqVo);
-        if (getService().saveOrUpdate(po)) {
+        if (getService().save(po)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.raise(CodeMsg.SAVE_ERROR);
         }
     }
+
+    @PostMapping("/update")
+    @ApiOperation("更新")
+    public JsonVo update(@Valid @RequestBody ReqVo reqVo) {
+        // 将ReqVo -> Po
+        Po po = getFunction().apply(reqVo);
+        if (getService().updateById(po)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.raise(CodeMsg.SAVE_ERROR);
+        }
+    }
+
 }

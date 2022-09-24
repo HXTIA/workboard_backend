@@ -8,13 +8,14 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @ApiModel("【登录】后台模块")
-public class LoginReqVo {
+public class AdminLoginReqVo {
 
     @NotBlank
-    @ApiModelProperty(value = "邮箱", required = true)
-    private String email;
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
 
     @NotBlank
     @ApiModelProperty(value = "密码", required = true)
     private String password;
+
 }

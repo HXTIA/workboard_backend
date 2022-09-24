@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.MiniApps;
+import run.hxtia.workbd.common.util.Strings;
 import run.hxtia.workbd.mapper.UserMapper;
 import run.hxtia.workbd.pojo.dto.UserInfoDto;
 import run.hxtia.workbd.pojo.po.User;
@@ -24,7 +24,6 @@ import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.miniapp.WxUserService;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -45,8 +44,8 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
         MiniApps.checkAppId(wxMaService);
         try {
             WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
-            String token = UUID.randomUUID().toString().replace("-", "");
-            redises.set(Constants.WxMiniApp.TOKEN_PREFIX, token, session, 7, TimeUnit.DAYS);
+            String token = Strings.getUUID();
+            redises.set(Constants.Web.HEADER_TOKEN, token, session, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
             return  token;
         } finally {
             //清理ThreadLocal
@@ -88,8 +87,6 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
             userInfoDto = new UserInfoDto();
 
             if (userPo != null) {
-                UserVo userVo = new UserVo();
-
                 userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(userPo));
             } else {
                 // 来到这里说明用户是第一次授权，需要注册

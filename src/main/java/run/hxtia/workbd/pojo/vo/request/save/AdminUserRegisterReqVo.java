@@ -4,29 +4,29 @@ package run.hxtia.workbd.pojo.vo.request.save;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Data
-@ApiModel("【添加 & 编辑】用户信息")
-public class UserReqVo {
-
-    @ApiModelProperty("用户id【大于0是编辑，否则是保存】")
-    private Integer id;
+@ApiModel("【注册】B端超管注册")
+public class AdminUserRegisterReqVo {
 
     @Email
-    @ApiModelProperty(value = "用户邮箱【必须包含@】", required = true)
-    private String email;
-
     @NotBlank
+    @ApiModelProperty(value = "用户邮箱【必须包含@】", required = true)
+    private String username;
+
+    @NotNull
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 
-    @ApiModelProperty("用户用户昵称")
-    private String nickname;
+    // TODO: 邮箱验证码
 
-
-
+    // TODO: 可以将密钥的盐值生成，让前端来完成
 }

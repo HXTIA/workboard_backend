@@ -2,6 +2,9 @@ package run.hxtia.workbd.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.util.StringUtils;
+
+import java.security.InvalidParameterException;
 
 /**
  * 加密工具类
@@ -9,7 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 @Slf4j
 public class Md5s {
 
-    public final static String DEFAULT_SALT = "hxtia";
+    public final static int DEFAULT_SALT_LEN = 6;
 
     /**
      * 用来加密

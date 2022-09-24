@@ -18,6 +18,7 @@ import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 统一拦截并且处理异常【这里的异常是来自必须是来自Controller|自定义异常】
@@ -69,14 +70,7 @@ public class CommonExceptionHandler {
      * 处理后端验证【BindException】异常
      */
     private JsonVo handle(BindException be) {
-        List<ObjectError> errors = be.getBindingResult().getAllErrors();
-        /*
-            1、利用Map将 List<ObjectError> -> List<String>
-            2、ObjectError::getDefaultMessage：lambda的方法引用
-         */
-        List<String> defaultMsgs = Streams.map(errors, ObjectError::getDefaultMessage);
-        String msg = StringUtils.collectionToDelimitedString(defaultMsgs, ", ");
-        return JsonVos.error(msg);
+        return JsonVos.error(getMsg(be.getBindingResult().getAllErrors()));
     }
 
     /**
@@ -92,9 +86,7 @@ public class CommonExceptionHandler {
      * 处理后端验证【MethodArgumentNotValidException】异常
      */
     private JsonVo handle(MethodArgumentNotValidException mae) {
-        List<String> msgs = Streams.map(mae.getBindingResult().getAllErrors(), ObjectError::getDefaultMessage);
-        String msg = StringUtils.collectionToDelimitedString(msgs, ", ");
-        return JsonVos.error(msg);
+        return JsonVos.error(getMsg(mae.getBindingResult().getAllErrors()));
     }
 
     /**
@@ -103,6 +95,21 @@ public class CommonExceptionHandler {
     private JsonVo handle(WxErrorException mae) {
         WxError error = mae.getError();
         return JsonVos.error(error.getErrorCode(), error.getErrorMsg());
+    }
+
+    /**
+     * 获取错误的消息
+     * @param errors ：所有的错误类型
+     * @return ：错误消息
+     */
+    private String getMsg(List<ObjectError> errors) {
+        /*
+            1、利用Map将 List<ObjectError> -> List<String>
+            2、ObjectError::getDefaultMessage：lambda的方法引用
+         */
+        List<String> defaultMsgs = Streams.map(errors, (err) ->
+            Objects.requireNonNull(err.getCodes())[1] + ":" + err.getDefaultMessage());
+        return  StringUtils.collectionToDelimitedString(defaultMsgs, ", ");
     }
 
 }

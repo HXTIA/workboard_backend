@@ -9,9 +9,10 @@ public class Constants {
     /**
      * 用户状态常量
      */
-    public static class UserStatus {
+    public static class Users {
         public static final int UNABLE = 0;
         public static final int ENABLE = 1;
+        public static final String PREFIX = "user";
     }
 
     /**
@@ -27,6 +28,14 @@ public class Constants {
     public static class Web {
         public static final String HEADER_TOKEN = "Token";
         public static final String ERROR_URI = "/handleError";
+    }
+
+    /**
+     * 时间常量
+     */
+    public static class Date {
+        // 过期时间
+        public static final int EXPIRE_DATS = 7;
     }
 
 }

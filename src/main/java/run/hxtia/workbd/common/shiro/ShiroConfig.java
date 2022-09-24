@@ -51,8 +51,9 @@ public class ShiroConfig {
         // 添加 URI 映射
         Map<String, String> uriMap = new LinkedHashMap<>();
 
-        // 放行登录接口
+        // 放行登录&注册接口
         uriMap.put("/admin/users/login", "anon");
+        uriMap.put("/admin/users/register", "anon");
 
         // 放行Swagger文档
         uriMap.put("/swagger*/**", "anon");
