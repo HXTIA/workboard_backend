@@ -2,6 +2,7 @@ package run.hxtia.workbd.common.commoncontroller;
 
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import run.hxtia.workbd.common.filter.ErrorFilter;
 import run.hxtia.workbd.common.util.Constants;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class ErrorController {
 
-    @PostMapping(Constants.Web.ERROR_URI)
+    @RequestMapping(Constants.Web.ERROR_URI)
     public void handle(HttpServletRequest request) throws Exception {
         throw (Exception) request.getAttribute(Constants.Web.ERROR_URI);
     }

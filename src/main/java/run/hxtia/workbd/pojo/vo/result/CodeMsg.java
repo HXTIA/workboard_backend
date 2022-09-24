@@ -10,6 +10,7 @@ public enum CodeMsg {
     SAVE_OK(1, "保存成功"),
     REMOVE_OK(1, "删除成功"),
     SUB_MSG_OK(1, "成功订阅消息"),
+    REGISTER_OK(1, "注册成功"),
 
     BAD_REQUEST(400, "请求出错"),
     UNAUTHORIZED(401, "未授权"),
@@ -24,11 +25,13 @@ public enum CodeMsg {
     USER_INFO_ERROR(40005, "用户信息校验失败"),
     SUB_MSG_ERROR(40006, "消息订阅失败"),
     AUTHORIZED_ERROR(40007, "微信授权失败"),
+    REGISTER_ERROR(40008, "注册失败"),
 
-    WRONG_USERNAME(50001, "邮箱不存在"),
+    WRONG_USERNAME(50001, "用户名不存在"),
     WRONG_PASSWORD(50002, "密码错误"),
     USER_LOCKED(50003, "用户被锁定，无法正常登录"),
     WRONG_CAPTCHA(50004, "验证码错误"),
+    EXIST_USERS(50005, "用户已存在"),
 
     NO_TOKEN(60001, "没有Token，请登录"),
     TOKEN_EXPIRED(60002, "Token过期，请重新登录"),

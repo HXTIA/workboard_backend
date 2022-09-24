@@ -30,6 +30,10 @@ public class AdminUsers implements Serializable {
      */
     private String password;
     /**
+     * 密码的盐值
+     */
+    private String salt;
+    /**
      * 头像url
      */
     private String avatarUrl;
@@ -41,6 +45,10 @@ public class AdminUsers implements Serializable {
      * 组织ID
      */
     private Short orgId;
+    /**
+     * 组织ID
+     */
+    private Short status;
 
 }
 
