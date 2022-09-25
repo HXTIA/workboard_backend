@@ -7,9 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
 import run.hxtia.workbd.mapper.OrganizationMapper;
-import run.hxtia.workbd.mapper.UserMapper;
 import run.hxtia.workbd.pojo.po.Organization;
-import run.hxtia.workbd.pojo.po.User;
 
 @SpringBootTest(classes = WorkBoardApplication.class)
 @Rollback
@@ -23,7 +21,7 @@ public class OrgMapperTest {
     public void testKey() {
 
         Organization organization = new Organization();
-        int i = organizationMapper.defaultRegister(organization);
+        int i = organizationMapper.insertDefaultRegister(organization);
         System.out.println(organization.getId());
 
     }

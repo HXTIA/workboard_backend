@@ -32,10 +32,12 @@ public enum CodeMsg {
     USER_LOCKED(50003, "用户被锁定，无法正常登录"),
     WRONG_CAPTCHA(50004, "验证码错误"),
     EXIST_USERS(50005, "用户已存在"),
+    PERFECT_ORG_INFO(50006, "请完善组织信息"),
 
     NO_TOKEN(60001, "没有Token，请登录"),
     TOKEN_EXPIRED(60002, "Token过期，请重新登录"),
-    NO_APP_ID(60003, "未找到对应的appId");
+    NO_APP_ID(60003, "未找到对应的appId"),
+    NO_ORG_INFO(60004, "未找到组织信息！！！");
 
 
     /**

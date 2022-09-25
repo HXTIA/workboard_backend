@@ -7,22 +7,29 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 @Data
-@ApiModel("【编辑|保存】用户信息")
+@ApiModel("【保存】用户信息")
 public class AdminUserReqVo {
 
-    @ApiModelProperty("用户id【大于0是编辑，否则是保存】")
-    private Long id;
+    @NotBlank
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
+
+    @NotBlank
+    @ApiModelProperty(value = "密码", required = true)
+    private String password;
 
     @ApiModelProperty("用户用户昵称")
     private String nickname;
 
-    @ApiModelProperty("头像url")
-    private String avatarUrl;
+    @NotNull
+    @ApiModelProperty(value = "操纵者的ID【当前登录用户的ID】", required = true)
+    private Short operatorId;
 
-    @ApiModelProperty("组织ID【在超管第一次创建管理员的时候，才需要传组织ID】")
-    private Integer orgId;
+    @ApiModelProperty("角色ID【多个角色之间使用：, 隔开】")
+    private String roleIds;
 
 }
