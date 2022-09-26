@@ -13,10 +13,7 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
@@ -25,6 +22,7 @@ import run.hxtia.workbd.service.admin.AdminUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.function.Function;
 
 
@@ -53,13 +51,11 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
         }
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     @ApiOperation("退出登录")
-    public JsonVo logout(HttpServletRequest request) {
-        String token = request.getHeader(Constants.Web.HEADER_TOKEN);
-        Redises redises = Redises.getRedises();
+    public JsonVo logout(@NotNull(message = "ID不能为空") Long id) {
         // 清空缓存中的token就可以了
-        redises.del(Constants.Web.HEADER_TOKEN + token);
+        Redises.getRedises().delByUserId(id);
         return JsonVos.ok();
     }
 
@@ -87,6 +83,18 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     @ApiOperation("修改用户个人信息【必须有待编辑者ID】")
     public JsonVo update(@Valid @RequestBody AdminUserInfoEditReqVo reqVo) throws Exception {
         if (adminUserService.update(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
+    @PostMapping("/updatePassword")
+    @ApiOperation("修改密码【仅自己修改】")
+    public JsonVo updatePassword(@Valid @RequestBody AdminUserPasswordReqVo reqVo) {
+        if (adminUserService.update(reqVo)) {
+            // 修改成功将其踢下线【重新登录】
+            Redises.getRedises().delByUserId(reqVo.getId());
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);

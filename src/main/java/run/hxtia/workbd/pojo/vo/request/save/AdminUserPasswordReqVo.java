@@ -6,18 +6,16 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 @Data
 @ApiModel("【编辑】用户密码")
 public class AdminUserPasswordReqVo {
 
+    @NotNull
     @ApiModelProperty(value = "用户ID", required = true)
     private Long id;
-
-    @NotBlank
-    @ApiModelProperty(value = "用户名", required = true)
-    private String username;
 
     @NotBlank
     @ApiModelProperty(value = "旧密码", required = true)
@@ -26,7 +24,5 @@ public class AdminUserPasswordReqVo {
     @NotBlank
     @ApiModelProperty(value = "新密码", required = true)
     private String newPassword;
-
-    //TODO: 暂时提供用户名密码找回，之后加上手机验证码找回
 
 }

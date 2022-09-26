@@ -17,10 +17,7 @@ import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.admin.AdminUserService;
@@ -171,8 +168,7 @@ public class AdminUserServiceImpl
         AdminUsers po = MapStructs.INSTANCE.reqVo2po(reqVo);
 
         // 将该用户的缓存清除掉【让其重新登陆】
-        String userToken = (String) redises.get(String.valueOf(id));
-        if (StringUtils.hasLength(userToken)) redises.del(userToken);
+        redises.delByUserId(id);
 
         // 清除该用户所有的角色
         userRoleService.removeByUserId(id);
@@ -221,6 +217,38 @@ public class AdminUserServiceImpl
             log.error(e.getMessage());
             return false;
         }
+    }
 
+    /**
+     * 修改密码
+     * @param reqVo ：用户密码信息
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(AdminUserPasswordReqVo reqVo) {
+        AdminUsers adminUsers = baseMapper.selectById(reqVo.getId());
+        if (adminUsers == null) return false;
+
+        String oldPsd = adminUsers.getPassword();
+        String oldSalt = adminUsers.getSalt();
+
+        // 验证旧密码是否正确
+        if (!Md5s.verify(reqVo.getOldPassword(), oldSalt, oldPsd)) {
+            return JsonVos.raise(CodeMsg.WRONG_OLD_PASSWORD);
+        }
+
+        // 验证新密码与旧密码是否重复
+        if (Md5s.verify(reqVo.getNewPassword(), oldSalt, oldPsd)) {
+            return JsonVos.raise(CodeMsg.WRONG_NEW_PASSWORD_REPEAT);
+        }
+
+        // 设置新密码
+        String newSalt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
+        String newPsd = Md5s.md5(reqVo.getNewPassword(), newSalt);
+
+        adminUsers.setPassword(newPsd);
+        adminUsers.setSalt(newSalt);
+
+        return updateById(adminUsers);
     }
 }

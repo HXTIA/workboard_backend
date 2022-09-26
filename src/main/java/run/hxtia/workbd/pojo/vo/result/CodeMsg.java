@@ -27,12 +27,14 @@ public enum CodeMsg {
     AUTHORIZED_ERROR(40007, "微信授权失败"),
     REGISTER_ERROR(40008, "注册失败"),
 
-    WRONG_USERNAME(50001, "用户名不存在"),
+    WRONG_USERNAME(50001, "用户不存在"),
     WRONG_PASSWORD(50002, "密码错误"),
     USER_LOCKED(50003, "用户被锁定，无法正常登录"),
     WRONG_CAPTCHA(50004, "验证码错误"),
     EXIST_USERS(50005, "用户已存在"),
     PERFECT_ORG_INFO(50006, "请完善组织信息"),
+    WRONG_OLD_PASSWORD(50007, "旧密码错误"),
+    WRONG_NEW_PASSWORD_REPEAT(50008, "新密码与旧密码重复"),
 
     NO_TOKEN(60001, "没有Token，请登录"),
     TOKEN_EXPIRED(60002, "Token过期，请重新登录"),
