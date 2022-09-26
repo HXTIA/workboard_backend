@@ -26,6 +26,7 @@ public enum CodeMsg {
     SUB_MSG_ERROR(40006, "消息订阅失败"),
     AUTHORIZED_ERROR(40007, "微信授权失败"),
     REGISTER_ERROR(40008, "注册失败"),
+    ADD_ROLE_ERROR(40009, "添加角色失败"),
 
     WRONG_USERNAME(50001, "用户不存在"),
     WRONG_PASSWORD(50002, "密码错误"),

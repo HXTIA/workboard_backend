@@ -45,9 +45,9 @@ public class OrganizationServiceImpl
      * @return ：是否成功
      */
     @Override
-    public boolean saveDefaultRegister(Organization organization) {
+    public boolean saveDefaultRegisterOrg(Organization organization) {
         if (organization == null) return false;
-        return baseMapper.insertDefaultRegister(organization) > 0;
+        return baseMapper.insertDefaultRegisterOrg(organization) > 0;
     }
 
 }

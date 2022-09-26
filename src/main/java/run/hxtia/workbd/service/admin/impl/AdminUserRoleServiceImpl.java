@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import run.hxtia.workbd.mapper.UserRoleMapper;
-import run.hxtia.workbd.pojo.po.UserRole;
-import run.hxtia.workbd.service.admin.UserRoleService;
+import run.hxtia.workbd.mapper.AdminUserRoleMapper;
+import run.hxtia.workbd.pojo.po.AdminUserRole;
+import run.hxtia.workbd.service.admin.AdminUserRoleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.List;
  * 用户角色模块 业务层
  */
 @Service
-public class UserRoleServiceImpl
-    extends ServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
+public class AdminUserRoleServiceImpl
+    extends ServiceImpl<AdminUserRoleMapper, AdminUserRole> implements AdminUserRoleService {
 
     /**
      * 根据用户ID，删除所有的角色信息
@@ -26,8 +26,8 @@ public class UserRoleServiceImpl
     @Override
     public boolean removeByUserId(Long userId) {
         if (userId == null || userId <= 0) return false;
-        LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UserRole::getUserId, userId);
+        LambdaQueryWrapper<AdminUserRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(AdminUserRole::getUserId, userId);
         return remove(wrapper);
     }
 
@@ -44,11 +44,11 @@ public class UserRoleServiceImpl
         // 构建用户角色信息
         String[] roleIds = roleIdsStr.split(",");
 
-        List<UserRole> userRoles = new ArrayList<>();
+        List<AdminUserRole> adminUserRoles = new ArrayList<>();
         for (String roleId : roleIds) {
-            userRoles.add(new UserRole(userId, Short.valueOf(roleId)));
+            adminUserRoles.add(new AdminUserRole(userId, Short.valueOf(roleId)));
         }
 
-        return saveBatch(userRoles);
+        return saveBatch(adminUserRoles);
     }
 }

@@ -13,6 +13,7 @@ public class Constants {
         public static final int UNABLE = 0;
         public static final int ENABLE = 1;
         public static final String PREFIX = "user";
+        public static final String DEFAULT_ROLE = "超级管理员";
     }
 
     /**

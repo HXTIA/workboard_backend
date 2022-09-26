@@ -11,7 +11,7 @@
      -->
 
     <!-- 因为直接使用 mp的插入，什么值都没有，会插入失败 -->
-    <insert id="insertDefaultRegister" useGeneratedKeys="true" keyProperty="id" parameterType="Organization">
+    <insert id="insertDefaultRegisterOrg" useGeneratedKeys="true" keyProperty="id" parameterType="Organization">
         INSERT INTO organization (  ) VALUES (  )
     </insert>
 

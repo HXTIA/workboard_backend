@@ -18,7 +18,7 @@ public class RoleResource implements Serializable {
     /**
      * 角色ID
      */
-    private Short id;
+    private Short roleId;
     /**
      * 资源ID
      */

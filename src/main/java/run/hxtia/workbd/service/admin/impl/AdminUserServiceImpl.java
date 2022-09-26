@@ -16,13 +16,15 @@ import run.hxtia.workbd.common.util.Strings;
 import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
+import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.OrganizationService;
-import run.hxtia.workbd.service.admin.UserRoleService;
+import run.hxtia.workbd.service.admin.AdminUserRoleService;
+import run.hxtia.workbd.service.admin.RoleService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +35,8 @@ public class AdminUserServiceImpl
 
     private final Redises redises;
     private final OrganizationService orgService;
-    private final UserRoleService userRoleService;
+    private final AdminUserRoleService adminUserRoleService;
+    private final RoleService roleService;
 
     /**
      * 用户登录
@@ -101,7 +104,7 @@ public class AdminUserServiceImpl
 
         // 注册组织
         Organization defaultOrg = new Organization();
-        if (orgService.saveDefaultRegister(defaultOrg)) {
+        if (!orgService.saveDefaultRegisterOrg(defaultOrg)) {
             return JsonVos.raise(CodeMsg.REGISTER_ERROR);
         }
 
@@ -115,10 +118,16 @@ public class AdminUserServiceImpl
         po.setOrgId(defaultOrg.getId());
 
         // 若插入失败，得抛出异常，才能回滚事务
-        boolean res = baseMapper.insert(po) > 0;
-        if (!res) return JsonVos.raise(CodeMsg.OPERATE_OK);
+        if (!(baseMapper.insert(po) > 0)) return JsonVos.raise(CodeMsg.OPERATE_OK);
 
-        // TODO： 给组织发起者，添加上超级管理员的权限
+        // 给组织发起者，添加上超级管理员的角色
+        LambdaQueryWrapper<Role> roleMapper = new LambdaQueryWrapper<>();
+        roleMapper.eq(Role::getName, Constants.Users.DEFAULT_ROLE);
+        Short roleId = roleService.getOne(roleMapper).getId();
+
+        if (!adminUserRoleService.save(po.getId(), String.valueOf(roleId))) {
+            return JsonVos.raise(CodeMsg.ADD_ROLE_ERROR);
+        }
 
         return true;
     }
@@ -155,7 +164,7 @@ public class AdminUserServiceImpl
         String roleIds = reqVo.getRoleIds();
         if (!StringUtils.hasLength(roleIds)) return true;
 
-        return userRoleService.save(po.getId(), roleIds);
+        return adminUserRoleService.save(po.getId(), roleIds);
     }
 
     /**
@@ -171,7 +180,7 @@ public class AdminUserServiceImpl
         redises.delByUserId(id);
 
         // 清除该用户所有的角色
-        userRoleService.removeByUserId(id);
+        adminUserRoleService.removeByUserId(id);
 
         // 保存 or 编辑用户信息
         if (!updateById(po)) return false;
@@ -180,7 +189,7 @@ public class AdminUserServiceImpl
         // 说明没有分配角色信息，那么直接返回成功
         if (!StringUtils.hasLength(roleIds)) return true;
 
-        return userRoleService.save(po.getId(), roleIds);
+        return adminUserRoleService.save(po.getId(), roleIds);
     }
 
     /**

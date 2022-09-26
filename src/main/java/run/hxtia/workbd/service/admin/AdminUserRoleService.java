@@ -2,12 +2,10 @@ package run.hxtia.workbd.service.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
-import run.hxtia.workbd.pojo.po.UserRole;
-
-import java.util.List;
+import run.hxtia.workbd.pojo.po.AdminUserRole;
 
 @Transactional(readOnly = true)
-public interface UserRoleService extends IService<UserRole> {
+public interface AdminUserRoleService extends IService<AdminUserRole> {
 
     /**
      * 根据用户ID，删除所有的角色信息
