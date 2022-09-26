@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
+import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Md5s;
@@ -14,9 +16,9 @@ import run.hxtia.workbd.common.util.Strings;
 import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
-import run.hxtia.workbd.pojo.po.UserRole;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
@@ -25,8 +27,6 @@ import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.admin.UserRoleService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -121,6 +121,8 @@ public class AdminUserServiceImpl
         boolean res = baseMapper.insert(po) > 0;
         if (!res) return JsonVos.raise(CodeMsg.OPERATE_OK);
 
+        // TODO： 给组织发起者，添加上超级管理员的权限
+
         return true;
     }
 
@@ -183,5 +185,42 @@ public class AdminUserServiceImpl
         if (!StringUtils.hasLength(roleIds)) return true;
 
         return userRoleService.save(po.getId(), roleIds);
+    }
+
+    /**
+     * 修改用户个人信息
+     * @param reqVo ：用户信息【带头像】
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(AdminUserInfoEditReqVo reqVo) throws Exception {
+
+        AdminUsers po = MapStructs.INSTANCE.reqVo2po(reqVo);
+
+        // 上传头像
+        String filePath = "";
+        MultipartFile avatarFile = reqVo.getAvatarFile();
+        if (avatarFile != null) {
+            // 上传到磁盘，并且返回文件路径，用于存库
+            filePath = Uploads.uploadImage(avatarFile);
+            if (!StringUtils.hasLength(filePath))
+                po.setAvatarUrl(filePath);
+        }
+
+        try {
+            // 保存 or 编辑用户信息
+            boolean res = updateById(po);
+            if (res) {
+                // 说明成功了，删除以前的头像
+                Uploads.deleteFile(reqVo.getAvatarUrl());
+            }
+            return res;
+        } catch (Exception e) {
+            // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
+            Uploads.deleteFile(filePath);
+            log.error(e.getMessage());
+            return false;
+        }
+
     }
 }

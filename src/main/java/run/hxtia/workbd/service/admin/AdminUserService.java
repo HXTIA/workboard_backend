@@ -3,13 +3,12 @@ package run.hxtia.workbd.service.admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.AdminUsers;
-import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 
 @Transactional(readOnly = true)
 public interface AdminUserService extends IService<AdminUsers> {
@@ -45,4 +44,12 @@ public interface AdminUserService extends IService<AdminUsers> {
      */
     @Transactional(readOnly = false)
     boolean update(AdminUserEditReqVo reqVo);
+
+    /**
+     * 修改用户个人信息
+     * @param reqVo ：用户信息
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean update(AdminUserInfoEditReqVo reqVo) throws Exception;
 }

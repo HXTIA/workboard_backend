@@ -165,7 +165,7 @@ public class Uploads {
      * @param relativePath :文件相对路径
      */
     public static void deleteFile(String relativePath) throws Exception {
-        if (StringUtils.hasLength(relativePath)) return;
+        if (!StringUtils.hasLength(relativePath)) return;
 
         // 拿到文件绝对路径
         String fullPath = UPLOAD.getBasePath() + relativePath;
@@ -183,7 +183,7 @@ public class Uploads {
      * @param filePath：数据库里的路径逗号隔开的
      */
     public static void deleteFiles(String filePath) throws Exception {
-        if (StringUtils.hasLength(filePath)) return;
+        if (!StringUtils.hasLength(filePath)) return;
 
         String[] relativeFiles = filePath.split(",");
 

@@ -5,10 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
-import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
@@ -16,6 +14,7 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
@@ -26,7 +25,6 @@ import run.hxtia.workbd.service.admin.AdminUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.function.Function;
 
 
@@ -75,9 +73,19 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
         }
     }
 
-    @PostMapping("/updateInfo")
+    @PostMapping("/edit")
     @ApiOperation("编辑用户【必须有待编辑者ID】")
-    public JsonVo update(@Valid @RequestBody AdminUserEditReqVo reqVo) {
+    public JsonVo edit(@Valid @RequestBody AdminUserEditReqVo reqVo) {
+        if (adminUserService.update(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
+    @PostMapping("/updateInfo")
+    @ApiOperation("修改用户个人信息【必须有待编辑者ID】")
+    public JsonVo update(@Valid @RequestBody AdminUserInfoEditReqVo reqVo) throws Exception {
         if (adminUserService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
@@ -86,6 +94,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     }
 
     @Override
+    @ApiOperation("这是一个无用接口")
     public JsonVo update(AdminUserReqVo reqVo) {
         return JsonVos.error("更新用户信息请访问接口【/updateInfo】");
     }
