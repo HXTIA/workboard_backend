@@ -43,9 +43,9 @@ public abstract class BaseController<Po, ReqVo> {
         }
     }
 
-    @PostMapping("/save")
+    @PostMapping("/create")
     @ApiOperation("添加")
-    public JsonVo save(@Valid @RequestBody ReqVo reqVo) {
+    public JsonVo create(@Valid @RequestBody ReqVo reqVo) {
         // 将ReqVo -> Po
         Po po = getFunction().apply(reqVo);
         if (getService().save(po)) {

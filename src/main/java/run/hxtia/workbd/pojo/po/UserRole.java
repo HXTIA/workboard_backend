@@ -1,7 +1,9 @@
 package run.hxtia.workbd.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -13,6 +15,8 @@ import java.io.Serializable;
  */
 @Data
 @TableName("users_roles")
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserRole implements Serializable {
     private static final long serialVersionUID = -70924790322874581L;
     /**

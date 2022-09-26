@@ -15,6 +15,7 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
@@ -23,6 +24,7 @@ import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.function.Function;
@@ -55,11 +57,37 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @PostMapping("/logout")
     @ApiOperation("退出登录")
-    public JsonVo logout(@RequestHeader(Constants.Web.HEADER_TOKEN) String token) {
+    public JsonVo logout(HttpServletRequest request) {
+        String token = request.getHeader(Constants.Web.HEADER_TOKEN);
         Redises redises = Redises.getRedises();
         // 清空缓存中的token就可以了
         redises.del(Constants.Web.HEADER_TOKEN + token);
         return JsonVos.ok();
+    }
+
+    @Override
+    @ApiOperation("添加用户【必须有操纵者ID】")
+    public JsonVo create(@Valid @RequestBody AdminUserReqVo reqVo) {
+        if (adminUserService.save(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
+    @PostMapping("/updateInfo")
+    @ApiOperation("编辑用户【必须有待编辑者ID】")
+    public JsonVo update(@Valid @RequestBody AdminUserEditReqVo reqVo) {
+        if (adminUserService.update(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
+    @Override
+    public JsonVo update(AdminUserReqVo reqVo) {
+        return JsonVos.error("更新用户信息请访问接口【/updateInfo】");
     }
 
     @Override

@@ -5,7 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 
@@ -28,4 +30,19 @@ public interface AdminUserService extends IService<AdminUsers> {
     @Transactional(readOnly = false)
     boolean register(AdminUserRegisterReqVo reqVo);
 
+    /**
+     * 添加用户 or 修改用户信息
+     * @param reqVo ：用户信息
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean save(AdminUserReqVo reqVo);
+
+    /**
+     * 修改用户信息
+     * @param reqVo ：用户信息
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean update(AdminUserEditReqVo reqVo);
 }

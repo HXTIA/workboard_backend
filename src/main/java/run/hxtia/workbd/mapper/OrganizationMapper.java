@@ -10,6 +10,6 @@ import run.hxtia.workbd.pojo.po.Organization;
 @Repository
 public interface OrganizationMapper extends BaseMapper<Organization> {
 
-    int defaultRegister(Organization po);
+    int insertDefaultRegister(Organization po);
 
 }
