@@ -11,7 +11,7 @@
  Target Server Version : 80026
  File Encoding         : 65001
 
- Date: 24/09/2022 19:56:21
+ Date: 26/09/2022 20:56:21
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,17 @@ CREATE TABLE `admin_users`  (
   `salt` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '密码的盐值',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `admin_users_email_uindex`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'B端用户表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'B端用户表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for admin_users_roles
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_users_roles`;
+CREATE TABLE `admin_users_roles`  (
+  `user_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
+  `role_id` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色ID',
+  PRIMARY KEY (`user_id`, `role_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户-角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for clazz
@@ -80,7 +90,7 @@ CREATE TABLE `organization`  (
   `background` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '组织背景【旗帜】',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `organization_name_uindex`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组织表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组织表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for resources
@@ -96,7 +106,7 @@ CREATE TABLE `resources`  (
   `icon` varchar(280) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '图标',
   `parent_id` smallint UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级资源【0：无父资源】',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '资源表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '资源表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for roles
@@ -108,7 +118,7 @@ CREATE TABLE `roles`  (
   `intro` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '角色简介',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `roles_name_uindex`(`name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for roles_resources
@@ -130,7 +140,7 @@ CREATE TABLE `semesters`  (
   `start_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
   `weeks` tinyint UNSIGNED NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学期表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学期表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for tags
@@ -141,7 +151,7 @@ CREATE TABLE `tags`  (
   `detail` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '标签细节',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `tags_detail_uindex`(`detail`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '标签表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '标签表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for users
@@ -168,16 +178,6 @@ CREATE TABLE `users_courses`  (
   `course_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '班级ID',
   PRIMARY KEY (`user_id`, `course_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户-教学班表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Table structure for users_roles
--- ----------------------------
-DROP TABLE IF EXISTS `users_roles`;
-CREATE TABLE `users_roles`  (
-  `user_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `role_id` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色ID',
-  PRIMARY KEY (`user_id`, `role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户-角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for users_works
@@ -210,7 +210,7 @@ CREATE TABLE `work`  (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '作业表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '作业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for works_tags
