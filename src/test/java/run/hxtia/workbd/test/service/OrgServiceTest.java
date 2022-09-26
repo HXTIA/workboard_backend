@@ -20,8 +20,7 @@ public class OrgServiceTest {
     @Test
     public void test() {
         Organization organization = new Organization();
-        organization.setBackground("");
-        orgService.save(organization);
+        orgService.saveDefaultRegisterOrg(organization);
     }
 
 }

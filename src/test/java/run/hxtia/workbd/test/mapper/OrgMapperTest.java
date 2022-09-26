@@ -21,7 +21,7 @@ public class OrgMapperTest {
     public void testKey() {
 
         Organization organization = new Organization();
-        int i = organizationMapper.insertDefaultRegister(organization);
+        int i = organizationMapper.insertDefaultRegisterOrg(organization);
         System.out.println(organization.getId());
 
     }

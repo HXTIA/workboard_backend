@@ -14,10 +14,10 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-@TableName("users_roles")
+@TableName("admin_users_roles")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRole implements Serializable {
+public class AdminUserRole implements Serializable {
     private static final long serialVersionUID = -70924790322874581L;
     /**
      * 用户ID

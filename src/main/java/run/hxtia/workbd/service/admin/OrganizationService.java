@@ -20,6 +20,7 @@ public interface OrganizationService extends IService<Organization> {
      * @param organization ：组织信息
      * @return ：是否成功
      */
-    boolean saveDefaultRegister(Organization organization);
+    @Transactional(readOnly = false)
+    boolean saveDefaultRegisterOrg(Organization organization);
 
 }

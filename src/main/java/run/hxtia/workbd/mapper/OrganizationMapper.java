@@ -10,6 +10,11 @@ import run.hxtia.workbd.pojo.po.Organization;
 @Repository
 public interface OrganizationMapper extends BaseMapper<Organization> {
 
-    int insertDefaultRegister(Organization po);
+    /**
+     * 用户注册时，给其注册默认的组织
+     * @param po：空的组织信息
+     * @return ：是否成功
+     */
+    int insertDefaultRegisterOrg(Organization po);
 
 }
