@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +52,21 @@ public class Redises implements ApplicationContextAware {
      */
     public boolean expire(String key, Long time) {
         return expire(key, time, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 根据用户ID删除对应的缓存【用户信息缓存 + Token令牌缓存】
+     * @param id：用户ID
+     */
+    public void delByUserId(Long id) {
+        String idStr = String.valueOf(id);
+        String userToken = (String) get(idStr);
+        if (StringUtils.hasLength(userToken)) {
+            if (del(userToken)) {
+                // 删除缓存的Token
+                del(idStr);
+            }
+        }
     }
 
     /**
@@ -129,13 +145,14 @@ public class Redises implements ApplicationContextAware {
      *
      * @param key 可以传一个值 或多个
      */
-    public void del(String... keys) {
+    public boolean del(String... keys) {
         if (keys != null && keys.length > 0) {
             if (keys.length == 1) {
                 boolean result = redisTemplate.delete(keys[0]);
                 log.debug("--------------------------------------------");
                 log.debug(new StringBuilder("删除缓存：").append(keys[0]).append("，结果：").append(result).toString());
                 log.debug("--------------------------------------------");
+                return result;
             } else {
                 Set<Object> keySet = new HashSet<>();
                 for (String key : keys) {
@@ -146,8 +163,10 @@ public class Redises implements ApplicationContextAware {
                 log.debug("成功删除缓存：" + keySet.toString());
                 log.debug("缓存删除数量：" + count + "个");
                 log.debug("--------------------------------------------");
+                return count > 0;
             }
         }
+        return false;
     }
 
     // ============================String=============================
