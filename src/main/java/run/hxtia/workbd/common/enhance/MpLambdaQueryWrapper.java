@@ -23,7 +23,7 @@ public class MpLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
         if (str.length() == 0) return this;
 
         /*
-        拼接查询条件
+        拼接模糊查询条件
         1、nested是将其条件组合起来，最终包裹一个括号【去掉最后一个 .or】
         2、符合链式编程。方便拼接参数，返回值是父类，需强转为子类类型
          */
@@ -32,7 +32,25 @@ public class MpLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
                 w.like(func, str).or();
             }
         });
+    }
 
+    /**
+     * 加强 between
+     * @param val：开始日期 - 起始日期
+     * @param funcs：字段
+     * @return ：wrapper
+     */
+    @SafeVarargs
+    public final MpLambdaQueryWrapper<T> between(Object[] val, SFunction<T, ?>... funcs) {
+        if (val == null) return this;
+        // 必须是开始日期和截止日期
+        if (val.length != 2) return this;
+
+        return (MpLambdaQueryWrapper<T>) nested((w) -> {
+            for (SFunction<T, ?> func : funcs) {
+                w.between(func, val[0], val[1]).or();
+            }
+        });
     }
 
 }

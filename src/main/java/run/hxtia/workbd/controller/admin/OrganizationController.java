@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
+import run.hxtia.workbd.pojo.po.Organization;
+import run.hxtia.workbd.pojo.vo.request.page.OrganizationPageReqVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
+import run.hxtia.workbd.pojo.vo.result.PageJsonVo;
 import run.hxtia.workbd.service.admin.OrganizationService;
 
 import java.util.List;
@@ -31,5 +34,10 @@ public class OrganizationController {
         return JsonVos.ok(Streams.map(orgService.list(), MapStructs.INSTANCE::po2vo));
     }
 
+    @GetMapping("/searchOrgPageList")
+    @ApiOperation("获取所有组织信息【分页】")
+    public PageJsonVo<Organization> searchOrgPageList(OrganizationPageReqVo pageReqVo) {
+        return JsonVos.ok(orgService.list(pageReqVo));
+    }
 
 }

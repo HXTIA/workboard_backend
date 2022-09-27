@@ -46,9 +46,9 @@ public class SwaggerCfg implements InitializingBean {
     @Bean
     public Docket adminUserDocket() {
         return groupDocket(
-            "01_用户【管理】",              // 分组模块
-            "/admin/users.*",             // 正则表达式，想要的模块。
-            "用户模块文档",          // 模块标题
+            "01_用户、组织【管理】",              // 分组模块
+            "/admin/(users.*|organizations.*)",             // 正则表达式，想要的模块。
+            "用户、组织模块文档",          // 模块标题
             "测试文档");        // 描述信息
     }
 
