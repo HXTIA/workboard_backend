@@ -213,7 +213,7 @@ public class AdminUserServiceImpl
         }
 
         try {
-            // 保存 or 编辑用户信息
+            // 编辑用户信息
             boolean res = updateById(po);
             if (res) {
                 // 说明成功了，删除以前的头像

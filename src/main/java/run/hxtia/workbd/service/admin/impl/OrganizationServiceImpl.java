@@ -3,12 +3,17 @@ package run.hxtia.workbd.service.admin.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
+import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.mapper.OrganizationMapper;
+import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.vo.request.page.OrganizationPageReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.OrganizationReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.admin.OrganizationService;
@@ -76,4 +81,38 @@ public class OrganizationServiceImpl
             buildVo();
     }
 
+    /**
+     * 修改组织信息
+     * @param reqVo：组织信息
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(OrganizationReqVo reqVo) throws Exception {
+        Organization po = MapStructs.INSTANCE.reqVo2po(reqVo);
+
+        // 上传背景
+        String filePath = "";
+        MultipartFile avatarFile = reqVo.getBackgroundFile();
+        if (avatarFile != null) {
+            // 上传到磁盘，并且返回文件路径，用于存库
+            filePath = Uploads.uploadImage(avatarFile);
+            if (!StringUtils.hasLength(filePath))
+                po.setBackground(filePath);
+        }
+
+        try {
+            // 编辑组织信息
+            boolean res = updateById(po);
+            if (res) {
+                // 说明成功了，删除以前的背景
+                Uploads.deleteFile(reqVo.getBackground());
+            }
+            return res;
+        } catch (Exception e) {
+            // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
+            Uploads.deleteFile(filePath);
+            log.error(e.getMessage());
+            return false;
+        }
+    }
 }

@@ -9,10 +9,7 @@ import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
@@ -48,6 +45,7 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserRegisterReqVo reqVo);
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
+   Organization reqVo2po(OrganizationReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);
