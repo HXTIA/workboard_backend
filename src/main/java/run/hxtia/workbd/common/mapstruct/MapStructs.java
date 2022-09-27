@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.po.AdminUsers;
+import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserEditReqVo;
@@ -13,6 +14,7 @@ import run.hxtia.workbd.pojo.vo.request.save.AdminUserInfoEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.AdminUserReqVo;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
 
 /**
@@ -36,6 +38,7 @@ public interface MapStructs {
     */
     UserVo po2vo(User po);
     AdminLoginVo po2loginVo(AdminUsers po);
+    OrganizationVo po2vo(Organization po);
 
    // reqVo -> po  【用来做数据库保存】
 

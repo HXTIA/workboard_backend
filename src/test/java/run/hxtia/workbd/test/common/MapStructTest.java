@@ -11,8 +11,8 @@ public class MapStructTest {
 
     @Test
     public void mapStruct() {
-        UserVo userVo = MapStructs.INSTANCE.po2vo(null);
-        System.out.println(userVo);
+        // UserVo userVo = MapStructs.INSTANCE.po2vo();
+        // System.out.println(userVo);
     }
 
 }
