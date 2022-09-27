@@ -81,7 +81,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @PostMapping("/updateInfo")
     @ApiOperation("修改用户个人信息【必须有待编辑者ID】")
-    public JsonVo update(@Valid @RequestBody AdminUserInfoEditReqVo reqVo) throws Exception {
+    public JsonVo update(@Valid AdminUserInfoEditReqVo reqVo) throws Exception {
         if (adminUserService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {

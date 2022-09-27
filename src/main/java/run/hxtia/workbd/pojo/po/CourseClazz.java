@@ -26,7 +26,7 @@ public class CourseClazz implements Serializable {
     /**
      * 组织ID
      */
-    private Long orgId;
+    private Short orgId;
 
 }
 

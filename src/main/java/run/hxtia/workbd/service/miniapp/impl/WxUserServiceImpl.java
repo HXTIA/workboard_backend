@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
+import run.hxtia.workbd.common.upload.UploadReqParam;
+import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.MiniApps;
@@ -20,8 +22,11 @@ import run.hxtia.workbd.mapper.UserMapper;
 import run.hxtia.workbd.pojo.dto.UserInfoDto;
 import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.miniapp.WxUserService;
 
 import java.util.concurrent.TimeUnit;
@@ -33,6 +38,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
 
     private final WxMaService wxMaService;
     private final Redises redises;
+    private final OrganizationService orgService;
 
     /**
      * 根据 code验证码换取 session_key + openId
@@ -121,5 +127,36 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
             return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
         }
         return po;
+    }
+
+    /**
+     * 完善用户信息
+     * @param reqVo：用户信息
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(UserReqVo reqVo) {
+        User po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        // 判断组织是否存在
+        if (!orgService.isExist(reqVo.getOrgId())) {
+            return JsonVos.raise(CodeMsg.NO_ORG_INFO);
+        }
+
+        return baseMapper.updateById(po) > 0;
+    }
+
+    /**
+     * 用户上传头像
+     * @param reqVo：头像数据
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(UserAvatarReqVo reqVo) throws Exception {
+        User po = new User();
+        po.setId(reqVo.getId());
+        return Uploads.uploadWithPo(po,
+            new UploadReqParam(reqVo.getAvatarUrl(),
+                reqVo.getAvatarFile()),
+            baseMapper, User::setAvatarUrl);
     }
 }

@@ -1,5 +1,6 @@
 package run.hxtia.workbd.service.admin.impl;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -7,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.mapper.OrganizationMapper;
@@ -90,29 +92,20 @@ public class OrganizationServiceImpl
     public boolean update(OrganizationReqVo reqVo) throws Exception {
         Organization po = MapStructs.INSTANCE.reqVo2po(reqVo);
 
-        // 上传背景
-        String filePath = "";
-        MultipartFile avatarFile = reqVo.getBackgroundFile();
-        if (avatarFile != null) {
-            // 上传到磁盘，并且返回文件路径，用于存库
-            filePath = Uploads.uploadImage(avatarFile);
-            if (!StringUtils.hasLength(filePath))
-                po.setBackground(filePath);
-        }
+        return Uploads.uploadWithPo(po,
+            new UploadReqParam(reqVo.getBackground(),
+                reqVo.getBackgroundFile()),
+            baseMapper, Organization::setBackground);
+    }
 
-        try {
-            // 编辑组织信息
-            boolean res = updateById(po);
-            if (res) {
-                // 说明成功了，删除以前的背景
-                Uploads.deleteFile(reqVo.getBackground());
-            }
-            return res;
-        } catch (Exception e) {
-            // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
-            Uploads.deleteFile(filePath);
-            log.error(e.getMessage());
-            return false;
-        }
+    /**
+     * 判断组织是否存在
+     * @param id ：组织ID
+     * @return ：是否存在
+     */
+    @Override
+    public boolean isExist(Short id) {
+        if (id == null || id <= 0) return false;
+        return baseMapper.selectById(id) != null;
     }
 }

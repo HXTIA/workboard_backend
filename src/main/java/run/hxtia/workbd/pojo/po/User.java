@@ -42,7 +42,7 @@ public class User implements Serializable {
     /**
      * 组织ID
      */
-    private Long orgId;
+    private Short orgId;
 
 }
 

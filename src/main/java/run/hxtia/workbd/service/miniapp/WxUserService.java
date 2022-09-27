@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.dto.UserInfoDto;
 import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 
 @Transactional(readOnly = true)
 public interface WxUserService extends IService<User> {
@@ -25,4 +27,20 @@ public interface WxUserService extends IService<User> {
      */
     @Transactional(readOnly = false)
     UserInfoDto authLogin(WxAuthLoginReqVo wxAuth, String token);
+
+    /**
+     * 完善用户信息
+     * @param reqVo：用户信息
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean update(UserReqVo reqVo);
+
+    /**
+     * 用户上传头像
+     * @param reqVo：头像数据
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean update(UserAvatarReqVo reqVo) throws Exception;
 }

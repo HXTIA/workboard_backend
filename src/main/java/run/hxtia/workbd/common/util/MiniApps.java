@@ -75,7 +75,7 @@ public class MiniApps {
      * @return ：Session
      */
     public static WxMaJscode2SessionResult getSession(String token) {
-        return getSession(Constants.WxMiniApp.TOKEN_PREFIX , token);
+        return getSession(Constants.Web.HEADER_TOKEN , token);
     }
 
     /**

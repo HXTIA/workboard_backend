@@ -41,4 +41,11 @@ public interface OrganizationService extends IService<Organization> {
      */
     @Transactional(readOnly = false)
     boolean update(OrganizationReqVo reqVo) throws Exception;
+
+    /**
+     * 判断组织是否存在
+     * @param id ：组织ID
+     * @return ：是否存在
+     */
+    boolean isExist(Short id);
 }
