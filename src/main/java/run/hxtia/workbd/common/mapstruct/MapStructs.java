@@ -5,8 +5,10 @@ import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
+import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
@@ -50,5 +52,8 @@ public interface MapStructs {
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);
+
+    // PO -> DTO
+    ResourceDto po2dto(Resource po);
 
 }
