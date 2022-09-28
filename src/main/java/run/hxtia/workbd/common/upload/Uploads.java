@@ -1,6 +1,8 @@
 package run.hxtia.workbd.common.upload;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.StringUtils;
@@ -10,12 +12,15 @@ import run.hxtia.workbd.common.prop.WorkBoardProperties;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 /**
  * 1、文件上传
  * 2、支持多文件上传、编辑
  * 3、并且会同步删除无用的文件
  */
+@Slf4j
 public class Uploads {
 
     // 拿到读取到配置里的Upload对象【用来获取文件目录】
@@ -191,6 +196,44 @@ public class Uploads {
             deleteFile(relativeFile);
         }
 
+    }
+
+    /**
+     * 上传图片 并且 保存到数据库
+     * @param po：对应的 PO 对象
+     * @param baseMapper：对应的 Mapper
+     * @param setName：需要设置文件路径的字段【利用方法引用】 PO::setXXX
+     * @param <PO>：数据库对象，必须继承 UploadReqParam
+     * @return ：是否成功
+     */
+    public static <PO, ReqVo extends UploadReqParam> boolean uploadWithPo(
+        PO po, UploadReqParam reqParam, BaseMapper<PO> baseMapper, BiConsumer<PO, String> setName) throws Exception {
+
+        // 上传文件
+        String filePath = "";
+        MultipartFile file = reqParam.getFile();
+        if (file != null) {
+            // 上传到磁盘，并且返回文件路径，用于存库
+            filePath = uploadImage(file);
+            if (StringUtils.hasLength(filePath))
+                // 调用 set 方法
+                setName.accept(po, filePath);
+        }
+
+        try {
+            // 编辑组织信息
+            boolean res = baseMapper.updateById(po) > 0;
+            if (res) {
+                // 说明成功了，删除以前的文件
+                deleteFile(reqParam.getOriginUri());
+            }
+            return res;
+        } catch (Exception e) {
+            // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
+            deleteFile(filePath);
+            log.error(e.getMessage());
+            return false;
+        }
     }
 
 }

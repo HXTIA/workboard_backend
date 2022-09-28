@@ -46,6 +46,7 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
    Organization reqVo2po(OrganizationReqVo reqVo);
+   User reqVo2po(UserReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

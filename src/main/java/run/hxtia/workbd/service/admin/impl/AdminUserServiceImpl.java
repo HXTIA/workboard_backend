@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
+import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
@@ -17,6 +18,7 @@ import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.Role;
+import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
@@ -46,7 +48,6 @@ public class AdminUserServiceImpl
     @Override
     public AdminLoginVo login(AdminLoginReqVo reqVo) {
 
-        //TODO: 加强LambdaQueryWrapper
         // 通过用户名查询user
         LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(AdminUsers::getUsername, reqVo.getUsername());
@@ -202,30 +203,10 @@ public class AdminUserServiceImpl
 
         AdminUsers po = MapStructs.INSTANCE.reqVo2po(reqVo);
 
-        // 上传头像
-        String filePath = "";
-        MultipartFile avatarFile = reqVo.getAvatarFile();
-        if (avatarFile != null) {
-            // 上传到磁盘，并且返回文件路径，用于存库
-            filePath = Uploads.uploadImage(avatarFile);
-            if (!StringUtils.hasLength(filePath))
-                po.setAvatarUrl(filePath);
-        }
-
-        try {
-            // 编辑用户信息
-            boolean res = updateById(po);
-            if (res) {
-                // 说明成功了，删除以前的头像
-                Uploads.deleteFile(reqVo.getAvatarUrl());
-            }
-            return res;
-        } catch (Exception e) {
-            // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
-            Uploads.deleteFile(filePath);
-            log.error(e.getMessage());
-            return false;
-        }
+        return Uploads.uploadWithPo(po,
+            new UploadReqParam(reqVo.getAvatarUrl(),
+                reqVo.getAvatarFile()), baseMapper,
+            AdminUsers::setAvatarUrl);
     }
 
     /**
