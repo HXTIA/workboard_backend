@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.AdminUserRole;
 
+import java.util.List;
+
 @Transactional(readOnly = true)
 public interface AdminUserRoleService extends IService<AdminUserRole> {
 
@@ -23,5 +25,12 @@ public interface AdminUserRoleService extends IService<AdminUserRole> {
      */
     @Transactional(readOnly = false)
     boolean save(Long userId, String roleIdsStr);
+
+    /**
+     * 根据用户ID获取角色ID
+     * @param userId：用户ID
+     * @return ：该用户的所有角色ID
+     */
+    List<Short> listRoleIds(Integer userId);
 
 }

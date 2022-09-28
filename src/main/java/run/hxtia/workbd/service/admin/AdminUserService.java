@@ -2,10 +2,12 @@ package run.hxtia.workbd.service.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
+import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 
 @Transactional(readOnly = true)
 public interface AdminUserService extends IService<AdminUsers> {
@@ -57,4 +59,11 @@ public interface AdminUserService extends IService<AdminUsers> {
      */
     @Transactional(readOnly = false)
     boolean update(AdminUserPasswordReqVo reqVo);
+
+    /**
+     * 通过Id获取用户信息【角色 + 组织 + 个人信息】
+     * @param id：用户ID
+     * @return ：用户信息
+     */
+    AdminUserInfoDto getAdminUserInfo(Integer id);
 }
