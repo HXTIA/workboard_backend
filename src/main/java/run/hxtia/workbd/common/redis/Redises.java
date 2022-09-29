@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -59,6 +60,7 @@ public class Redises implements ApplicationContextAware {
      * @param id：用户ID
      */
     public void delByUserId(Long id) {
+        if (id == null || id <= 0) return;
         String idStr = String.valueOf(id);
         String userToken = (String) get(idStr);
         if (StringUtils.hasLength(userToken)) {
@@ -66,6 +68,17 @@ public class Redises implements ApplicationContextAware {
                 // 删除缓存的Token
                 del(idStr);
             }
+        }
+    }
+
+    /**
+     * 根据用户ID删除对应的缓存【用户信息缓存 + Token令牌缓存】——批量操作
+     * @param userIds
+     */
+    public void delByUserIds(List<Long> userIds) {
+        if (CollectionUtils.isEmpty(userIds)) return;
+        for (Long userId : userIds) {
+            delByUserId(userId);
         }
     }
 

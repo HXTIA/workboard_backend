@@ -33,4 +33,11 @@ public interface AdminUserRoleService extends IService<AdminUserRole> {
      */
     List<Short> listRoleIds(Integer userId);
 
+    /**
+     * 根据角色ID获取用户ID
+     * @param roleId：用户ID
+     * @return ：该角色的所有用户ID
+     */
+    List<Long> listAdminUserIds(Short roleId);
+
 }

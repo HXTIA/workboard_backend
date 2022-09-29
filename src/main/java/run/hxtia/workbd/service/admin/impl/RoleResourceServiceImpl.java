@@ -37,4 +37,18 @@ public class RoleResourceServiceImpl
         return Streams.map(resIds, (resId) -> ((Integer) resId).shortValue());
     }
 
+    /**
+     * 根据角色ID删除所有资源
+     * @param roleId：角色ID
+     * @return ：是否成功
+     */
+    @Override
+    public boolean removeByRoleId(Short roleId) {
+        if (roleId == null || roleId <= 0) return false;
+
+        MpLambdaQueryWrapper<RoleResource> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.eq(RoleResource::getRoleId, roleId);
+
+        return baseMapper.delete(wrapper) > 0;
+    }
 }

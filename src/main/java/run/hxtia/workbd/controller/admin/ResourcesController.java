@@ -31,4 +31,10 @@ public class ResourcesController {
         return JsonVos.ok(resourceService.listMenu(roleIds), "资源获取成功");
     }
 
+    @GetMapping("/searchList")
+    @ApiOperation("返回完整的树状结构的资源")
+    public DataJsonVo<List<ResourceDto>> searchList() {
+        return JsonVos.ok(resourceService.listAllTree(), "资源获取成功");
+    }
+
 }

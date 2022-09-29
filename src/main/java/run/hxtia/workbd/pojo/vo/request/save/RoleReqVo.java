@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 
 @Data
@@ -20,6 +21,9 @@ public class RoleReqVo {
 
     @ApiModelProperty("角色简介")
     private String intro;
+
+    @ApiModelProperty("所有资源ID")
+    private List<Short> resourceIds;
 
 }
 
