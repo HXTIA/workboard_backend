@@ -6,15 +6,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
-import run.hxtia.workbd.pojo.po.AdminUsers;
-import run.hxtia.workbd.pojo.po.Organization;
-import run.hxtia.workbd.pojo.po.Resource;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
+import run.hxtia.workbd.pojo.vo.response.WorkVo;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -38,6 +36,22 @@ public interface MapStructs {
     UserVo po2vo(User po);
     AdminLoginVo po2loginVo(AdminUsers po);
     OrganizationVo po2vo(Organization po);
+    @Mapping(
+        source = "createdAt",
+        target = "createdAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "updatedAt",
+        target = "updatedAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    WorkVo po2vo(Work po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -49,6 +63,12 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
    Organization reqVo2po(OrganizationReqVo reqVo);
    User reqVo2po(UserReqVo reqVo);
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Mills2Date.class
+    )
+   Work reqVo2po(WorkReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

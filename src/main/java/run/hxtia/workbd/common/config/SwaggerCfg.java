@@ -62,9 +62,18 @@ public class SwaggerCfg implements InitializingBean {
     }
 
     @Bean
+    public Docket adminWorkDocket() {
+        return groupDocket(
+            "03_作业【管理】",
+            "/admin/works.*",
+            "作业模块文档",
+            "作业的增删改查、图片编辑...文档");
+    }
+
+    @Bean
     public Docket wxUserDocket() {
         return groupDocket(
-            "03_用户【小程序】",
+            "04_用户【小程序】",
             "/wx/users.*",
             "小程序用户模块文档",
             "小程序用户文档");
@@ -73,7 +82,7 @@ public class SwaggerCfg implements InitializingBean {
     @Bean
     public Docket wxMsgDocket() {
         return groupDocket(
-            "03_消息【小程序】",
+            "05_消息【小程序】",
             "/wx/messages.*",
             "小程序消息模块文档",
             "小程序消息文档");
