@@ -56,7 +56,7 @@ public class ShiroConfig {
         uriMap.put("/admin/users/register", "anon");
 
         // 放行Swagger文档
-        uriMap.put("/swagger*/**", "anon");
+        uriMap.put("/swagger**/**", "anon");
         uriMap.put("/v3/api-docs/**", "anon");
         uriMap.put("/wx/users/getSessionId", "anon");
 

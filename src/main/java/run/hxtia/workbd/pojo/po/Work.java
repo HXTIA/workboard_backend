@@ -29,10 +29,6 @@ public class Work implements Serializable {
      */
     private Integer semesterId;
     /**
-     * 用户ID
-     */
-    private Long userId;
-    /**
      * 作业标题
      */
     private String title;
@@ -43,7 +39,11 @@ public class Work implements Serializable {
     /**
      * 截止日期
      */
-    private Date dateline;
+    private Date deadline;
+    /**
+     * 作业图片
+     */
+    private String pictures;
     /**
      * 创建时间
      */
@@ -55,7 +55,7 @@ public class Work implements Serializable {
     /**
      * 是否展示【1：展示，0：不展示】
      */
-    private Short show;
+    private Short enable;
 
 }
 

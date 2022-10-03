@@ -5,9 +5,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.prop.WorkBoardProperties;
+import run.hxtia.workbd.common.util.Constants;
+import run.hxtia.workbd.common.util.Strings;
 
 import java.io.File;
 import java.util.List;
@@ -41,8 +44,8 @@ public class Uploads {
     }
 
     // 多图片上传
-    public static String uploadImages(MultipartFile[] multipartFiles) throws Exception {
-        if (multipartFiles == null || multipartFiles.length <= 0) return "";
+    public static String uploadImages(List<MultipartFile> multipartFiles) throws Exception {
+        if (CollectionUtils.isEmpty(multipartFiles)) return "";
         // 获取图片相对目录
         String relativeDir = UPLOAD.getImageDir();
 
@@ -66,7 +69,7 @@ public class Uploads {
      */
     public static UploadEditResult uploadEditImages(UploadEditParam uploadParam) throws Exception {
 
-        MultipartFile[] newFiles = uploadParam.getNewFiles();
+        List<MultipartFile> newFiles = uploadParam.getNewFiles();
         List<Integer> matchIndex = uploadParam.getMatchIndex();
         String oldFilesPath = uploadParam.getOldFilesPath();
 
@@ -84,20 +87,21 @@ public class Uploads {
 
         // 遍历去掉要删除的文件 和要保存的文件
         for (int i = 0; i < oldAlbumPath.length; i++) {
-            // 若对标数组为0，那么说明原图片被删除了
-            if (matchIndex.get(i) == 0) {
-                deletePath.append(oldAlbumPath[i]).append(",");
-                oldAlbumPath[i] = "";
+            // 若对标数组为1，那么说明原图片被编辑了
+            if (matchIndex.get(i) == Constants.Status.MATCH_INDEX_EDIT) {
+                if (i == 0) {
+                    deletePath.append(oldAlbumPath[i]);
+                } else {
+                    deletePath.append(",").append(oldAlbumPath[i]);
+                }
+                continue;
             }
+
             // 拼接删减后的路径
             if (oldAlbumPath[i].length() != 0) {
                 newFilePathBuilder.append(oldAlbumPath[i]).append(",");
             }
         }
-
-        // 如果有删除的图片，将最后一个逗号去掉
-        if (deletePath.length() > 0)
-            deletePath.replace(deletePath.length() - 1, deletePath.length(), "");
 
         // 如果删减后的图片路径字符串
         String newFilePath = newFilePathBuilder.toString();
@@ -107,12 +111,12 @@ public class Uploads {
         filePath = newUploadFilePath;
 
         // 判断以前是否有图片【】
-        if (!StringUtils.hasLength(newFilePath)) {
+        if (StringUtils.hasLength(newFilePath)) {
             // 判断有没有新传的图片
-            if (!StringUtils.hasLength(filePath)) {
+            if (StringUtils.hasLength(filePath)) {
                 filePath = newFilePath + filePath;
             } else {
-                // 没有就说明是以前的图片【去掉逗号】
+                // 来到这说明没有新传，是以前的图片【去掉最后一个逗号】
                 filePath = newFilePath.substring(0, newFilePath.length() - 1);
             }
         }
@@ -144,7 +148,7 @@ public class Uploads {
         String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
 
         // 文件名
-        String fileName = UUID.randomUUID() + "." + extension;
+        String fileName = Strings.getUUID(16) + "." + extension;
 
         // 文件相对路径【upload/....】
         String relativePath = dir + fileName;
@@ -203,10 +207,10 @@ public class Uploads {
      * @param po：对应的 PO 对象
      * @param baseMapper：对应的 Mapper
      * @param setName：需要设置文件路径的字段【利用方法引用】 PO::setXXX
-     * @param <PO>：数据库对象，必须继承 UploadReqParam
+     * @param <PO>：数据库对象
      * @return ：是否成功
      */
-    public static <PO, ReqVo extends UploadReqParam> boolean uploadWithPo(
+    public static <PO> boolean uploadOneWithPo(
         PO po, UploadReqParam reqParam, BaseMapper<PO> baseMapper, BiConsumer<PO, String> setName) throws Exception {
 
         // 上传文件
@@ -221,7 +225,7 @@ public class Uploads {
         }
 
         try {
-            // 编辑组织信息
+            // 编辑信息
             boolean res = baseMapper.updateById(po) > 0;
             if (res) {
                 // 说明成功了，删除以前的文件
@@ -231,6 +235,40 @@ public class Uploads {
         } catch (Exception e) {
             // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
             deleteFile(filePath);
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 多图片编辑 并且保存到数据库
+     * @param po ：对应的 PO 对象
+     * @param editParam ：编辑所需参数
+     * @param baseMapper ：对应的 Mapper
+     * @param setName：需要设置文件路径的字段【利用方法引用】 PO::setXXX
+     * @param <PO> 数据库对象
+     * @return ：是否成功
+     */
+    public static <PO> boolean uploadMoreWithPo(
+        PO po, UploadEditParam editParam, BaseMapper<PO> baseMapper, BiConsumer<PO, String> setName) throws Exception {
+
+        // 上传文件
+        UploadEditResult editResult = uploadEditImages(editParam);
+        // 调用 set 方法
+        setName.accept(po, editResult.getFilePath());
+        try {
+            // 编辑信息
+            boolean res = baseMapper.updateById(po) > 0;
+            if (res) {
+                // 说明成功了，删除需要删除的文件【以前编辑过的图片】
+                deleteFiles(editResult.getNeedDeletePath());
+            }
+            return res;
+        } catch (Exception e) {
+            // 如果在上传的时候出现异常，将刚刚上传成功的文件删掉
+            deleteFiles(editResult.getNewUploadFilePath());
+            e.printStackTrace();
             log.error(e.getMessage());
             return false;
         }
