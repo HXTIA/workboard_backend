@@ -6,15 +6,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.vo.request.page.base.WxWorkPageReqVo;
 import run.hxtia.workbd.pojo.vo.response.UserWorkVo;
+import run.hxtia.workbd.pojo.vo.response.WorkVo;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.PageJsonVo;
 import run.hxtia.workbd.service.miniapp.WxWorkService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -48,6 +51,12 @@ public class WxWorkController {
     @ApiOperation("分页查询该用户的所有作业【历史、分页】")
     public PageJsonVo<UserWorkVo> searchHistoryPageList(@Valid @RequestBody WxWorkPageReqVo pageReqVo) {
         return JsonVos.ok(workService.list(pageReqVo, Constants.Status.WORK_DISABLE));
+    }
+
+    @GetMapping("/searchOne")
+    @ApiOperation("根据作业ID获取作业信息")
+    public DataJsonVo<WorkVo> searchOne(@NotNull(message = "作业ID不能为空") @RequestParam Long workId) {
+        return JsonVos.ok(MapStructs.INSTANCE.po2vo(workService.getById(workId)));
     }
 
 }
