@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.AdminUserRoleMapper;
 import run.hxtia.workbd.pojo.po.AdminUserRole;
 import run.hxtia.workbd.service.admin.AdminUserRoleService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * 用户角色模块 业务层
@@ -50,5 +52,23 @@ public class AdminUserRoleServiceImpl
         }
 
         return saveBatch(adminUserRoles);
+    }
+
+    /**
+     * 根据用户ID获取角色ID
+     * @param userId：用户ID
+     * @return ：该用户的所有角色ID
+     */
+    @Override
+    public List<Short> listRoleIds(Integer userId) {
+        if (userId == null || userId <= 0) return null;
+
+        LambdaQueryWrapper<AdminUserRole> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(AdminUserRole::getRoleId).eq(AdminUserRole::getUserId, userId);
+
+        // 查询角色ID
+        List<Object> roleIds = baseMapper.selectObjs(wrapper);
+
+        return Streams.map(roleIds, roleId -> ((Integer) roleId).shortValue());
     }
 }

@@ -29,6 +29,7 @@ public class Constants {
     public static class Web {
         public static final String HEADER_TOKEN = "Token";
         public static final String ERROR_URI = "/handleError";
+        public static final Short DIR_TYPE = 1;
     }
 
     /**

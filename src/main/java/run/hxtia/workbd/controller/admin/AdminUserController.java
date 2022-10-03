@@ -11,6 +11,7 @@ import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
@@ -99,6 +100,12 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("通过Id获取用户信息【角色 + 组织 + 个人信息】")
+    public DataJsonVo<AdminUserInfoDto> searchAdminUserInfo(@PathVariable @NotNull Integer id) {
+        return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
 
     @Override

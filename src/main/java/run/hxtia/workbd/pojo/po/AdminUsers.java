@@ -46,7 +46,7 @@ public class AdminUsers implements Serializable {
      */
     private Short orgId;
     /**
-     * 组织ID
+     * 用户状态【1：可用 0：禁用】
      */
     private Short status;
 

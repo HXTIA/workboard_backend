@@ -18,7 +18,7 @@ public class Resource implements Serializable {
     /**
      * 资源ID
      */
-    private Integer id;
+    private Short id;
     /**
      * 资源名称
      */
@@ -46,7 +46,7 @@ public class Resource implements Serializable {
     /**
      * 父级资源【0：无父资源】
      */
-    private Integer parentId;
+    private Short parentId;
 
 }
 

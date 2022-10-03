@@ -15,6 +15,7 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Md5s;
 import run.hxtia.workbd.common.util.Strings;
 import run.hxtia.workbd.mapper.AdminUserMapper;
+import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.Role;
@@ -28,6 +29,7 @@ import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.admin.AdminUserRoleService;
 import run.hxtia.workbd.service.admin.RoleService;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -240,5 +242,27 @@ public class AdminUserServiceImpl
         adminUsers.setSalt(newSalt);
 
         return updateById(adminUsers);
+    }
+
+    /**
+     * 通过Id获取用户信息【角色 + 组织 + 个人信息】
+     * @param userId：用户ID
+     * @return ：用户信息
+     */
+    @Override
+    public AdminUserInfoDto getAdminUserInfo(Integer userId) {
+        if (userId == null || userId <= 0) return null;
+
+        // TODO:获取用户信息【待队友实现】
+
+        // 获取用户角色
+        List<Role> roles = roleService.listByIds(adminUserRoleService.listRoleIds(userId));
+
+        // TODO: 根据上面获取的组织ID，获取组织信息
+
+        AdminUserInfoDto dto = new AdminUserInfoDto();
+        dto.setRoles(roles);
+
+        return dto;
     }
 }
