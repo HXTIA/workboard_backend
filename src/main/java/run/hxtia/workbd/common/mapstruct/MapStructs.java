@@ -9,6 +9,10 @@ import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
+import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
+import run.hxtia.workbd.pojo.vo.response.RoleVo;
+import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.response.*;
 
 /**
@@ -33,6 +37,7 @@ public interface MapStructs {
     UserVo po2vo(User po);
     AdminLoginVo po2loginVo(AdminUsers po);
     OrganizationVo po2vo(Organization po);
+    RoleVo po2vo(Role po);
     @Mapping(
         source = "createdAt",
         target = "createdAt",
@@ -76,6 +81,7 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
    Organization reqVo2po(OrganizationReqVo reqVo);
    User reqVo2po(UserReqVo reqVo);
+   Role reqVo2po(RoleReqVo reqVo);
     @Mapping(
         source = "deadline",
         target = "deadline",

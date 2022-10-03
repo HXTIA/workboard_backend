@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.AdminUserRoleMapper;
 import run.hxtia.workbd.pojo.po.AdminUserRole;
@@ -70,5 +71,19 @@ public class AdminUserRoleServiceImpl
         List<Object> roleIds = baseMapper.selectObjs(wrapper);
 
         return Streams.map(roleIds, roleId -> ((Integer) roleId).shortValue());
+    }
+
+    /**
+     * 根据角色ID获取用户ID
+     * @param roleId：用户ID
+     * @return ：该角色的所有用户ID
+     */
+    @Override
+    public List<Long> listAdminUserIds(Short roleId) {
+        if (roleId == null || roleId <= 0) return null;
+        MpLambdaQueryWrapper<AdminUserRole> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.select(AdminUserRole::getUserId).eq(AdminUserRole::getRoleId, roleId);
+        List<Object> userIds = baseMapper.selectObjs(wrapper);
+        return Streams.map(userIds, (userId) -> (Long) userId);
     }
 }

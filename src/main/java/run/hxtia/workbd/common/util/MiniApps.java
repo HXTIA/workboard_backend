@@ -66,7 +66,7 @@ public class MiniApps {
      * @return ：OpenId
      */
     public static String getOpenId(String token) {
-        return getOpenId(Constants.WxMiniApp.TOKEN_PREFIX, token);
+        return getOpenId(Constants.Web.HEADER_TOKEN, token);
     }
 
     /**
@@ -85,7 +85,9 @@ public class MiniApps {
      * @return ：SessionKey
      */
     public static String getSessionKey(String prefix, String token) {
-        return Objects.requireNonNull(getSession(prefix, token)).getSessionKey();
+        WxMaJscode2SessionResult session = getSession(prefix, token);
+        if (session == null) return null;
+        return  session.getSessionKey();
     }
 
     /**
@@ -95,7 +97,9 @@ public class MiniApps {
      * @return ：OpenId
      */
     public static String getOpenId(String prefix, String token) {
-        return Objects.requireNonNull(getSession(prefix, token)).getOpenid();
+        WxMaJscode2SessionResult session = getSession(prefix, token);
+        if (session == null) return null;
+        return session.getOpenid();
     }
 
     /**
