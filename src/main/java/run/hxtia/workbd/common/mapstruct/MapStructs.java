@@ -9,10 +9,7 @@ import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
-import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
-import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
-import run.hxtia.workbd.pojo.vo.response.UserVo;
-import run.hxtia.workbd.pojo.vo.response.WorkVo;
+import run.hxtia.workbd.pojo.vo.response.*;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -52,6 +49,22 @@ public interface MapStructs {
         qualifiedBy = MapStructFormatter.Date2Millis.class
     )
     WorkVo po2vo(Work po);
+    @Mapping(
+        source = "createdAt",
+        target = "createdAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "updatedAt",
+        target = "updatedAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    UserWorkVo po2userWorkVo(Work po);
 
    // reqVo -> po  【用来做数据库保存】
 

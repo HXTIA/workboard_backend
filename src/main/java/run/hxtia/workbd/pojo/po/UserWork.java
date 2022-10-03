@@ -25,13 +25,13 @@ public class UserWork implements Serializable {
      */
     private Long workId;
     /**
-     * 阅读状态【0：未读，1：已读】
+     * 作业状态【0：未读未完成，1：已读未完成，2：已读已完成】
      */
-    private Short workStatus;
+    private Short status;
     /**
-     * 是否完成【0：未完成，1：已完成】
+     * 是否置顶【0：不置顶，1：置顶】
      */
-    private Short workPin;
+    private Short pin;
     /**
      * 查看次数
      */

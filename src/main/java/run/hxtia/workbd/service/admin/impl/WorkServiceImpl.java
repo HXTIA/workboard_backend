@@ -1,6 +1,7 @@
 package run.hxtia.workbd.service.admin.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,7 @@ import run.hxtia.workbd.pojo.vo.request.save.WorkUploadReqVo;
 import run.hxtia.workbd.pojo.vo.response.WorkVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.service.admin.UserWorkService;
 import run.hxtia.workbd.service.admin.WorkService;
 
 import java.util.Arrays;
@@ -32,7 +34,10 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements WorkService {
+
+    private final UserWorkService userWorkService;
 
     /**
      * 分页查询作业
@@ -153,8 +158,13 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         List<String> workIds = Arrays.asList(ids.split(","));
         // 检查作业是否能删除
         checkWorkRemove(workIds);
-
-        return removeByIds(workIds);
+        boolean deleteWork = removeByIds(workIds);
+        boolean deleteUserWork = userWorkService.removeByWorkId(workIds);
+        // 在用户作业表里删除作业
+        if (!deleteWork || !deleteUserWork) {
+            return JsonVos.raise(CodeMsg.REMOVE_ERROR);
+        }
+        return true;
     }
 
     /**
