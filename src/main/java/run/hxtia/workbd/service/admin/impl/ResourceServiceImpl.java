@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.Streams;
@@ -40,6 +41,17 @@ public class ResourceServiceImpl
         List<Resource> resources = listOrderByType(resourceIds);
         // 构建资源树
         return listComTree(resources);
+    }
+
+    /**
+     * 构建完整的资源树结构
+     * @return ：一整棵父子结构
+     */
+    @Override
+    public List<ResourceDto> listAllTree() {
+        MpLambdaQueryWrapper<Resource> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.orderByAsc(Resource::getType);
+        return listComTree(baseMapper.selectList(wrapper));
     }
 
     /**

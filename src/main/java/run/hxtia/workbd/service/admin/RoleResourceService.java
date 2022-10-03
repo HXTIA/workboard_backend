@@ -18,4 +18,13 @@ public interface RoleResourceService extends IService<RoleResource> {
      * @return ：拥有资源的并集
      */
     List<Short> listResourceIds(List<Short> roleIds);
+
+    /**
+     * 根据角色ID删除所有资源
+     * @param roleId：角色ID
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean removeByRoleId(Short roleId);
+
 }

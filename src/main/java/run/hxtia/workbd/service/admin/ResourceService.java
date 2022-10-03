@@ -19,4 +19,10 @@ public interface ResourceService extends IService<Resource> {
      * @return ：树状结构的菜单
      */
     List<ResourceDto> listMenu(String roleStrIds);
+
+    /**
+     * 构建完整的资源树结构
+     * @return ：一整棵父子结构
+     */
+    List<ResourceDto> listAllTree();
 }

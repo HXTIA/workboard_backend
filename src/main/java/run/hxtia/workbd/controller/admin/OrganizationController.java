@@ -31,15 +31,15 @@ public class OrganizationController {
 
     private final OrganizationService orgService;
 
-    @GetMapping("/searchOrgList")
+    @GetMapping("/searchList")
     @ApiOperation("获取所有组织信息")
     public DataJsonVo<List<OrganizationVo>> searchOrgList() {
         return JsonVos.ok(Streams.map(orgService.list(), MapStructs.INSTANCE::po2vo));
     }
 
-    @GetMapping("/searchOrgPageList")
+    @PostMapping("/searchListPage")
     @ApiOperation("获取所有组织信息【分页】")
-    public PageJsonVo<Organization> searchOrgPageList(OrganizationPageReqVo pageReqVo) {
+    public PageJsonVo<Organization> searchOrgPageList(@RequestBody OrganizationPageReqVo pageReqVo) {
         return JsonVos.ok(orgService.list(pageReqVo));
     }
 

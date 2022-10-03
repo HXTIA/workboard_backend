@@ -56,7 +56,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket adminSkillDocket() {
         return groupDocket(
                 "02_角色、资源【管理】",
-                "/admin/resources.*",
+                "/admin/(roles.*|resources.*)",
                 "角色、资源模块文档",
                 "角色、资源文档");
     }
