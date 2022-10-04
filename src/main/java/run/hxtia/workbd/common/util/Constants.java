@@ -10,7 +10,7 @@ public class Constants {
      * 用户状态常量
      */
     public static class Users {
-        public static final String PREFIX = "user";
+        public static final String USER_ID = "user:id:";
         // 超管默认角色
         public static final String DEFAULT_ROLE = "超级管理员";
     }
@@ -19,7 +19,9 @@ public class Constants {
      * 微信小程序常量
      */
     public static class WxMiniApp {
-        public static final String TOKEN_PREFIX = "wx:user:";
+        public static final String WX_USER = "wx:user:";
+        // 微信接口前缀
+        public static final String WX_PREFIX = "/wx/";
     }
 
     /**
@@ -28,6 +30,7 @@ public class Constants {
     public static class Web {
         public static final String HEADER_TOKEN = "Token";
         public static final String ERROR_URI = "/handleError";
+        public static final String ADMIN_PREFIX = "/admin/";
     }
 
     /**

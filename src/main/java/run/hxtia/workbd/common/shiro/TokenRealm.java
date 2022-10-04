@@ -8,6 +8,8 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import run.hxtia.workbd.common.redis.Redises;
+import run.hxtia.workbd.common.util.Constants;
 
 /**
  *  自定义Shiro数据源Realm
@@ -40,6 +42,12 @@ public class TokenRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         log.debug("AuthorizationInfo----{}", principals);
+        String token = (String) principals.getPrimaryPrincipal();
+        Redises redises = Redises.getRedises();
+
+        Object o = redises.get(Constants.Web.HEADER_TOKEN, token);
+
+
         return null;
     }
 

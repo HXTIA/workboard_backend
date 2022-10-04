@@ -58,15 +58,16 @@ public class MiniApps {
      * @return ：SessionKey
      */
     public static String getSessionKey(String token) {
-        return getSessionKey(Constants.WxMiniApp.TOKEN_PREFIX, token);
+        return getSessionKey(Constants.WxMiniApp.WX_PREFIX, token);
     }
+
     /**
      * 根据Token获取 OpenId
      * @param token：令牌
      * @return ：OpenId
      */
     public static String getOpenId(String token) {
-        return getOpenId(Constants.Web.HEADER_TOKEN, token);
+        return getOpenId(Constants.WxMiniApp.WX_PREFIX, token);
     }
 
     /**
@@ -75,7 +76,7 @@ public class MiniApps {
      * @return ：Session
      */
     public static WxMaJscode2SessionResult getSession(String token) {
-        return getSession(Constants.Web.HEADER_TOKEN , token);
+        return getSession(Constants.WxMiniApp.WX_PREFIX , token);
     }
 
     /**

@@ -195,6 +195,16 @@ public class Redises implements ApplicationContextAware {
     }
 
     /**
+     * 省去强转的key
+     * @param key
+     * @param <T>
+     * @return
+     */
+    public <T> T getT(String key) {
+        return (T) get(key);
+    }
+
+    /**
      * 普通缓存获取
      *
      * @param prefix 前缀
