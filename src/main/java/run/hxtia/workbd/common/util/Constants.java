@@ -41,6 +41,9 @@ public class Constants {
         public static final int EXPIRE_DATS = 7;
     }
 
+    /**
+     * 状态常量
+     */
     public static class Status {
         // 用户禁用状态
         public static final int UNABLE = 0;
@@ -54,5 +57,54 @@ public class Constants {
         public static final short MATCH_INDEX_NO_EDIT = 0;
         public static final short MATCH_INDEX_EDIT = 1;
     }
+
+    /**
+     * 权限常量
+     */
+    public static class Permission {
+        // 组织管理
+        public static final String SYS_ORGANIZATION_READ = "sysOrganization:read";
+        public static final String SYS_ORGANIZATION_UPDATE = "sysOrganization:update";
+        // B端用户管理
+        public static final String SYS_ADMIN_USER_READ = "sysAdminUser:read";
+        public static final String SYS_ADMIN_USER_UPDATE = "sysAdminUser:update";
+        public static final String SYS_ADMIN_USER_DELETE = "sysAdminUser:delete";
+        public static final String SYS_ADMIN_USER_CREATE = "sysAdminUser:create";
+        // C端用户管理
+        public static final String SYS_USER_READ = "sysUser:read";
+        public static final String SYS_USER_UPDATE = "sysUser:update";
+        public static final String SYS_USER_DELETE = "sysUser:delete";
+        // 角色管理
+        public static final String SYS_ROLE_READ = "sysRole:read";
+        public static final String SYS_ROLE_UPDATE = "sysRole:update";
+        public static final String SYS_ROLE_DELETE = "sysRole:delete";
+        public static final String SYS_ROLE_CREATE = "sysRole:create";
+        // 行政班级管理
+        public static final String CLS_EXECUTIVE_READ = "clsExecutive:read";
+        public static final String CLS_EXECUTIVE_UPDATE = "clsExecutive:update";
+        public static final String CLS_EXECUTIVE_DELETE = "clsExecutive:delete";
+        public static final String CLS_EXECUTIVE_CREATE = "clsExecutive:create";
+        // 教学班级管理
+        public static final String CLS_EDUCATION_READ = "clsEducation:read";
+        public static final String CLS_EDUCATION_UPDATE = "clsEducation:update";
+        public static final String CLS_EDUCATION_DELETE = "clsEducation:delete";
+        public static final String CLS_EDUCATION_CREATE = "clsEducation:create";
+        // 作业管理
+        public static final String WORK_MANAGE_READ = "workManage:read";
+        public static final String WORK_MANAGE_UPDATE = "workManage:update";
+        public static final String WORK_MANAGE_DELETE = "workManage:delete";
+        public static final String WORK_MANAGE_CREATE = "workManage:create";
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -3,6 +3,7 @@ package run.hxtia.workbd.pojo.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;

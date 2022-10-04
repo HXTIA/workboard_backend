@@ -6,10 +6,20 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.util.CollectionUtils;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
+import run.hxtia.workbd.common.util.Streams;
+import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
+import run.hxtia.workbd.pojo.dto.AdminUserPermissionDto;
+import run.hxtia.workbd.pojo.dto.UserInfoDto;
+import run.hxtia.workbd.pojo.po.Resource;
+import run.hxtia.workbd.pojo.po.Role;
+
+import java.util.List;
 
 /**
  *  自定义Shiro数据源Realm
@@ -44,11 +54,22 @@ public class TokenRealm extends AuthorizingRealm {
         log.debug("AuthorizationInfo----{}", principals);
         String token = (String) principals.getPrimaryPrincipal();
         Redises redises = Redises.getRedises();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-        Object o = redises.get(Constants.Web.HEADER_TOKEN, token);
+        AdminUserPermissionDto userInfoDto = redises.getT(Constants.Web.HEADER_TOKEN + token);
+        if (userInfoDto == null) return info;
 
+        // 添加角色
+        List<Role> roles = userInfoDto.getRoles();
+        if (CollectionUtils.isEmpty(roles)) return info;
+        info.addRoles(Streams.map(roles, Role::getName));
 
-        return null;
+        // 添加权限
+        List<Resource> resources = userInfoDto.getResources();
+        if (CollectionUtils.isEmpty(resources)) return info;
+        info.addStringPermissions(Streams.map(resources, Resource::getPermission));
+
+        return info;
     }
 
     /**

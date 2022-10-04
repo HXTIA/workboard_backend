@@ -16,6 +16,7 @@ import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.util.Constants;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -62,7 +63,7 @@ public class Redises implements ApplicationContextAware {
     public void delByUserId(Long id) {
         if (id == null || id <= 0) return;
         String idStr = String.valueOf(id);
-        String userToken = (String) get(idStr);
+        String userToken = (String) get(Constants.Users.USER_ID, idStr);
         if (StringUtils.hasLength(userToken)) {
             if (del(userToken)) {
                 // 删除缓存的Token
