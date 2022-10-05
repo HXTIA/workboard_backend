@@ -3,6 +3,7 @@ package run.hxtia.workbd.service.admin.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
@@ -21,7 +22,10 @@ import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.admin.AdminUserRoleService;
@@ -252,15 +256,53 @@ public class AdminUserServiceImpl
         if (userId == null || userId <= 0) return null;
 
         // TODO:获取用户信息【待队友实现】
-
+        //获取用户信息
+        AdminUserVo adminUserVo =queryInfoById(userId);
         // 获取用户角色
         List<Role> roles = roleService.listByIds(adminUserRoleService.listRoleIds(userId));
 
         // TODO: 根据上面获取的组织ID，获取组织信息
+        short orgId = adminUserVo.getOrgId();
+        System.out.println("orgId"+orgId);
+        OrganizationVo organizationVo = orgService.queryOrgById(orgId);
 
         AdminUserInfoDto dto = new AdminUserInfoDto();
         dto.setRoles(roles);
-
+        dto.setUserVo(adminUserVo);
+        dto.setOrgVo(organizationVo);
         return dto;
     }
+
+    /**
+     *
+     * @param userId:用户id
+     * @return vo:用户信息
+     */
+    @Override
+    public AdminUserVo queryInfoById(Integer userId) {
+
+        //根据id查询用户信息
+        AdminUsers adminUser = baseMapper.selectById(userId);
+        //用户不存在
+        if( adminUser == null){
+            return JsonVos.raise(CodeMsg.WRONG_USERNAME);
+        }
+        //将po转换为vo
+        AdminUserVo adminUserVo= MapStructs.INSTANCE.po2adminUserVo(adminUser);
+        return adminUserVo;
+    }
+
+//    @Override
+//    public PageVo<AdminUserVo> queryAllUser() {
+//        List<AdminUsers> adminUsers = baseMapper.selectList(null);
+//        PageVo<AdminUserVo> adminUserInfoVoPageVo=new PageVo<>();
+//        //暂无用户,请添加!
+//        if ( adminUsers == null){
+//            return JsonVos.raise(CodeMsg.NO_USER_AT_PRESENT);
+//        }
+//        //(po)->vo->PageVo
+//        List<AdminUserVo> adminUserInfoVos= MapStructs.INSTANCE.po2infoVoList(adminUsers);
+//        adminUserInfoVoPageVo.setData(adminUserInfoVos);
+//        return adminUserInfoVoPageVo;
+//    }
 }
