@@ -12,6 +12,9 @@ public class AdminUserVo {
     @ApiModelProperty("用户ID")
     private Long id;
 
+    @ApiModelProperty("组织ID")
+    private short orgId;
+
     @ApiModelProperty("用户名")
     private String username;
 
