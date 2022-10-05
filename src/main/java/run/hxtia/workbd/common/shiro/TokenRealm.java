@@ -44,7 +44,6 @@ public class TokenRealm extends AuthorizingRealm {
     }
 
     /**
-     * TODO: 若需要，在这给shiro用户授予权限、角色
      * 授权器
      * @param principals ：认证器认证成功传过来的shiro信息【Shiro的用户名和密码】
      * @return 该shiro用户所拥有的权限和角色信息

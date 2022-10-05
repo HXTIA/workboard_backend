@@ -26,7 +26,7 @@ public class TokenFilter extends AccessControlFilter {
         boolean isWxInterface = request.getRequestURI().startsWith(Constants.WxMiniApp.WX_PREFIX);
         // 判断URI是否是 wx的接口，如果是，验证Token是否有效即可放行，进入下一链条
         if (isWxInterface) {
-            isShiroLogin(request, Constants.WxMiniApp.WX_PREFIX);
+            checkToken(request, Constants.WxMiniApp.WX_PREFIX);
             return true;
         }
 
@@ -39,7 +39,7 @@ public class TokenFilter extends AccessControlFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
         // 来到这，去验证后台的接口，并且返回token，需要去加载权限
-        String token = isShiroLogin(request, Constants.Web.ADMIN_PREFIX);
+        String token = checkToken(request, Constants.Web.ADMIN_PREFIX);
 
         //TODO: 这里决定是否需要去鉴权
         SecurityUtils.getSubject().login(new Token(token));
@@ -53,7 +53,7 @@ public class TokenFilter extends AccessControlFilter {
      * @param prefix：用于获取缓存信息的前缀
      * @return ：返回Token
      */
-    private String isShiroLogin(HttpServletRequest request, String prefix) {
+    private String checkToken(HttpServletRequest request, String prefix) {
         // 不能放在外面，因为过滤器会先装载
         Redises redises = Redises.getRedises();
         // 取出Token

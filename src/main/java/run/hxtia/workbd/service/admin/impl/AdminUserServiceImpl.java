@@ -67,7 +67,7 @@ public class AdminUserServiceImpl
             return JsonVos.raise(CodeMsg.USER_LOCKED);
         }
 
-        // TODO：1、查询角色信息 2、查询角色资源信息 3、缓存到 Redis
+        // 1、查询角色信息 2、查询角色资源信息 3、缓存到 Redis
         AdminUserPermissionDto dto = new AdminUserPermissionDto();
         dto.setUsers(userPo);
 
