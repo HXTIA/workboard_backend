@@ -3,6 +3,7 @@ package run.hxtia.workbd.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxError;
 import me.chanjar.weixin.common.error.WxErrorException;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
+import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 
 import javax.validation.ConstraintViolation;
@@ -48,6 +50,8 @@ public class CommonExceptionHandler {
             return handle((MethodArgumentNotValidException) t);
         } else if (t instanceof WxErrorException) {
             return handle((WxErrorException) t);
+        } else if (t instanceof AuthorizationException) {
+            return JsonVos.error(CodeMsg.NO_PERMISSION);
         }
         // 其他想要处理的异常，继续 else if 拓展异常类即可
 

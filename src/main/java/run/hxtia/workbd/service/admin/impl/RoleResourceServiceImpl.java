@@ -27,7 +27,7 @@ public class RoleResourceServiceImpl
     public List<Short> listResourceIds(List<Short> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) return null;
 
-        // 查询所有资源
+        // 构建SQL
         MpLambdaQueryWrapper<RoleResource> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.select(RoleResource::getResourceId).in(RoleResource::getRoleId, roleIds);
         List<Object> res = baseMapper.selectObjs(wrapper);

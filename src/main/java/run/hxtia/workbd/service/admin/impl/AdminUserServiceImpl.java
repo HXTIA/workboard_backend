@@ -4,28 +4,25 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.common.upload.Uploads;
-import run.hxtia.workbd.common.util.Constants;
-import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.common.util.Md5s;
-import run.hxtia.workbd.common.util.Strings;
+import run.hxtia.workbd.common.util.*;
 import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
+import run.hxtia.workbd.pojo.dto.AdminUserPermissionDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
+import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.service.admin.AdminUserService;
-import run.hxtia.workbd.service.admin.OrganizationService;
-import run.hxtia.workbd.service.admin.AdminUserRoleService;
-import run.hxtia.workbd.service.admin.RoleService;
+import run.hxtia.workbd.service.admin.*;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +36,7 @@ public class AdminUserServiceImpl
     private final OrganizationService orgService;
     private final AdminUserRoleService adminUserRoleService;
     private final RoleService roleService;
+    private final ResourceService resourceService;
 
     /**
      * 用户登录
@@ -69,16 +67,29 @@ public class AdminUserServiceImpl
             return JsonVos.raise(CodeMsg.USER_LOCKED);
         }
 
-        // TODO：1、查询角色信息 2、查询角色资源信息 3、缓存到 Redis
+        // 1、查询角色信息 2、查询角色资源信息 3、缓存到 Redis
+        AdminUserPermissionDto dto = new AdminUserPermissionDto();
+        dto.setUsers(userPo);
+
+        // 查询角色信息
+        List<Role> roles = roleService.listByUserId(userPo.getId());
+        if (!CollectionUtils.isEmpty(roles)) {
+            dto.setRoles(roles);
+
+            // 查询资源信息
+            List<Short> roleIds = Streams.map(roles, Role::getId);
+            List<Resource> resources = resourceService.listByRoleIds(roleIds);
+            dto.setResources(resources);
+        }
 
         // 生成Token
         String token = Strings.getUUID();
 
         // 将对象其放入缓存中
-        redises.set(Constants.Web.HEADER_TOKEN, token, userPo, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
+        redises.set(Constants.Web.ADMIN_PREFIX, token, dto, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
 
         // 将用户Token 放入 缓存
-        redises.set(String.valueOf(userPo.getId()), Constants.Web.HEADER_TOKEN + token);
+        redises.set(Constants.Users.USER_ID, String.valueOf(userPo.getId()), Constants.Web.HEADER_TOKEN + token);
 
         // 将 po -> vo
         AdminLoginVo vo = MapStructs.INSTANCE.po2loginVo(userPo);
@@ -248,7 +259,7 @@ public class AdminUserServiceImpl
      * @return ：用户信息
      */
     @Override
-    public AdminUserInfoDto getAdminUserInfo(Integer userId) {
+    public AdminUserInfoDto getAdminUserInfo(Long userId) {
         if (userId == null || userId <= 0) return null;
 
         // TODO:获取用户信息【待队友实现】

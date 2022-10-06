@@ -61,7 +61,7 @@ public class AdminUserRoleServiceImpl
      * @return ：该用户的所有角色ID
      */
     @Override
-    public List<Short> listRoleIds(Integer userId) {
+    public List<Short> listRoleIds(Long userId) {
         if (userId == null || userId <= 0) return null;
 
         LambdaQueryWrapper<AdminUserRole> wrapper = new LambdaQueryWrapper<>();
