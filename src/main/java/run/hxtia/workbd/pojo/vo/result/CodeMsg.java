@@ -37,7 +37,6 @@ public enum CodeMsg {
     WRONG_OLD_PASSWORD(50007, "旧密码错误"),
     WRONG_NEW_PASSWORD_REPEAT(50008, "新密码与旧密码重复"),
     WRONG_WORK_NO_REMOVE(50009, "该作业不能被删除"),
-    NO_USER_AT_PRESENT(50010,"暂时没有用户,请添加!"),
 
     NO_TOKEN(60001, "没有Token，请登录"),
     TOKEN_EXPIRED(60002, "Token过期，请重新登录"),
