@@ -27,6 +27,7 @@ public enum CodeMsg {
     AUTHORIZED_ERROR(40007, "微信授权失败"),
     REGISTER_ERROR(40008, "注册失败"),
     ADD_ROLE_ERROR(40009, "添加角色失败"),
+    WRONG_CODE_SEND_ERROR(50010, "验证码发送失败，请稍后再试哟~"),
 
     WRONG_USERNAME(50001, "用户不存在"),
     WRONG_PASSWORD(50002, "密码错误"),
@@ -37,6 +38,7 @@ public enum CodeMsg {
     WRONG_OLD_PASSWORD(50007, "旧密码错误"),
     WRONG_NEW_PASSWORD_REPEAT(50008, "新密码与旧密码重复"),
     WRONG_WORK_NO_REMOVE(50009, "该作业不能被删除"),
+    WRONG_CODE_EXIST(50010, "验证码已发送，请稍后再试哟~"),
 
     NO_TOKEN(60001, "没有Token，请登录"),
     TOKEN_EXPIRED(60002, "Token过期，请重新登录"),

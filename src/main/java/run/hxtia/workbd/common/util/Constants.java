@@ -52,4 +52,12 @@ public class Constants {
         public static final short MATCH_INDEX_EDIT = 1;
     }
 
+    /**
+     * 邮件
+     */
+    public static class Email {
+        // 邮件验证码前缀
+        public static final String EMAIL_CODE_PREFIX = "Email:";
+    }
+
 }

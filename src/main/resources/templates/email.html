@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>邮箱验证码</title>
+</head>
+<body>
+<h2 class="title">欢迎使用HXTIA作业板：</h2>
+<div class="body">
+    <div class="code">
+        <span>邮箱验证码：</span>
+        <span th:text="${code}"></span>
+    </div>
+    <div class="data">
+        <span>到期时间：</span>
+        <span th:text="${expirationDate}"></span>
+    </div>
+    <div class="footer">
+        <span>感谢您的使用！！！</span>
+    </div>
+</div>
+</body>
+</html>

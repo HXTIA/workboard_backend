@@ -20,9 +20,11 @@ import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
+import run.hxtia.workbd.service.admin.EmailService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.function.Function;
 
@@ -35,6 +37,23 @@ import java.util.function.Function;
 public class AdminUserController extends BaseController<AdminUsers, AdminUserReqVo> {
 
     private final AdminUserService adminUserService;
+    private final EmailService emailService;
+
+    @GetMapping("/sendEmail")
+    @ApiOperation("发送邮箱验证码")
+    public JsonVo sendEmail(@Email(message = "请输入正确的邮件地址")
+                                @RequestParam String email) throws Exception {
+        emailService.sendHTMLEmail(email, "验证码");
+        return JsonVos.ok();
+    }
+
+    @GetMapping("/sendTest")
+    @ApiOperation("发送邮箱验证码")
+    public JsonVo sendTest(@Email(message = "请输入正确的邮件地址")
+                            @RequestParam String email) throws Exception {
+        emailService.sendSimpleEmail(email, "验证码", "测试验证码");
+        return JsonVos.ok();
+    }
 
     @PostMapping("/login")
     @ApiOperation("登录")

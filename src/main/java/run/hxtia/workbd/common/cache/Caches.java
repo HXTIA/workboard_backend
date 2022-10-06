@@ -5,6 +5,7 @@ import org.ehcache.CacheManager;
 import org.ehcache.config.Configuration;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.xml.XmlConfiguration;
+import org.springframework.util.StringUtils;
 
 import java.net.URL;
 
@@ -19,11 +20,14 @@ public class Caches {
      * 默认缓存
      */
     private static final Cache<Object, Object> DEFAULT_CACHE;
-
     /**
      * Token 缓存
      */
     private static final Cache<Object, Object> TOKEN_CACHE;
+    /**
+     * code 缓存
+     */
+    private static final Cache<Object, Object> CODE_CACHE;
 
     static {
         // 初始化缓存管理器
@@ -37,6 +41,7 @@ public class Caches {
         // 缓存对象
         DEFAULT_CACHE = MNG.getCache("default", Object.class, Object.class);
         TOKEN_CACHE = MNG.getCache("token", Object.class, Object.class);
+        CODE_CACHE = MNG.getCache("code", Object.class, Object.class);
 
     }
 
@@ -112,6 +117,71 @@ public class Caches {
      */
     public static void clearToken() {
         TOKEN_CACHE.clear();
+    }
+
+    /**
+     * 将数据放入缓存中 【key value 形式】
+     * @param key：键
+     * @param value：值
+     */
+    public static void putCode(Object key, Object value) {
+        if (key == null || value == null) return;
+        CODE_CACHE.put(key, value);
+    }
+
+    /**
+     * 通过Key读取缓存
+     * @param key：键
+     * @param <T>：返回的参数类型
+     * @return ：具体缓存的数据
+     */
+    public static <T> T getCode(Object key) {
+        if (key == null) return null;
+        return (T) CODE_CACHE.get(key);
+    }
+
+    /**
+     * 验证是否已经存在此验证码
+     * @param key：键
+     * @return ：是否存在
+     */
+    public static boolean isExistCode(Object key) {
+        return isExistCode("", key);
+    }
+
+    /**
+     * 验证是否已经存在此验证码
+     * @param prefix：前缀
+     * @param key：键
+     * @return ：是否存在
+     */
+    public static boolean isExistCode(String prefix, Object key) {
+        if (key == null) return false;
+        return getCode(prefix + key) != null;
+    }
+
+    /**
+     * 检查验证是否正确
+     * @param key：键
+     * @param awayCode：待验证的码
+     * @return ：是否相等
+     */
+    public static boolean checkCode(Object key, String awayCode) {
+        return checkCode("", key, awayCode);
+    }
+
+    /**
+     * 检查验证是否正确
+     * @param prefix：前缀
+     * @param key：键
+     * @param awayCode：待验证的码
+     * @return ：是否相等
+     */
+    public static boolean checkCode(String prefix, Object key, String awayCode) {
+        if (key == null) return false;
+        String code = getCode(prefix + key);
+        if (!StringUtils.hasLength(code)) return false;
+        return code.equals(awayCode);
     }
 
 }
