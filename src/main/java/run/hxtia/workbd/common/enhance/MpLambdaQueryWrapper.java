@@ -53,4 +53,9 @@ public class MpLambdaQueryWrapper<T> extends LambdaQueryWrapper<T> {
         });
     }
 
+    @Override
+    public LambdaQueryWrapper<T> eq(SFunction<T, ?> column, Object val) {
+        if (val == null) return this;
+        return super.eq(column, val);
+    }
 }

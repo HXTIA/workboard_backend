@@ -24,7 +24,6 @@ import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
-import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.miniapp.WxUserService;
@@ -154,7 +153,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
     public boolean update(UserAvatarReqVo reqVo) throws Exception {
         User po = new User();
         po.setId(reqVo.getId());
-        return Uploads.uploadWithPo(po,
+        return Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getAvatarUrl(),
                 reqVo.getAvatarFile()),
             baseMapper, User::setAvatarUrl);

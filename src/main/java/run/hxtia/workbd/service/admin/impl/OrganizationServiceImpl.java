@@ -1,10 +1,8 @@
 package run.hxtia.workbd.service.admin.impl;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
@@ -12,7 +10,6 @@ import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.mapper.OrganizationMapper;
-import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.vo.request.page.OrganizationPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.OrganizationReqVo;
@@ -92,7 +89,7 @@ public class OrganizationServiceImpl
     public boolean update(OrganizationReqVo reqVo) throws Exception {
         Organization po = MapStructs.INSTANCE.reqVo2po(reqVo);
 
-        return Uploads.uploadWithPo(po,
+        return Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getBackground(),
                 reqVo.getBackgroundFile()),
             baseMapper, Organization::setBackground);

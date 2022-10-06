@@ -14,7 +14,7 @@ public class UploadEditParam {
     /**
      * 新传的文件数据
      */
-    private MultipartFile[] newFiles;
+    private List<MultipartFile> newFiles;
     /**
      * 以前文件的对标索引
      */

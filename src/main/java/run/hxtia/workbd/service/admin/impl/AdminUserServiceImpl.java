@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
@@ -19,7 +18,6 @@ import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.Role;
-import run.hxtia.workbd.pojo.po.User;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
@@ -67,7 +65,7 @@ public class AdminUserServiceImpl
         }
 
         // 用户状态
-        if (userPo.getStatus() == Constants.Users.UNABLE) {
+        if (userPo.getStatus() == Constants.Status.UNABLE) {
             return JsonVos.raise(CodeMsg.USER_LOCKED);
         }
 
@@ -205,7 +203,7 @@ public class AdminUserServiceImpl
 
         AdminUsers po = MapStructs.INSTANCE.reqVo2po(reqVo);
 
-        return Uploads.uploadWithPo(po,
+        return Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getAvatarUrl(),
                 reqVo.getAvatarFile()), baseMapper,
             AdminUsers::setAvatarUrl);

@@ -13,6 +13,7 @@ import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
+import run.hxtia.workbd.pojo.vo.response.*;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -37,6 +38,38 @@ public interface MapStructs {
     AdminLoginVo po2loginVo(AdminUsers po);
     OrganizationVo po2vo(Organization po);
     RoleVo po2vo(Role po);
+    @Mapping(
+        source = "createdAt",
+        target = "createdAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "updatedAt",
+        target = "updatedAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    WorkVo po2vo(Work po);
+    @Mapping(
+        source = "createdAt",
+        target = "createdAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "updatedAt",
+        target = "updatedAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    UserWorkVo po2userWorkVo(Work po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -49,6 +82,12 @@ public interface MapStructs {
    Organization reqVo2po(OrganizationReqVo reqVo);
    User reqVo2po(UserReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Mills2Date.class
+    )
+   Work reqVo2po(WorkReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

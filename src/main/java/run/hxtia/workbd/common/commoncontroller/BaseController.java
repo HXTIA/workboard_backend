@@ -11,6 +11,7 @@ import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.function.Function;
@@ -34,12 +35,12 @@ public abstract class BaseController<Po, ReqVo> {
     protected abstract Function<ReqVo, Po> getFunction();
 
     @PostMapping("/remove")
-    @ApiOperation("删除一条或者多条数据")
-    public JsonVo remove(@NotNull(message = "【多个ID间用逗号(,)隔开】") @RequestParam String ids) {
+    @ApiOperation("删除一条或者多条数据【多个ID间用逗号(,)隔开】")
+    public JsonVo remove(@NotBlank(message = "ids不能为空") @RequestParam String ids) {
         if (getService().removeByIds(Arrays.asList(ids.split(",")))) {
             return JsonVos.ok(CodeMsg.REMOVE_OK);
         } else {
-            return JsonVos.raise(CodeMsg.REMOVE_ERROR);
+            return JsonVos.error(CodeMsg.REMOVE_ERROR);
         }
     }
 
@@ -51,7 +52,7 @@ public abstract class BaseController<Po, ReqVo> {
         if (getService().save(po)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
-            return JsonVos.raise(CodeMsg.SAVE_ERROR);
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
 
@@ -63,7 +64,7 @@ public abstract class BaseController<Po, ReqVo> {
         if (getService().updateById(po)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
-            return JsonVos.raise(CodeMsg.SAVE_ERROR);
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
 

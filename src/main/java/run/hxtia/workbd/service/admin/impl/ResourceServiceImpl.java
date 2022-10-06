@@ -87,7 +87,7 @@ public class ResourceServiceImpl
             dtoMap.put(resource.getId(), resDto);
 
             Short type = resDto.getType();
-            if (type.equals(Constants.Web.DIR_TYPE)) {
+            if (type.equals(Constants.Status.DIR_TYPE)) {
                 // 如果是目录.直接添加到返回结果中即可
                 tree.add(resDto);
             } else {
