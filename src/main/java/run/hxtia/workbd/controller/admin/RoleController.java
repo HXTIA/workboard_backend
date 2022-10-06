@@ -5,9 +5,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.pojo.po.Role;
@@ -35,17 +37,20 @@ public class RoleController extends BaseController<Role, RoleReqVo> {
 
     @PostMapping("/searchListPage")
     @ApiOperation("角色列表【关键字、分页】")
+    @RequiresPermissions(Constants.Permission.SYS_ROLE_READ)
     public PageJsonVo<RoleVo> searchListPage(@RequestBody RolePageReqVo pageReqVo) {
         return JsonVos.ok(roleService.list(pageReqVo));
     }
 
     @GetMapping("/searchList")
     @ApiOperation("获取所有角色")
+    @RequiresPermissions(Constants.Permission.SYS_ROLE_READ)
     public DataJsonVo<List<RoleVo>> searchList() {
         return JsonVos.ok(Streams.map(roleService.list(), MapStructs.INSTANCE::po2vo));
     }
 
     @Override
+    @RequiresPermissions(Constants.Permission.SYS_ROLE_CREATE)
     public JsonVo create(@Valid @RequestBody RoleReqVo reqVo) {
         if (roleService.saveOrUpdate(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -55,8 +60,15 @@ public class RoleController extends BaseController<Role, RoleReqVo> {
     }
 
     @Override
+    @RequiresPermissions(Constants.Permission.SYS_ROLE_UPDATE)
     public JsonVo update(@Valid @RequestBody RoleReqVo reqVo) {
         return create(reqVo);
+    }
+
+    @Override
+    @RequiresPermissions(Constants.Permission.SYS_ROLE_DELETE)
+    public JsonVo remove(String ids) {
+        return super.remove(ids);
     }
 
     @Override

@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
@@ -83,6 +84,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @Override
     @ApiOperation("添加用户【必须有操纵者ID】")
+    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_CREATE)
     public JsonVo create(@Valid @RequestBody AdminUserReqVo reqVo) {
         if (adminUserService.save(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -93,6 +95,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @PostMapping("/edit")
     @ApiOperation("编辑用户【必须有待编辑者ID】")
+    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_UPDATE)
     public JsonVo edit(@Valid @RequestBody AdminUserEditReqVo reqVo) {
         if (adminUserService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -134,7 +137,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @GetMapping("/{id}")
     @ApiOperation("通过Id获取用户信息【角色 + 组织 + 个人信息】")
-    public DataJsonVo<AdminUserInfoDto> searchAdminUserInfo(@PathVariable @NotNull Integer id) {
+    public DataJsonVo<AdminUserInfoDto> searchAdminUserInfo(@PathVariable @NotNull Long id) {
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
 
@@ -142,6 +145,12 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     @ApiOperation("这是一个无用接口")
     public JsonVo update(AdminUserReqVo reqVo) {
         return JsonVos.error("更新用户信息请访问接口【/updateInfo】");
+    }
+
+    @Override
+    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_DELETE)
+    public JsonVo remove(String ids) {
+        return super.remove(ids);
     }
 
     @Override

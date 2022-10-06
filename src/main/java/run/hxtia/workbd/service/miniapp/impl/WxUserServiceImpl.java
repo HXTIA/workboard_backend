@@ -50,7 +50,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
         try {
             WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
             String token = Strings.getUUID();
-            redises.set(Constants.Web.HEADER_TOKEN, token, session, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
+            redises.set(Constants.WxMiniApp.WX_PREFIX, token, session, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
             return  token;
         } finally {
             //清理ThreadLocal
@@ -80,7 +80,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
             );
 
             // 从redis中读取 user 信息
-            UserInfoDto userInfoDto = (UserInfoDto) redises.get(openId);
+            UserInfoDto userInfoDto = (UserInfoDto) redises.get(Constants.WxMiniApp.WX_USER, openId);
 
             // 检查 redis中有无用户
             if (userInfoDto != null) return userInfoDto;
@@ -103,7 +103,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
             }
 
             // 将最新消息缓存到 redis
-            redises.set(openId, userInfoDto);
+            redises.set(Constants.WxMiniApp.WX_USER, openId, userInfoDto);
             return userInfoDto;
 
         } finally {

@@ -94,4 +94,19 @@ public class RoleServiceImpl
 
         return true;
     }
+
+    /**
+     * 根据用户ID查询角色列表
+     * @param userId：用户ID
+     * @return ：用户的角色列表
+     */
+    @Override
+    public List<Role> listByUserId(Long userId) {
+        if (userId == null || userId <= 0) return null;
+
+        List<Short> roleIds = adminUserRoleService.listRoleIds(userId);
+        if (CollectionUtils.isEmpty(roleIds)) return null;
+
+        return baseMapper.selectBatchIds(roleIds);
+    }
 }

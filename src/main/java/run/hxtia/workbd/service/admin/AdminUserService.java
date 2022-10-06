@@ -65,7 +65,7 @@ public interface AdminUserService extends IService<AdminUsers> {
      * @param id：用户ID
      * @return ：用户信息
      */
-    AdminUserInfoDto getAdminUserInfo(Integer id);
+    AdminUserInfoDto getAdminUserInfo(Long id);
 
     /**
      * 忘记密码，并且修改密码

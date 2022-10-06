@@ -11,7 +11,7 @@ import run.hxtia.workbd.pojo.vo.result.PageVo;
 import java.util.List;
 
 /**
- * 角色模块 持久层
+ * 角色模块 业务层
  */
 @Transactional(readOnly = true)
 public interface RoleService extends IService<Role> {
@@ -30,4 +30,11 @@ public interface RoleService extends IService<Role> {
      */
     @Transactional(readOnly = false)
     boolean saveOrUpdate(RoleReqVo reqVo);
+
+    /**
+     * 根据用户ID查询角色列表
+     * @param userId：用户ID
+     * @return ：用户的角色列表
+     */
+    List<Role> listByUserId(Long userId);
 }

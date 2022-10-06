@@ -4,9 +4,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.pojo.po.Organization;
@@ -33,18 +35,21 @@ public class OrganizationController {
 
     @GetMapping("/searchList")
     @ApiOperation("获取所有组织信息")
+    @RequiresPermissions(Constants.Permission.SYS_ORGANIZATION_READ)
     public DataJsonVo<List<OrganizationVo>> searchOrgList() {
         return JsonVos.ok(Streams.map(orgService.list(), MapStructs.INSTANCE::po2vo));
     }
 
     @PostMapping("/searchListPage")
     @ApiOperation("获取所有组织信息【分页】")
+    @RequiresPermissions(Constants.Permission.SYS_ORGANIZATION_READ)
     public PageJsonVo<Organization> searchOrgPageList(@RequestBody OrganizationPageReqVo pageReqVo) {
         return JsonVos.ok(orgService.list(pageReqVo));
     }
 
     @PostMapping("/update")
     @ApiOperation("更新组织信息")
+    @RequiresPermissions(Constants.Permission.SYS_ORGANIZATION_UPDATE)
     public JsonVo update(@Valid @RequestBody OrganizationReqVo reqVo) throws Exception {
         if (orgService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
