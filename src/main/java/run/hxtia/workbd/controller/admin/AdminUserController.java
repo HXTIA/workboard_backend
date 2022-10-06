@@ -108,6 +108,12 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
 
+    @PostMapping("/searchAdminUserInfoById/{id}")
+    @ApiOperation("通过Id获取用户信息【角色 + 组织 + 个人信息】")
+    public DataJsonVo<AdminUserInfoDto> searchAdminUserInfoById(@PathVariable @NotNull Integer id) {
+        return JsonVos.ok(adminUserService.getAdminUserInfo(id));
+    }
+
     @Override
     @ApiOperation("这是一个无用接口")
     public JsonVo update(AdminUserReqVo reqVo) {

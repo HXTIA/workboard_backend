@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.vo.request.page.OrganizationPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.OrganizationReqVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
@@ -48,4 +49,11 @@ public interface OrganizationService extends IService<Organization> {
      * @return ：是否存在
      */
     boolean isExist(Short id);
+
+    /**
+     *
+     * @param orgId :组织id
+     * @return : 该id的组织信息
+     */
+    OrganizationVo getOrgById(short orgId);
 }

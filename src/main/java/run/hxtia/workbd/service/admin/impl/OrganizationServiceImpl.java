@@ -13,6 +13,7 @@ import run.hxtia.workbd.mapper.OrganizationMapper;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.vo.request.page.OrganizationPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.OrganizationReqVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.admin.OrganizationService;
@@ -104,5 +105,13 @@ public class OrganizationServiceImpl
     public boolean isExist(Short id) {
         if (id == null || id <= 0) return false;
         return baseMapper.selectById(id) != null;
+    }
+
+    @Override
+    public OrganizationVo getOrgById(short orgId) {
+        Organization organization = baseMapper.selectById(orgId);
+        OrganizationVo organizationVo = MapStructs.INSTANCE.po2vo(organization);
+        System.out.println(organizationVo);
+        return organizationVo;
     }
 }
