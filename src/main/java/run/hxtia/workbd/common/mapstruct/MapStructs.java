@@ -15,8 +15,6 @@ import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.response.*;
 
-import java.util.List;
-
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
  * 2、https://github.com/mapstruct/mapstruct
@@ -72,8 +70,6 @@ public interface MapStructs {
         qualifiedBy = MapStructFormatter.Date2Millis.class
     )
     UserWorkVo po2userWorkVo(Work po);
-    AdminUserVo po2adminUserVo(AdminUsers po);
-//    List<AdminUserInfoVo> po2infoVoList(List<AdminUsers> po);
 
    // reqVo -> po  【用来做数据库保存】
 
