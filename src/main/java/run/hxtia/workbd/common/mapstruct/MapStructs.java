@@ -76,6 +76,7 @@ public interface MapStructs {
    @Mapping(source = "nickName", target = "nickname")
    User wxReqVo2po(WxMaUserInfo wxReqVo);
    AdminUsers reqVo2po(AdminUserReqVo reqVo);
+   @Mapping(source = "email", target = "username")
    AdminUsers reqVo2po(AdminUserRegisterReqVo reqVo);
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);

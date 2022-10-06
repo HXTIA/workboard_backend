@@ -58,6 +58,8 @@ public class Constants {
     public static class Email {
         // 邮件验证码前缀
         public static final String EMAIL_CODE_PREFIX = "Email:";
+        // 邮箱验证码内嵌图片位置
+        public static final String CODE_IMAGE = "static/hxtiacode.png";
     }
 
 }

@@ -51,12 +51,13 @@ public class ShiroConfig {
         // 添加 URI 映射
         Map<String, String> uriMap = new LinkedHashMap<>();
 
-        // 放行登录&注册接口
+        // 放行登录&注册接口&发送验证码&忘记密码
         uriMap.put("/admin/users/login", "anon");
         uriMap.put("/admin/users/register", "anon");
         uriMap.put("/admin/users/sendEmail", "anon");
         uriMap.put("/admin/users/sendTest", "anon");
         uriMap.put("/wx/users/getSessionId", "anon");
+        uriMap.put("/admin/users/forgotPwd", "anon");
 
         // 放行Swagger文档
         uriMap.put("/swagger**/**", "anon");

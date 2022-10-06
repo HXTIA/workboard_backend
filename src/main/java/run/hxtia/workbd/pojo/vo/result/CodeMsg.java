@@ -11,6 +11,7 @@ public enum CodeMsg {
     REMOVE_OK(1, "删除成功"),
     SUB_MSG_OK(1, "成功订阅消息"),
     REGISTER_OK(1, "注册成功"),
+    UPDATE_PWD_OK(1, "密码修改成功，请重新登录"),
 
     BAD_REQUEST(400, "请求出错"),
     UNAUTHORIZED(401, "未授权"),
@@ -27,9 +28,10 @@ public enum CodeMsg {
     AUTHORIZED_ERROR(40007, "微信授权失败"),
     REGISTER_ERROR(40008, "注册失败"),
     ADD_ROLE_ERROR(40009, "添加角色失败"),
-    WRONG_CODE_SEND_ERROR(50010, "验证码发送失败，请稍后再试哟~"),
+    CODE_SEND_ERROR(50010, "验证码发送失败，请稍后再试哟~"),
+    UPDATE_PWD_ERROR(50011, "密码修改失败"),
 
-    WRONG_USERNAME(50001, "用户不存在"),
+    WRONG_USERNAME_NOT_EXIST(50001, "用户不存在"),
     WRONG_PASSWORD(50002, "密码错误"),
     USER_LOCKED(50003, "用户被锁定，无法正常登录"),
     WRONG_CAPTCHA(50004, "验证码错误"),

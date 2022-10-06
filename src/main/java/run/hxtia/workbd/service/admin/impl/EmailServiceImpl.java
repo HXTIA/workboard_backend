@@ -2,10 +2,11 @@ package run.hxtia.workbd.service.admin.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.prop.WorkBoardProperties;
@@ -16,8 +17,8 @@ import run.hxtia.workbd.common.util.Strings;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.admin.EmailService;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,25 +35,6 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     private final WorkBoardProperties properties;
     private final Thymeleafs thymeleafs;
-
-
-    @Override
-    public void sendSimpleEmail(String to, String subject, String content) {
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setFrom(properties.getEmail().getFromAddr());
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(content);
-
-        try {
-            javaMailSender.send(simpleMailMessage);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-            JsonVos.raise(CodeMsg.WRONG_CODE_SEND_ERROR);
-        }
-
-    }
 
     /**
      * 发送验证码邮件
@@ -80,7 +62,7 @@ public class EmailServiceImpl implements EmailService {
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
-            JsonVos.raise(CodeMsg.WRONG_CODE_SEND_ERROR);
+            JsonVos.raise(CodeMsg.CODE_SEND_ERROR);
         }
     }
 
@@ -93,7 +75,7 @@ public class EmailServiceImpl implements EmailService {
      */
     private void buildMimeMessageHelper(MimeMessage mimeMessage,
                                         String to, String subject,
-                                        String code) throws MessagingException {
+                                        String code) throws Exception {
         WorkBoardProperties.Email email = properties.getEmail();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         // 主题
