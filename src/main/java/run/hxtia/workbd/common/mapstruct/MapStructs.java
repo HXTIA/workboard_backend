@@ -71,7 +71,6 @@ public interface MapStructs {
     )
     UserWorkVo po2userWorkVo(Work po);
     AdminUserVo po2AdminUserVo(AdminUsers po);
-
    // reqVo -> po  【用来做数据库保存】
 
    @Mapping(source = "nickName", target = "nickname")

@@ -16,6 +16,7 @@ import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -107,7 +108,13 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     public DataJsonVo<AdminUserInfoDto> searchAdminUserInfo(@PathVariable @NotNull Integer id) {
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
-    
+
+    @PostMapping("/searchInfoById/{id}")
+    @ApiOperation("通过Id获取用户信息【个人信息】")
+    public DataJsonVo<AdminUserVo> searchAdminUserInfoById(@PathVariable @NotNull Integer id) {
+        return JsonVos.ok(adminUserService.getAdminUserInfoById(id));
+    }
+
     @Override
     @ApiOperation("这是一个无用接口")
     public JsonVo update(AdminUserReqVo reqVo) {
