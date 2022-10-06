@@ -107,7 +107,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     public DataJsonVo<AdminUserInfoDto> searchAdminUserInfo(@PathVariable @NotNull Integer id) {
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
-
+    
     @Override
     @ApiOperation("这是一个无用接口")
     public JsonVo update(AdminUserReqVo reqVo) {

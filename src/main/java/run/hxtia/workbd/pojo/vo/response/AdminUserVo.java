@@ -21,6 +21,9 @@ public class AdminUserVo {
     @ApiModelProperty("姓名")
     private String nickname;
 
+    @ApiModelProperty("组织ID")
+    private short orgId;
+
     @ApiModelProperty("用户状态")
     private Short status;
 

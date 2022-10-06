@@ -7,6 +7,7 @@ import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 
 @Transactional(readOnly = true)
@@ -66,4 +67,12 @@ public interface AdminUserService extends IService<AdminUsers> {
      * @return ：用户信息
      */
     AdminUserInfoDto getAdminUserInfo(Integer id);
+
+
+    /**
+     *
+     * @param id : 用户id
+     * @return : 用户基本信息
+     */
+    AdminUserVo getAdminUserInfoById(Integer id);
 }

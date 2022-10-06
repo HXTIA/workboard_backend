@@ -21,6 +21,8 @@ import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.OrganizationService;
@@ -252,15 +254,27 @@ public class AdminUserServiceImpl
         if (userId == null || userId <= 0) return null;
 
         // TODO:获取用户信息【待队友实现】
-
+        //获取角色基本信息
+        AdminUserVo adminUserVo = getAdminUserInfoById(userId);
         // 获取用户角色
         List<Role> roles = roleService.listByIds(adminUserRoleService.listRoleIds(userId));
 
         // TODO: 根据上面获取的组织ID，获取组织信息
+        //获取用户组织信息
+        Integer orgId = Integer.valueOf(adminUserVo.getOrgId());
+        OrganizationVo orgVo = orgService.getOrgInfoById(orgId);
 
         AdminUserInfoDto dto = new AdminUserInfoDto();
+        dto.setUserVo(adminUserVo);
         dto.setRoles(roles);
-
+        dto.setOrgVo(orgVo);
         return dto;
+    }
+
+    @Override
+    public AdminUserVo getAdminUserInfoById(Integer id) {
+        AdminUsers adminUsers = baseMapper.selectById(id);
+        AdminUserVo adminUserVo = MapStructs.INSTANCE.po2AdminUserVo(adminUsers);
+        return adminUserVo;
     }
 }
