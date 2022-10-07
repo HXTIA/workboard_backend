@@ -70,6 +70,7 @@ public class Constants {
         public static final String SYS_ADMIN_USER_UPDATE = "sysAdminUser:update";
         public static final String SYS_ADMIN_USER_DELETE = "sysAdminUser:delete";
         public static final String SYS_ADMIN_USER_CREATE = "sysAdminUser:create";
+        public static final String SYS_ADMIN_USER_FORGOT = "sysAdminUser:forgot";
         // C端用户管理
         public static final String SYS_USER_READ = "sysUser:read";
         public static final String SYS_USER_UPDATE = "sysUser:update";
@@ -97,24 +98,14 @@ public class Constants {
 
     }
 
-
-
-
-
-
-
-
-
-
-
     /**
      * 邮件
      */
-    public static class Email {
+    public static class VerificationCode {
         // 邮件验证码前缀
         public static final String EMAIL_CODE_PREFIX = "Email:";
-        // 邮箱验证码内嵌图片位置
-        public static final String CODE_IMAGE = "static/hxtiacode.png";
+        // 图形验证码前缀
+        public static final String IMAGE_CODE_PREFIX = "Captcha:";
     }
 
 }

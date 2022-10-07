@@ -25,4 +25,7 @@ public class AdminUserPasswordReqVo {
     @ApiModelProperty(value = "新密码", required = true)
     private String newPassword;
 
+    @NotBlank
+    @ApiModelProperty(value = "验证码", required = true)
+    private String captcha;
 }

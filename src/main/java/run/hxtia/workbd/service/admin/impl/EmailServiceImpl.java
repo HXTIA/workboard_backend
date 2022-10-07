@@ -2,11 +2,9 @@ package run.hxtia.workbd.service.admin.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.prop.WorkBoardProperties;
@@ -18,7 +16,6 @@ import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.admin.EmailService;
 
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 
         // 生成验证码，并且缓存到 ehcache 中 【之后若需要，可缓存到redis中】
         String code = Strings.getUUID(6);
-        String emailCodePrefix = Constants.Email.EMAIL_CODE_PREFIX;
+        String emailCodePrefix = Constants.VerificationCode.EMAIL_CODE_PREFIX;
         if (Caches.isExistCode(emailCodePrefix, to)) {
             // 说明在60秒内已经发送过了
             JsonVos.raise(CodeMsg.WRONG_CODE_EXIST);

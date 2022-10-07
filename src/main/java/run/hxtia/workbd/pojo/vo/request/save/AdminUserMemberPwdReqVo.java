@@ -20,7 +20,8 @@ public class AdminUserMemberPwdReqVo {
     @NotBlank
     @ApiModelProperty(value = "新密码", required = true)
     private String newPassword;
-    
-    // TODO：添加图片验证码
 
+    @NotBlank
+    @ApiModelProperty(value = "验证码", required = true)
+    private String captcha;
 }
