@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
@@ -53,7 +54,7 @@ public class AdminUserServiceImpl
 
         // 验证用户名
         if (userPo == null) {
-            return JsonVos.raise(CodeMsg.WRONG_USERNAME);
+            return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
         }
 
         // 验证密码
@@ -106,11 +107,9 @@ public class AdminUserServiceImpl
     @Override
     public boolean register(AdminUserRegisterReqVo reqVo) {
 
-        // TODO: 验证验证码
+        // 检查验证码并且返回 po
+        AdminUsers po = checkCodeAndPo(reqVo.getEmail(), reqVo.getCode());
 
-        LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(AdminUsers::getUsername, reqVo.getUsername());
-        AdminUsers po = baseMapper.selectOne(wrapper);
         // 验证用户是否存在
         if (po != null) return JsonVos.raise(CodeMsg.EXIST_USERS);
 
@@ -238,19 +237,7 @@ public class AdminUserServiceImpl
             return JsonVos.raise(CodeMsg.WRONG_OLD_PASSWORD);
         }
 
-        // 验证新密码与旧密码是否重复
-        if (Md5s.verify(reqVo.getNewPassword(), oldSalt, oldPsd)) {
-            return JsonVos.raise(CodeMsg.WRONG_NEW_PASSWORD_REPEAT);
-        }
-
-        // 设置新密码
-        String newSalt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
-        String newPsd = Md5s.md5(reqVo.getNewPassword(), newSalt);
-
-        adminUsers.setPassword(newPsd);
-        adminUsers.setSalt(newSalt);
-
-        return updateById(adminUsers);
+        return updatePwd(adminUsers, reqVo.getNewPassword());
     }
 
     /**
@@ -273,5 +260,74 @@ public class AdminUserServiceImpl
         dto.setRoles(roles);
 
         return dto;
+    }
+
+    /**
+     * 忘记密码，并且修改密码
+     * @param reqVo：请求参数
+     * @return ：是否成功
+     */
+    @Override
+    public boolean forgotPwd(AdminUserForgotReqVo reqVo) {
+        // 检查验证码并且返回 po
+        AdminUsers po = checkCodeAndPo(reqVo.getEmail(), reqVo.getCode());
+        if (po == null) return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
+
+        // 1、验证新密码 2、保存新密码
+        return updatePwd(po, reqVo.getNewPassword());
+    }
+
+    /**
+     * 修改组织成员密码【替组织成员找回密码】
+     * @param reqVo：请求参数
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(AdminUserMemberPwdReqVo reqVo) {
+        AdminUsers po = baseMapper.selectById(reqVo.getId());
+        if (po == null) return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
+        // 1、验证新密码 2、保存新密码
+        return updatePwd(po, reqVo.getNewPassword());
+    }
+
+    /**
+     * 验证是否与旧密码重复，并且修改密码
+     * @param po：修改的用户
+     * @param newPassword：新密码
+     * @return ：是否成功
+     */
+    private boolean updatePwd(AdminUsers po, String newPassword) {
+        // 验证新密码与旧密码是否重复
+        if (Md5s.verify(newPassword, po.getSalt(), po.getPassword())) {
+            return JsonVos.raise(CodeMsg.WRONG_NEW_PASSWORD_REPEAT);
+        }
+
+        // 设置新密码
+        String newSalt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
+        String newPsd = Md5s.md5(newPassword, newSalt);
+
+        po.setPassword(newPsd);
+        po.setSalt(newSalt);
+        boolean res = updateById(po);
+        // 保存成功，将用户在redis中的缓存踢下线
+        if (res) redises.delByUserId(po.getId());
+        return res;
+    }
+
+    /**
+     * 检查验证码和并且返回用户
+     * @param email：邮箱
+     * @param code：验证码
+     * @return ：对应的用户
+     */
+    private AdminUsers checkCodeAndPo(String email, String code) {
+        // 验证验证码
+        boolean checkCode = Caches.checkCode(Constants.Email.EMAIL_CODE_PREFIX, email, code);
+        if (!checkCode) return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
+
+        LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(AdminUsers::getUsername, email);
+
+        return baseMapper.selectOne(wrapper);
     }
 }

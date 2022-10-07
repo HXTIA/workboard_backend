@@ -42,4 +42,11 @@
             <none/>
         </expiry>
     </cache>
+
+    <!-- 验证码缓存：60秒过期 -->
+    <cache alias="code" uses-template="common">
+        <expiry>
+            <ttl unit="seconds">60</ttl>
+        </expiry>
+    </cache>
 </config>

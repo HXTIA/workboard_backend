@@ -18,10 +18,13 @@ public class WorkBoardProperties implements ApplicationContextAware {
     /**
      * 1、配置类
      * 2、文件上传路径类
+     * 3、微信小程序
+     * 4、邮件发送
      */
     private Cfg cfg;
     private Upload upload;
     private Wx wx;
+    private Email email;
     /**
      * 1、如果没有放在Spring容器中的Bean
      * 2、不可以直接使用 @Autowired 注入对象。给那些没有在Spring Ioc中的类使用
@@ -73,6 +76,9 @@ public class WorkBoardProperties implements ApplicationContextAware {
         private String[] corsOrigins;
     }
 
+    /**
+     * 读取微信小程序配置
+     */
     @Data
     public static class Wx {
         /**
@@ -94,6 +100,25 @@ public class WorkBoardProperties implements ApplicationContextAware {
          * 消息模板ID
          */
         private String templateId;
+    }
+
+    /**
+     * 读取邮件配置
+     */
+    @Data
+    public static class Email {
+        /**
+         * 邮件发送地址
+         */
+        private String fromAddr;
+        /**
+         * 用户名
+         */
+        private String nickName;
+
+        public String getForm() {
+            return nickName + "<" + fromAddr + ">";
+        }
     }
 
 }
