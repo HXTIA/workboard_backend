@@ -322,7 +322,7 @@ public class AdminUserServiceImpl
      */
     private AdminUsers checkCodeAndPo(String email, String code) {
         // 验证验证码
-        boolean checkCode = Caches.checkCode(Constants.Email.EMAIL_CODE_PREFIX, email, code);
+        boolean checkCode = Caches.checkCode(Constants.VerificationCode.EMAIL_CODE_PREFIX, email, code);
         if (!checkCode) return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
 
         LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();

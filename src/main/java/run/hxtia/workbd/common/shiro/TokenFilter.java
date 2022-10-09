@@ -41,7 +41,7 @@ public class TokenFilter extends AccessControlFilter {
         // 来到这，去验证后台的接口，并且返回token，需要去加载权限
         String token = checkToken(request, Constants.Web.ADMIN_PREFIX);
 
-        //TODO: 这里决定是否需要去鉴权
+        // 去认证且授权
         SecurityUtils.getSubject().login(new Token(token));
 
         return true;
