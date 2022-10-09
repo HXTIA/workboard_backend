@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
@@ -19,11 +21,13 @@ import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.admin.AdminUserRoleService;
@@ -287,5 +291,16 @@ public class AdminUserServiceImpl
         //将po转换为vo
         AdminUserVo adminUserVo= MapStructs.INSTANCE.po2adminUserVo(adminUser);
         return adminUserVo;
+    }
+
+    @Override
+    public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo) {
+
+        MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname);
+
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo),wrapper).
+            buildVo(MapStructs.INSTANCE::po2adminUserVo);
     }
 }

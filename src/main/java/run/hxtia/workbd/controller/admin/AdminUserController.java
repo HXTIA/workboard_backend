@@ -2,6 +2,7 @@ package run.hxtia.workbd.controller.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +15,14 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.result.PageJsonVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,6 +117,15 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     public DataJsonVo<AdminUserInfoDto> searchAdminUserInfoById(@PathVariable @NotNull Integer id) {
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
+
+    @PostMapping("/searchListPage")
+    @ApiOperation("获取用户基本信息【分页】")
+    public PageJsonVo<AdminUserVo> searchUserListPage(AdminUserPageReqVo pageReqVo){
+        return JsonVos.ok(adminUserService.getList(pageReqVo));
+
+    }
+
+    @GetMapping("/searchListPage")
 
     @Override
     @ApiOperation("这是一个无用接口")
