@@ -33,6 +33,14 @@ spring:
     resources:
       static-locations:
       # 静态资源映射位置
+
+  mail:
+    username: ${work-board.email.username}
+    password: ${work-board.email.password}
+    host: ${work-board.email.host}
+    port: ${work-board.email.port}
+    default-encoding: UTF-8
+
 server:
   port: 8888
 
@@ -77,3 +85,10 @@ work-board:
     template-id: 消息订阅的模板
     msgDataFormat: JSON
 
+  # 邮件配置
+  email:
+    username: 你的邮箱用户名
+    password: 你邮箱获取的用户名
+    host: 使用的邮箱类型
+    port: 使用的端口
+    fromAddr: 你的邮箱地址
