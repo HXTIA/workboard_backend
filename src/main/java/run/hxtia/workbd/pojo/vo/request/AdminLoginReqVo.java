@@ -3,12 +3,14 @@ package run.hxtia.workbd.pojo.vo.request;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ApiModel("【登录】后台模块")
-public class AdminLoginReqVo {
+public class AdminLoginReqVo extends CaptchaReqVo {
 
     @NotBlank
     @ApiModelProperty(value = "用户名", required = true)
@@ -17,9 +19,5 @@ public class AdminLoginReqVo {
     @NotBlank
     @ApiModelProperty(value = "密码", required = true)
     private String password;
-
-    @NotBlank
-    @ApiModelProperty(value = "验证码", required = true)
-    private String captcha;
 
 }

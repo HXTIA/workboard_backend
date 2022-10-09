@@ -68,4 +68,15 @@ public class Captchas {
         return result != null && result.equals(verifyCode);
     }
 
+    /**
+     * 验证 verifyCode
+     * @param verifyKey：返回验证码时生成的 Key
+     * @param verifyCode：验证码
+     * @return ：是否正确
+     */
+    public static boolean ver(String verifyKey, String verifyCode) {
+        if (!StringUtils.hasLength(verifyKey) || !StringUtils.hasLength(verifyCode)) return false;
+        return Caches.checkCode(Constants.VerificationCode.IMAGE_CODE_PREFIX, verifyKey, verifyCode);
+    }
+
 }

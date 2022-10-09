@@ -19,6 +19,7 @@ import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.CaptchaVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -54,10 +55,9 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @PostMapping("/login")
     @ApiOperation("登录")
-    public DataJsonVo<AdminLoginVo> login(@Valid @RequestBody AdminLoginReqVo reqVo,
-                                          HttpServletRequest request) {
+    public DataJsonVo<AdminLoginVo> login(@Valid @RequestBody AdminLoginReqVo reqVo) {
         // 检验图形验证码是否正确
-        if (!Captchas.ver(reqVo.getCaptcha(), request))
+        if (!Captchas.ver(reqVo.getVerifyKey(), reqVo.getCaptcha()))
             return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
         return JsonVos.ok(adminUserService.login(reqVo));
     }
@@ -124,10 +124,9 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @PostMapping("/updatePassword")
     @ApiOperation("修改密码【仅自己修改】")
-    public JsonVo updatePassword(@Valid @RequestBody AdminUserPasswordReqVo reqVo,
-                                 HttpServletRequest request) {
+    public JsonVo updatePassword(@Valid @RequestBody AdminUserPasswordReqVo reqVo) {
         // 检验图形验证码是否正确
-        if (!Captchas.ver(reqVo.getCaptcha(), request))
+        if (!Captchas.ver(reqVo.getVerifyKey(), reqVo.getCaptcha()))
             return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
         if (adminUserService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -139,10 +138,9 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     @PostMapping("/updateMemberPwd")
     @ApiOperation("修改组织成员密码【当成员忘记密码时】")
     @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_FORGOT)
-    public JsonVo updateMemberPwd(@Valid @RequestBody AdminUserMemberPwdReqVo reqVo,
-                                  HttpServletRequest request) {
+    public JsonVo updateMemberPwd(@Valid @RequestBody AdminUserMemberPwdReqVo reqVo) {
         // 检验图形验证码是否正确
-        if (!Captchas.ver(reqVo.getCaptcha(), request))
+        if (!Captchas.ver(reqVo.getVerifyKey(), reqVo.getCaptcha()))
             return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
 
         if (adminUserService.update(reqVo)) {
@@ -160,8 +158,8 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
 
     @GetMapping("/captcha")
     @ApiOperation("获取图形验证码【登录时、修改密码时使用】")
-    public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Captchas.out(request, response);
+    public CaptchaVo captcha() {
+        return Captchas.out();
     }
 
     @Override
