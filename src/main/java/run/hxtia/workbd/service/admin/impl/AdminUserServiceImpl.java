@@ -274,10 +274,8 @@ public class AdminUserServiceImpl
         List<Role> roles = roleService.listByIds(adminUserRoleService.listRoleIds(userId));
 
         // TODO: 根据上面获取的组织ID，获取组织信息
-        short orgId = adminUserVo.getOrgId();
-        System.out.println("orgId" + orgId);
-        OrganizationVo organizationVo = orgService.getOrgById(orgId);
-
+        Organization organization = orgService.getBaseMapper().selectById(adminUserVo.getOrgId());
+        OrganizationVo organizationVo = MapStructs.INSTANCE.po2vo(organization);
         AdminUserInfoDto dto = new AdminUserInfoDto();
         dto.setRoles(roles);
         dto.setUserVo(adminUserVo);
