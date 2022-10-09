@@ -50,6 +50,7 @@
         <cache.version>3.10.0</cache.version>
         <fastjson2.version>2.0.4</fastjson2.version>
         <weixin-java-miniapp.version>4.4.0</weixin-java-miniapp.version>
+        <captcha.version>2.2.2</captcha.version>
     </properties>
 
     <!-- 依赖 -->
@@ -165,6 +166,22 @@
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-miniapp</artifactId>
             <version>${weixin-java-miniapp.version}</version>
+        </dependency>
+        <!-- 发送邮件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- 用于发送邮件的模板 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- 图形验证码 -->
+        <dependency>
+            <groupId>com.pig4cloud.plugin</groupId>
+            <artifactId>captcha-spring-boot-starter</artifactId>
+            <version>${captcha.version}</version>
         </dependency>
 
         <!-- debug阶段 -->

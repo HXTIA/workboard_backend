@@ -63,19 +63,12 @@ public interface AdminUserService extends IService<AdminUsers> {
     boolean update(AdminUserPasswordReqVo reqVo);
 
     /**
-     * 通过Id获取用户信息【角色 + 组织 + 个人信息】
-     * @param id：用户ID
-     * @return ：用户信息
-     */
-    AdminUserInfoDto getAdminUserInfo(Integer id);
-
-    /**
      *
      * @param userId:用户id
      * @return 用户信息
      */
     @Transactional(readOnly = false)
-    AdminUserVo getAdminUserInfoById(Integer userId);
+    AdminUserVo getAdminUserInfoById(Long userId);
 
     /**
      *
@@ -83,4 +76,23 @@ public interface AdminUserService extends IService<AdminUsers> {
      */
     @Transactional(readOnly = false)
     PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo);
+
+    AdminUserInfoDto getAdminUserInfo(Long id);
+
+    /**
+     * 忘记密码，并且修改密码
+     * @param reqVo：请求参数
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean forgotPwd(AdminUserForgotReqVo reqVo);
+
+    /**
+     * 修改组织成员密码【替组织成员找回密码】
+     * @param reqVo：请求参数
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean update(AdminUserMemberPwdReqVo reqVo);
+
 }

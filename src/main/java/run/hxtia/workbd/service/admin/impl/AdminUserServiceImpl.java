@@ -4,21 +4,22 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
+import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.common.upload.Uploads;
-import run.hxtia.workbd.common.util.Constants;
-import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.common.util.Md5s;
-import run.hxtia.workbd.common.util.Strings;
+import run.hxtia.workbd.common.util.*;
 import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
+import run.hxtia.workbd.pojo.dto.AdminUserPermissionDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.Organization;
+import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
@@ -33,6 +34,8 @@ import run.hxtia.workbd.service.admin.OrganizationService;
 import run.hxtia.workbd.service.admin.AdminUserRoleService;
 import run.hxtia.workbd.service.admin.RoleService;
 
+import run.hxtia.workbd.service.admin.*;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,9 +48,11 @@ public class AdminUserServiceImpl
     private final OrganizationService orgService;
     private final AdminUserRoleService adminUserRoleService;
     private final RoleService roleService;
+    private final ResourceService resourceService;
 
     /**
      * 用户登录
+     *
      * @param reqVo：登录数据
      * @return ：LoginVo
      */
@@ -61,7 +66,7 @@ public class AdminUserServiceImpl
 
         // 验证用户名
         if (userPo == null) {
-            return JsonVos.raise(CodeMsg.WRONG_USERNAME);
+            return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
         }
 
         // 验证密码
@@ -75,16 +80,29 @@ public class AdminUserServiceImpl
             return JsonVos.raise(CodeMsg.USER_LOCKED);
         }
 
-        // TODO：1、查询角色信息 2、查询角色资源信息 3、缓存到 Redis
+        // 1、查询角色信息 2、查询角色资源信息 3、缓存到 Redis
+        AdminUserPermissionDto dto = new AdminUserPermissionDto();
+        dto.setUsers(userPo);
+
+        // 查询角色信息
+        List<Role> roles = roleService.listByUserId(userPo.getId());
+        if (!CollectionUtils.isEmpty(roles)) {
+            dto.setRoles(roles);
+
+            // 查询资源信息
+            List<Short> roleIds = Streams.map(roles, Role::getId);
+            List<Resource> resources = resourceService.listByRoleIds(roleIds);
+            dto.setResources(resources);
+        }
 
         // 生成Token
         String token = Strings.getUUID();
 
         // 将对象其放入缓存中
-        redises.set(Constants.Web.HEADER_TOKEN, token, userPo, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
+        redises.set(Constants.Web.ADMIN_PREFIX, token, dto, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
 
         // 将用户Token 放入 缓存
-        redises.set(String.valueOf(userPo.getId()), Constants.Web.HEADER_TOKEN + token);
+        redises.set(Constants.Users.USER_ID, String.valueOf(userPo.getId()), Constants.Web.HEADER_TOKEN + token);
 
         // 将 po -> vo
         AdminLoginVo vo = MapStructs.INSTANCE.po2loginVo(userPo);
@@ -95,17 +113,16 @@ public class AdminUserServiceImpl
 
     /**
      * 超管注册
+     *
      * @param reqVo：注册的信息
      * @return ：是否成功
      */
     @Override
     public boolean register(AdminUserRegisterReqVo reqVo) {
 
-        // TODO: 验证验证码
+        // 检查验证码并且返回 po
+        AdminUsers po = checkCodeAndPo(reqVo.getEmail(), reqVo.getCode());
 
-        LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(AdminUsers::getUsername, reqVo.getUsername());
-        AdminUsers po = baseMapper.selectOne(wrapper);
         // 验证用户是否存在
         if (po != null) return JsonVos.raise(CodeMsg.EXIST_USERS);
 
@@ -141,6 +158,7 @@ public class AdminUserServiceImpl
 
     /**
      * 添加用户
+     *
      * @param reqVo ：用户信息
      * @return ：是否成功
      */
@@ -176,6 +194,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改用户信息
+     *
      * @param reqVo ：用户信息
      * @return ：是否成功
      */
@@ -201,6 +220,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改用户个人信息
+     *
      * @param reqVo ：用户信息【带头像】
      * @return ：是否成功
      */
@@ -217,6 +237,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改密码
+     *
      * @param reqVo ：用户密码信息
      * @return ：是否成功
      */
@@ -233,39 +254,28 @@ public class AdminUserServiceImpl
             return JsonVos.raise(CodeMsg.WRONG_OLD_PASSWORD);
         }
 
-        // 验证新密码与旧密码是否重复
-        if (Md5s.verify(reqVo.getNewPassword(), oldSalt, oldPsd)) {
-            return JsonVos.raise(CodeMsg.WRONG_NEW_PASSWORD_REPEAT);
-        }
-
-        // 设置新密码
-        String newSalt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
-        String newPsd = Md5s.md5(reqVo.getNewPassword(), newSalt);
-
-        adminUsers.setPassword(newPsd);
-        adminUsers.setSalt(newSalt);
-
-        return updateById(adminUsers);
+        return updatePwd(adminUsers, reqVo.getNewPassword());
     }
 
     /**
      * 通过Id获取用户信息【角色 + 组织 + 个人信息】
+     *
      * @param userId：用户ID
      * @return ：用户信息
      */
     @Override
-    public AdminUserInfoDto getAdminUserInfo(Integer userId) {
+    public AdminUserInfoDto getAdminUserInfo(Long userId) {
         if (userId == null || userId <= 0) return null;
 
         // TODO:获取用户信息【待队友实现】
         //获取用户信息
-        AdminUserVo adminUserVo =getAdminUserInfoById(userId);
+        AdminUserVo adminUserVo = getAdminUserInfoById(userId);
         // 获取用户角色
         List<Role> roles = roleService.listByIds(adminUserRoleService.listRoleIds(userId));
 
         // TODO: 根据上面获取的组织ID，获取组织信息
         short orgId = adminUserVo.getOrgId();
-        System.out.println("orgId"+orgId);
+        System.out.println("orgId" + orgId);
         OrganizationVo organizationVo = orgService.getOrgById(orgId);
 
         AdminUserInfoDto dto = new AdminUserInfoDto();
@@ -276,20 +286,21 @@ public class AdminUserServiceImpl
     }
 
     /**
+     * <<<<<<< HEAD
      *
      * @param userId:用户id
      * @return vo:用户信息
      */
     @Override
-    public AdminUserVo getAdminUserInfoById(Integer userId) {
+    public AdminUserVo getAdminUserInfoById(Long userId) {
         //根据id查询用户信息
         AdminUsers adminUser = baseMapper.selectById(userId);
         //用户不存在
-        if( adminUser == null){
-            return JsonVos.raise(CodeMsg.WRONG_USERNAME);
+        if (adminUser == null) {
+            return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
         }
         //将po转换为vo
-        AdminUserVo adminUserVo= MapStructs.INSTANCE.po2adminUserVo(adminUser);
+        AdminUserVo adminUserVo = MapStructs.INSTANCE.po2adminUserVo(adminUser);
         return adminUserVo;
     }
 
@@ -300,7 +311,76 @@ public class AdminUserServiceImpl
         wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname);
 
         return baseMapper.
-            selectPage(new MpPage<>(pageReqVo),wrapper).
+            selectPage(new MpPage<>(pageReqVo), wrapper).
             buildVo(MapStructs.INSTANCE::po2adminUserVo);
+
+    }
+    /**
+     * 忘记密码，并且修改密码
+     * @param reqVo：请求参数
+     * @return ：是否成功
+     */
+    @Override
+    public boolean forgotPwd(AdminUserForgotReqVo reqVo) {
+        // 检查验证码并且返回 po
+        AdminUsers po = checkCodeAndPo(reqVo.getEmail(), reqVo.getCode());
+        if (po == null) return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
+
+        // 1、验证新密码 2、保存新密码
+        return updatePwd(po, reqVo.getNewPassword());
+    }
+
+    /**
+     * 修改组织成员密码【替组织成员找回密码】
+     * @param reqVo：请求参数
+     * @return ：是否成功
+     */
+    @Override
+    public boolean update(AdminUserMemberPwdReqVo reqVo) {
+        AdminUsers po = baseMapper.selectById(reqVo.getId());
+        if (po == null) return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
+        // 1、验证新密码 2、保存新密码
+        return updatePwd(po, reqVo.getNewPassword());
+    }
+
+    /**
+     * 验证是否与旧密码重复，并且修改密码
+     * @param po：修改的用户
+     * @param newPassword：新密码
+     * @return ：是否成功
+     */
+    private boolean updatePwd(AdminUsers po, String newPassword) {
+        // 验证新密码与旧密码是否重复
+        if (Md5s.verify(newPassword, po.getSalt(), po.getPassword())) {
+            return JsonVos.raise(CodeMsg.WRONG_NEW_PASSWORD_REPEAT);
+        }
+
+        // 设置新密码
+        String newSalt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
+        String newPsd = Md5s.md5(newPassword, newSalt);
+
+        po.setPassword(newPsd);
+        po.setSalt(newSalt);
+        boolean res = updateById(po);
+        // 保存成功，将用户在redis中的缓存踢下线
+        if (res) redises.delByUserId(po.getId());
+        return res;
+    }
+
+    /**
+     * 检查验证码和并且返回用户
+     * @param email：邮箱
+     * @param code：验证码
+     * @return ：对应的用户
+     */
+    private AdminUsers checkCodeAndPo (String email, String code) {
+        // 验证验证码
+        boolean checkCode = Caches.checkCode(Constants.VerificationCode.EMAIL_CODE_PREFIX, email, code);
+        if (!checkCode) return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
+
+        LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(AdminUsers::getUsername, email);
+
+        return baseMapper.selectOne(wrapper);
     }
 }

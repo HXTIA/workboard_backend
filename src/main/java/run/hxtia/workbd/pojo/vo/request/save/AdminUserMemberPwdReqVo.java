@@ -13,16 +13,12 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("【编辑】用户密码")
-public class AdminUserPasswordReqVo extends CaptchaReqVo {
+@ApiModel("【编辑】修改组织成员密码")
+public class AdminUserMemberPwdReqVo extends CaptchaReqVo {
 
     @NotNull
     @ApiModelProperty(value = "用户ID", required = true)
     private Long id;
-
-    @NotBlank
-    @ApiModelProperty(value = "旧密码", required = true)
-    private String oldPassword;
 
     @NotBlank
     @ApiModelProperty(value = "新密码", required = true)

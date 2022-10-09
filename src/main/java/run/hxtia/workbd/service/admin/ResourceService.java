@@ -25,4 +25,11 @@ public interface ResourceService extends IService<Resource> {
      * @return ：一整棵父子结构
      */
     List<ResourceDto> listAllTree();
+
+    /**
+     * 根据角色IDs获取资源列表
+     * @param roleIds：角色IDs
+     * @return ：资源列表
+     */
+    List<Resource> listByRoleIds(List<Short> roleIds);
 }

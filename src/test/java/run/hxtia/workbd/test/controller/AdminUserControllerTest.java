@@ -24,7 +24,7 @@ public class AdminUserControllerTest {
     @Test
     public void registerTest() {
         AdminUserRegisterReqVo reqVo = new AdminUserRegisterReqVo();
-        reqVo.setUsername("");
+        reqVo.setEmail("");
         reqVo.setPassword("");
         controller.register(reqVo);
     }

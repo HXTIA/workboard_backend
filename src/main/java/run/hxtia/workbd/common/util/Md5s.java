@@ -37,11 +37,7 @@ public class Md5s {
         try {
             // 根据传入的密钥进行验证
             String md5Text = md5(text, salt);
-            if (md5Text.equalsIgnoreCase(md5)) { // 相同
-                System.out.println("MD5验证通过");
-                return true;
-            }
-            return false;
+            return md5Text.equalsIgnoreCase(md5);
         } catch (Exception e) {
             log.error("Md5s - verify 失败！ message - {}", e.getMessage());
             e.printStackTrace();

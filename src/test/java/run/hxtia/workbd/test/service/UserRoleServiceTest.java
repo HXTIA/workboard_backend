@@ -28,7 +28,7 @@ public class UserRoleServiceTest {
 
     @Test
     public void roleIdsTest() {
-        List<Short> shorts = userRoleService.listRoleIds(5);
+        List<Short> shorts = userRoleService.listRoleIds(5L);
         List<Role> roles = roleService.listByIds(shorts);
         System.out.println(roles);
     }

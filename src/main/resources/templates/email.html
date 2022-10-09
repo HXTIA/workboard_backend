@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>邮箱验证码</title>
+    <style>
+        .content {
+            background-image: url('https://img1.imgtp.com/2022/10/06/vb3q5d6v.png');
+            background-repeat: no-repeat;
+            background-size: 95vw;
+            width: 95vw;
+            height: 100%;
+        }
+
+        .code {
+            text-decoration: underline;
+            padding:23vw 0px 0px 34vw;
+            font-size: 8vw;
+            font-weight: bold;
+            color: royalblue;
+        }
+
+        .date {
+            padding:105vw 0px 0px 26vw;
+            font-size: 3vw;
+            color: #b3b3b3;
+        }
+    </style>
+</head>
+<body>
+
+<div style="background-image: url('https://img1.imgtp.com/2022/10/06/vb3q5d6v.png');
+            background-repeat: no-repeat;background-size: 95vw;
+            width: 95vw;height: 100%;">
+    <div style="text-decoration: underline;padding:23vw 0px 0px 34vw;
+                font-size: 8vw;font-weight: bold;color: royalblue;">
+        <span th:text="${code}"></span>
+    </div>
+    <div style="padding:100vw 0px 0px 26vw;font-size: 3vw;color: #b3b3b3;">
+        <span >到期时间:</span>
+        <span th:text="${expirationDate}"></span>
+    </div>
+</div>
+</body>
+</html>
