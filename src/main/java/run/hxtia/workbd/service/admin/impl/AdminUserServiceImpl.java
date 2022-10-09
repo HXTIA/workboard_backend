@@ -286,7 +286,6 @@ public class AdminUserServiceImpl
     }
 
     /**
-     * <<<<<<< HEAD
      *
      * @param userId:用户id
      * @return vo:用户信息
