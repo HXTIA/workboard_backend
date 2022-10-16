@@ -6,7 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.cache.Caches;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
@@ -20,9 +24,17 @@ import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.service.admin.AdminUserService;
+import run.hxtia.workbd.service.admin.OrganizationService;
+import run.hxtia.workbd.service.admin.AdminUserRoleService;
+import run.hxtia.workbd.service.admin.RoleService;
 import run.hxtia.workbd.service.admin.*;
 
 import java.util.List;
@@ -41,6 +53,7 @@ public class AdminUserServiceImpl
 
     /**
      * 用户登录
+     *
      * @param reqVo：登录数据
      * @return ：LoginVo
      */
@@ -101,6 +114,7 @@ public class AdminUserServiceImpl
 
     /**
      * 超管注册
+     *
      * @param reqVo：注册的信息
      * @return ：是否成功
      */
@@ -145,6 +159,7 @@ public class AdminUserServiceImpl
 
     /**
      * 添加用户
+     *
      * @param reqVo ：用户信息
      * @return ：是否成功
      */
@@ -180,6 +195,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改用户信息
+     *
      * @param reqVo ：用户信息
      * @return ：是否成功
      */
@@ -205,6 +221,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改用户个人信息
+     *
      * @param reqVo ：用户信息【带头像】
      * @return ：是否成功
      */
@@ -221,6 +238,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改密码
+     *
      * @param reqVo ：用户密码信息
      * @return ：是否成功
      */
@@ -242,6 +260,7 @@ public class AdminUserServiceImpl
 
     /**
      * 通过Id获取用户信息【角色 + 组织 + 个人信息】
+     *
      * @param userId：用户ID
      * @return ：用户信息
      */
@@ -249,19 +268,50 @@ public class AdminUserServiceImpl
     public AdminUserInfoDto getAdminUserInfo(Long userId) {
         if (userId == null || userId <= 0) return null;
 
-        // TODO:获取用户信息【待队友实现】
-
+        // 获取用户信息
+        AdminUsers adminUsers = baseMapper.selectById(userId);
+        AdminUserVo adminUserVo = MapStructs.INSTANCE.po2adminUserVo(adminUsers);
         // 获取用户角色
         List<Role> roles = roleService.listByIds(adminUserRoleService.listRoleIds(userId));
-
-        // TODO: 根据上面获取的组织ID，获取组织信息
-
+        // 根据上面获取的组织ID，获取组织信息
+        Organization organization = orgService.getById(adminUsers.getOrgId());
+        OrganizationVo organizationVo = MapStructs.INSTANCE.po2vo(organization);
         AdminUserInfoDto dto = new AdminUserInfoDto();
         dto.setRoles(roles);
-
+        dto.setUserVo(adminUserVo);
+        dto.setOrgVo(organizationVo);
         return dto;
     }
 
+    /**
+     *
+     * @param userId:用户id
+     * @return vo:用户信息
+     */
+    @Override
+    public AdminUserVo getAdminUserInfoById(Long userId) {
+        //根据id查询用户信息
+        AdminUsers adminUser = baseMapper.selectById(userId);
+        //用户不存在
+        if (adminUser == null) {
+            return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
+        }
+        //将po转换为vo
+        AdminUserVo adminUserVo = MapStructs.INSTANCE.po2adminUserVo(adminUser);
+        return adminUserVo;
+    }
+
+    @Override
+    public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo) {
+
+        MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname);
+
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo), wrapper).
+            buildVo(MapStructs.INSTANCE::po2adminUserVo);
+
+    }
     /**
      * 忘记密码，并且修改密码
      * @param reqVo：请求参数
@@ -320,7 +370,7 @@ public class AdminUserServiceImpl
      * @param code：验证码
      * @return ：对应的用户
      */
-    private AdminUsers checkCodeAndPo(String email, String code) {
+    private AdminUsers checkCodeAndPo (String email, String code) {
         // 验证验证码
         boolean checkCode = Caches.checkCode(Constants.VerificationCode.EMAIL_CODE_PREFIX, email, code);
         if (!checkCode) return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
@@ -329,5 +379,25 @@ public class AdminUserServiceImpl
         wrapper.eq(AdminUsers::getUsername, email);
 
         return baseMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 获取用户分页信息
+     * @param pageReqVo 分页信息
+     * @param token : 请求的token
+     * @return 返回用户基本信息
+     */
+    @Override
+    public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo, String token) {
+        AdminUserPermissionDto dto = redises.getT(Constants.Web.ADMIN_PREFIX + token);
+
+        MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname).
+            eq(AdminUsers::getOrgId, dto.getUsers().getOrgId());
+
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo), wrapper).
+            buildVo(MapStructs.INSTANCE::po2adminUserVo);
+
     }
 }
