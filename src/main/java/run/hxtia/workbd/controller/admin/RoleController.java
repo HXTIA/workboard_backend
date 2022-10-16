@@ -9,6 +9,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
@@ -46,7 +47,11 @@ public class RoleController extends BaseController<Role, RoleReqVo> {
     @ApiOperation("获取所有角色")
     @RequiresPermissions(Constants.Permission.SYS_ROLE_READ)
     public DataJsonVo<List<RoleVo>> searchList() {
-        return JsonVos.ok(Streams.map(roleService.list(), MapStructs.INSTANCE::po2vo));
+
+        String key = Constants.RoleResource.ALL_PREFIX + Constants.RoleResource.ROLE_KEY;
+        List<Role> roles = Redises.queryCacheOrDB(key, roleService.getBaseMapper());
+
+        return JsonVos.ok(Streams.map(roles, MapStructs.INSTANCE::po2vo));
     }
 
     @Override

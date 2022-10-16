@@ -108,4 +108,15 @@ public class Constants {
         public static final String IMAGE_CODE_PREFIX = "Captcha:";
     }
 
+    /**
+     * 角色 - 资源
+     */
+    public static class RoleResource {
+        // 所有 & 列表 前缀
+        public static final String ALL_PREFIX = "All:";
+        public static final String LIST_PREFIX = "List:";
+        // 所有资源
+        public static final String RESOURCE_KEY = "Resource:";
+        public static final String ROLE_KEY = "Role:";
+    }
 }

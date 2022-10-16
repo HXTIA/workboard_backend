@@ -38,7 +38,7 @@ public class WorkReqVo {
     private Long deadline;
 
     @ApiModelProperty("新图片数据")
-    private List<MultipartFile> pictureFiles;
+    private List<MultipartFile> picturesFiles;
 
 }
 

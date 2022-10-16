@@ -36,6 +36,7 @@ public interface WorkService extends IService<Work> {
      * @param uploadReqVo ：所需参数
      * @return ：是否成功
      */
+    @Transactional(readOnly = false)
     boolean updatePictures(WorkUploadReqVo uploadReqVo) throws Exception;
 
     /**

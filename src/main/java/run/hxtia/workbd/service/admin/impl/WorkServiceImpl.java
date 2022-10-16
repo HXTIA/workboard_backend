@@ -75,7 +75,7 @@ public class WorkServiceImpl extends ServiceImpl<WorkMapper, Work> implements Wo
         String filePath = "";
         if (reqVo.getId() == null) {
             // 保证是新建时，才来上传图片
-            List<MultipartFile> pictureFiles = reqVo.getPictureFiles();
+            List<MultipartFile> pictureFiles = reqVo.getPicturesFiles();
             if (!CollectionUtils.isEmpty(pictureFiles))
                 filePath = Uploads.uploadImages(pictureFiles);
 

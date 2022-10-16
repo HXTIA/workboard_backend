@@ -1,5 +1,6 @@
 package run.hxtia.workbd.service.admin.impl;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.RoleMapper;
@@ -63,6 +65,11 @@ public class RoleServiceImpl
 
         // 保存角色信息
         if (!saveOrUpdate(po)) return false;
+
+        // 让缓存过期
+        boolean expire = redises.expire(Constants.RoleResource.ALL_PREFIX +
+            Constants.RoleResource.ROLE_KEY);
+        if (!expire) return JsonVos.raise(CodeMsg.OPERATE_ERROR);
 
         Short id = reqVo.getId();
 
