@@ -3,6 +3,7 @@ package run.hxtia.workbd.test.common;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.pojo.po.User;
 

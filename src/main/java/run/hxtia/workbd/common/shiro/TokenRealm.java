@@ -55,7 +55,7 @@ public class TokenRealm extends AuthorizingRealm {
         Redises redises = Redises.getRedises();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-        AdminUserPermissionDto userInfoDto = redises.getT(Constants.Web.HEADER_TOKEN + token);
+        AdminUserPermissionDto userInfoDto = redises.getT(Constants.Web.ADMIN_PREFIX + token);
         if (userInfoDto == null) return info;
 
         // 添加角色

@@ -39,6 +39,8 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
     private final Redises redises;
     private final OrganizationService orgService;
 
+    private WxMaJscode2SessionResult session;
+
     /**
      * 根据 code验证码换取 session_key + openId
      * @param code：验证码
@@ -70,7 +72,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
 
         // 微信小程序相关的信息
         WxMaUserService userService = wxMaService.getUserService();
-        WxMaJscode2SessionResult session = MiniApps.getSession(token);
+        session = MiniApps.getSession(token);
         String sessionKey = session.getSessionKey();
         String openId = session.getOpenid();
         try {
@@ -99,7 +101,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
                 WxMaUserInfo userInfo = userService.getUserInfo(
                     sessionKey, wxAuth.getEncryptedData(), wxAuth.getIv()
                 );
-                userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(registerUser(userInfo, token)));
+                userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(registerUser(userInfo)));
             }
 
             // 将最新消息缓存到 redis
@@ -115,13 +117,12 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
     /**
      * 注册用户【存开发者服务器】
      * @param userInfo：调用微信的接口，返回给
-     * @param token：用户令牌
      * @return ：是否成功。
      */
-    private User registerUser(WxMaUserInfo userInfo, String token) {
-        if (userInfo == null || !StringUtils.hasLength(token)) return null;
+    private User registerUser(WxMaUserInfo userInfo) {
+        if (userInfo == null) return null;
         User po = MapStructs.INSTANCE.wxReqVo2po(userInfo);
-        po.setOpenid(MiniApps.getOpenId(token));
+        po.setOpenid(session.getOpenid());
         if (baseMapper.insert(po) <= 0) {
             return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
         }
@@ -140,8 +141,10 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
         if (!orgService.isExist(reqVo.getOrgId())) {
             return JsonVos.raise(CodeMsg.NO_ORG_INFO);
         }
-
-        return baseMapper.updateById(po) > 0;
+        boolean res = baseMapper.updateById(po) > 0;
+        // 保存成功更新redis缓存
+        if (res) updateCacheById(po.getId());
+        return res;
     }
 
     /**
@@ -153,9 +156,27 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
     public boolean update(UserAvatarReqVo reqVo) throws Exception {
         User po = new User();
         po.setId(reqVo.getId());
-        return Uploads.uploadOneWithPo(po,
+
+        boolean res = Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getAvatarUrl(),
                 reqVo.getAvatarFile()),
             baseMapper, User::setAvatarUrl);
+
+        // 保存成功更新redis缓存
+        if (res) updateCacheById(po.getId());
+        return res;
+    }
+
+    /**
+     * 根据用户ID更新用户缓存
+     * @param userId：用户ID
+     */
+    private void  updateCacheById(Long userId) {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        User user = baseMapper.selectById(userId);
+        // TODO：班级信息
+        // TODO: 组织信息
+        userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(user));
+        redises.set(Constants.WxMiniApp.WX_USER, session.getOpenid(), userInfoDto);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.ResourceMapper;
@@ -23,6 +24,7 @@ public class ResourceServiceImpl
     extends ServiceImpl<ResourceMapper, Resource> implements ResourceService {
 
     private final RoleResourceService roleResourceService;
+    private final Redises redises;
 
     /**
      * 根据角色ID构建树状结构的菜单
@@ -49,9 +51,18 @@ public class ResourceServiceImpl
      */
     @Override
     public List<ResourceDto> listAllTree() {
-        MpLambdaQueryWrapper<Resource> wrapper = new MpLambdaQueryWrapper<>();
-        wrapper.orderByAsc(Resource::getType);
-        return listComTree(baseMapper.selectList(wrapper));
+
+        String key = Constants.RoleResource.ALL_PREFIX + Constants.RoleResource.RESOURCE_KEY;
+        List<ResourceDto> resourceDtos = redises.getT(key);
+
+        if (CollectionUtils.isEmpty(resourceDtos)) {
+            MpLambdaQueryWrapper<Resource> wrapper = new MpLambdaQueryWrapper<>();
+            wrapper.orderByAsc(Resource::getType);
+            resourceDtos = listComTree(baseMapper.selectList(wrapper));
+            redises.set(key, resourceDtos);
+        }
+
+        return resourceDtos;
     }
 
     /**

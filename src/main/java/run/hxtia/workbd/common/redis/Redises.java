@@ -1,5 +1,8 @@
 package run.hxtia.workbd.common.redis;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +20,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.util.Constants;
+import run.hxtia.workbd.pojo.po.Role;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -95,6 +100,15 @@ public class Redises implements ApplicationContextAware {
     }
 
     /**
+     * 让其Key 直接过期
+     * @param key ：对应的Key
+     * @return
+     */
+    public boolean expire(String key) {
+        return expire( key, 0L);
+    }
+
+    /**
      * 指定缓存失效时间
      * @param prefix   前缀
      * @param key      键
@@ -103,15 +117,14 @@ public class Redises implements ApplicationContextAware {
      */
     public boolean expire(String prefix, String key, long time, TimeUnit timeUnit) {
         String sb = new StringBuilder(prefix).append(key).toString();
+        boolean res = false;
         try {
-            if (time > 0) {
-                redisTemplate.expire(sb, time, timeUnit);
-            }
+            res = redisTemplate.expire(sb, time, timeUnit);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return false;
+            res = false;
         }
-        return true;
+        return res;
     }
 
     /**
@@ -203,6 +216,27 @@ public class Redises implements ApplicationContextAware {
      */
     public <T> T getT(String key) {
         return (T) get(key);
+    }
+
+    /**
+     * 先从缓存中获取，获取不到从数据库中获取
+     * @param cacheKey ：缓存的key
+     * @param baseMapper ：数据库的Mapper
+     * @param <T> ：查询的对象
+     * @return
+     */
+    public static <T> List<T> queryCacheOrDB(String cacheKey, BaseMapper<T> baseMapper) {
+        // 从缓存中获取
+
+        List<T> result = getRedises().getT(cacheKey);
+        // List<Object> jsonObjects = ;
+        if (CollectionUtils.isEmpty(result)) {
+            // 获取不到再从数据库中获取 并且缓存
+            result = baseMapper.selectList(null);
+            getRedises().set(cacheKey, result);
+        }
+
+        return result;
     }
 
     /**
@@ -663,7 +697,7 @@ public class Redises implements ApplicationContextAware {
      * @param time  时间(秒)
      * @return
      */
-    public boolean lSet(String key, List<Object> value, long time) {
+    public boolean lSetAll(String key, List<Object> value, long time) {
         try {
             redisTemplate.opsForList().rightPushAll(key, value);
             if (time > 0) {
