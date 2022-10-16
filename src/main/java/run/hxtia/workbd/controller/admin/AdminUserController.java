@@ -17,12 +17,15 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.response.CaptchaVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.result.PageJsonVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.EmailService;
 
@@ -156,11 +159,20 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
     }
 
+    @PostMapping("/searchListPage")
+    @ApiOperation("获取用户基本信息【分页】")
+    public PageJsonVo<AdminUserVo> searchUserListPage(@RequestBody AdminUserPageReqVo pageReqVo, HttpServletRequest request){
+        String token = request.getHeader(Constants.Web.HEADER_TOKEN);
+        return JsonVos.ok(adminUserService.getList(pageReqVo, token));
+    }
+
     @GetMapping("/captcha")
     @ApiOperation("获取图形验证码【登录时、修改密码时使用】")
     public CaptchaVo captcha() {
         return Captchas.out();
     }
+
+
 
     @Override
     @ApiOperation("这是一个无用接口")

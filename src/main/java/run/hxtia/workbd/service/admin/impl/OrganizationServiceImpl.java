@@ -105,4 +105,14 @@ public class OrganizationServiceImpl
         if (id == null || id <= 0) return false;
         return baseMapper.selectById(id) != null;
     }
+
+    /**
+     * 根据用户ID获取组织ID
+     * @param : userId
+     * @return : 该用户加入组织的ID
+     */
+    @Override
+    public Short getOne(Long userId) {
+        return baseMapper.selectById(userId).getId();
+    }
 }

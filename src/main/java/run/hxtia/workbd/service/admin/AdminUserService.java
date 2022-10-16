@@ -5,9 +5,12 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.result.PageVo;
 
 @Transactional(readOnly = true)
 public interface AdminUserService extends IService<AdminUsers> {
@@ -82,4 +85,12 @@ public interface AdminUserService extends IService<AdminUsers> {
      */
     @Transactional(readOnly = false)
     boolean update(AdminUserMemberPwdReqVo reqVo);
+
+    /**
+     * 获取用户分页信息
+     * @param pageReqVo 分页信息
+     * @param token : 请求的token
+     * @return 返回用户基本信息
+     */
+    PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo, String token);
 }

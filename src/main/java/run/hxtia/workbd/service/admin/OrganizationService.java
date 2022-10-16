@@ -48,4 +48,11 @@ public interface OrganizationService extends IService<Organization> {
      * @return ：是否存在
      */
     boolean isExist(Short id);
+
+    /**
+     * 根据用户ID获取组织ID
+     * @param : userId
+     * @return : 该用户所加入的组织ID
+     */
+    Short getOne(Long userId);
 }
