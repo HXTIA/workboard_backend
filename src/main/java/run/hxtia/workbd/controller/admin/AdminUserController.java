@@ -3,6 +3,7 @@ package run.hxtia.workbd.controller.admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,15 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.response.CaptchaVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.result.PageJsonVo;
 import run.hxtia.workbd.service.admin.AdminUserService;
 import run.hxtia.workbd.service.admin.EmailService;
 
@@ -154,6 +158,13 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     @ApiOperation("通过Id获取用户信息【角色 + 组织 + 个人信息】")
     public DataJsonVo<AdminUserInfoDto> searchAdminUserInfo(@PathVariable @NotNull Long id) {
         return JsonVos.ok(adminUserService.getAdminUserInfo(id));
+    }
+
+    @PostMapping("/searchListPage")
+    @ApiOperation("获取用户基本信息【分页】")
+    public PageJsonVo<AdminUserVo> searchUserListPage(@RequestBody AdminUserPageReqVo pageReqVo, HttpServletRequest request){
+        String token = request.getHeader(Constants.Web.HEADER_TOKEN);
+        return JsonVos.ok(adminUserService.getList(pageReqVo, token));
     }
 
     @GetMapping("/captcha")

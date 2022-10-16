@@ -111,14 +111,6 @@ public class WorkBoardProperties implements ApplicationContextAware {
          * 邮件发送地址
          */
         private String fromAddr;
-        /**
-         * 用户名
-         */
-        private String nickName;
-
-        public String getForm() {
-            return nickName + "<" + fromAddr + ">";
-        }
     }
 
 }
