@@ -9,7 +9,6 @@ import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
 @Transactional(readOnly = true)
@@ -64,10 +63,20 @@ public interface AdminUserService extends IService<AdminUsers> {
     boolean update(AdminUserPasswordReqVo reqVo);
 
     /**
-     * 通过Id获取用户信息【角色 + 组织 + 个人信息】
-     * @param id：用户ID
-     * @return ：用户信息
+     *
+     * @param userId:用户id
+     * @return 用户信息
      */
+    @Transactional(readOnly = false)
+    AdminUserVo getAdminUserInfoById(Long userId);
+
+    /**
+     *
+     * @return 所有用户信息
+     */
+    @Transactional(readOnly = false)
+    PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo);
+
     AdminUserInfoDto getAdminUserInfo(Long id);
 
     /**

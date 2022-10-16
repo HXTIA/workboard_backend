@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Organization;
 import run.hxtia.workbd.pojo.vo.request.page.OrganizationPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.OrganizationReqVo;
+import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 

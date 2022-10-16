@@ -15,6 +15,8 @@ import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.response.*;
 
+import java.util.List;
+
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
  * 2、https://github.com/mapstruct/mapstruct

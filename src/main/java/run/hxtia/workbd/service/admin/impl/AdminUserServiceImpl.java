@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.cache.Caches;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
@@ -29,6 +31,10 @@ import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.service.admin.AdminUserService;
+import run.hxtia.workbd.service.admin.OrganizationService;
+import run.hxtia.workbd.service.admin.AdminUserRoleService;
+import run.hxtia.workbd.service.admin.RoleService;
 import run.hxtia.workbd.service.admin.*;
 
 import java.util.List;
@@ -47,6 +53,7 @@ public class AdminUserServiceImpl
 
     /**
      * 用户登录
+     *
      * @param reqVo：登录数据
      * @return ：LoginVo
      */
@@ -107,6 +114,7 @@ public class AdminUserServiceImpl
 
     /**
      * 超管注册
+     *
      * @param reqVo：注册的信息
      * @return ：是否成功
      */
@@ -151,6 +159,7 @@ public class AdminUserServiceImpl
 
     /**
      * 添加用户
+     *
      * @param reqVo ：用户信息
      * @return ：是否成功
      */
@@ -186,6 +195,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改用户信息
+     *
      * @param reqVo ：用户信息
      * @return ：是否成功
      */
@@ -211,6 +221,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改用户个人信息
+     *
      * @param reqVo ：用户信息【带头像】
      * @return ：是否成功
      */
@@ -227,6 +238,7 @@ public class AdminUserServiceImpl
 
     /**
      * 修改密码
+     *
      * @param reqVo ：用户密码信息
      * @return ：是否成功
      */
@@ -248,6 +260,7 @@ public class AdminUserServiceImpl
 
     /**
      * 通过Id获取用户信息【角色 + 组织 + 个人信息】
+     *
      * @param userId：用户ID
      * @return ：用户信息
      */
@@ -270,6 +283,35 @@ public class AdminUserServiceImpl
         return dto;
     }
 
+    /**
+     *
+     * @param userId:用户id
+     * @return vo:用户信息
+     */
+    @Override
+    public AdminUserVo getAdminUserInfoById(Long userId) {
+        //根据id查询用户信息
+        AdminUsers adminUser = baseMapper.selectById(userId);
+        //用户不存在
+        if (adminUser == null) {
+            return JsonVos.raise(CodeMsg.WRONG_USERNAME_NOT_EXIST);
+        }
+        //将po转换为vo
+        AdminUserVo adminUserVo = MapStructs.INSTANCE.po2adminUserVo(adminUser);
+        return adminUserVo;
+    }
+
+    @Override
+    public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo) {
+
+        MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname);
+
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo), wrapper).
+            buildVo(MapStructs.INSTANCE::po2adminUserVo);
+
+    }
     /**
      * 忘记密码，并且修改密码
      * @param reqVo：请求参数
@@ -328,7 +370,7 @@ public class AdminUserServiceImpl
      * @param code：验证码
      * @return ：对应的用户
      */
-    private AdminUsers checkCodeAndPo(String email, String code) {
+    private AdminUsers checkCodeAndPo (String email, String code) {
         // 验证验证码
         boolean checkCode = Caches.checkCode(Constants.VerificationCode.EMAIL_CODE_PREFIX, email, code);
         if (!checkCode) return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);

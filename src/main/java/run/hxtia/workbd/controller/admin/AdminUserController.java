@@ -3,6 +3,7 @@ package run.hxtia.workbd.controller.admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -171,8 +172,6 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     public CaptchaVo captcha() {
         return Captchas.out();
     }
-
-
 
     @Override
     @ApiOperation("这是一个无用接口")
