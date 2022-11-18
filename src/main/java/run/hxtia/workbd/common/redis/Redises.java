@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.util.Constants;
+import run.hxtia.workbd.pojo.dto.AdminUserPermissionDto;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -70,6 +71,17 @@ public class Redises implements ApplicationContextAware {
                 del(idStr);
             }
         }
+    }
+
+    /**
+     * 根据组织token获取用户组织ID
+     * @param token：用户Token
+     * @return ：该用户组织ID
+     */
+    public static Short getOrgIdByToken(String token) {
+        if (!StringUtils.hasLength(token)) return 0;
+        AdminUserPermissionDto dto = getRedises().getT(Constants.Web.ADMIN_PREFIX + token);
+        return dto == null ? 0 : dto.getUsers().getOrgId();
     }
 
     /**

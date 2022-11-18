@@ -36,15 +36,17 @@ public class RoleServiceImpl
 
     /**
      * 角色分页列表
-     * @param pageReqVo：分页参数
+     * @param pageReqVo ：分页参数
+     * @param token：用户token
      * @return ：分页后的角色列表
      */
     @Override
-    public PageVo<RoleVo> list(RolePageReqVo pageReqVo) {
+    public PageVo<RoleVo> list(RolePageReqVo pageReqVo, String token) {
 
         // 构建查询条件
         MpLambdaQueryWrapper<Role> wrapper = new MpLambdaQueryWrapper<>();
-        wrapper.like(pageReqVo.getKeyword(), Role::getName, Role::getIntro);
+        wrapper.like(pageReqVo.getKeyword(), Role::getName, Role::getIntro).
+        eq(Role::getOrgId, Redises.getOrgIdByToken(token));
 
         // 构建分页结果
         return baseMapper.
@@ -54,17 +56,21 @@ public class RoleServiceImpl
 
     /**
      * 新建|保存角色
-     * @param reqVo：角色信息
+     * @param reqVo ：角色信息
+     * @param token ：用户token
      * @return ：是否成功
      */
     @Override
-    public boolean saveOrUpdate(RoleReqVo reqVo) {
+    public boolean saveOrUpdate(RoleReqVo reqVo, String token) {
         Role po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        Short id = reqVo.getId();
+        if (id == null || id <= 0) {
+            // 设置组织ID
+            po.setOrgId(Redises.getOrgIdByToken(token));
+        }
 
         // 保存角色信息
         if (!saveOrUpdate(po)) return false;
-
-        Short id = reqVo.getId();
 
         if (id != null && id > 0) {
             // 来到这说明是编辑角色。将拥有该角色的用户全部找出
@@ -74,7 +80,6 @@ public class RoleServiceImpl
             // 删除角色的所有资源，方便重新添加资源信息
             roleResourceService.removeByRoleId(id);
         }
-
 
         // 为角色添加对应的资源
         List<Short> resourceIds = reqVo.getResourceIds();
@@ -108,5 +113,20 @@ public class RoleServiceImpl
         if (CollectionUtils.isEmpty(roleIds)) return null;
 
         return baseMapper.selectBatchIds(roleIds);
+    }
+
+    /**
+     * 获取所有组织内角色
+     * @param token：用户Token
+     * @return ：组织内角色
+     */
+    @Override
+    public List<Role> list(String token) {
+
+        // 通过组织ID过滤一下
+        MpLambdaQueryWrapper<Role> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.eq(Role::getOrgId, Redises.getOrgIdByToken(token));
+
+        return list(wrapper);
     }
 }
