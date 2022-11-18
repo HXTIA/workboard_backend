@@ -389,11 +389,10 @@ public class AdminUserServiceImpl
      */
     @Override
     public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo, String token) {
-        AdminUserPermissionDto dto = redises.getT(Constants.Web.ADMIN_PREFIX + token);
 
         MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname).
-            eq(AdminUsers::getOrgId, dto.getUsers().getOrgId());
+            eq(AdminUsers::getOrgId, Redises.getOrgIdByToken(token));
 
         return baseMapper.
             selectPage(new MpPage<>(pageReqVo), wrapper).

@@ -27,6 +27,10 @@ public class Role implements Serializable {
      * 角色简介
      */
     private String intro;
+    /**
+     * 组织ID
+     */
+    private Short orgId;
 
 }
 
