@@ -27,6 +27,10 @@ public class Clazz implements Serializable {
      * 班级名称
      */
     private String className;
+    /**
+     * 组织ID
+     */
+    private Short orgId;
 
 }
 

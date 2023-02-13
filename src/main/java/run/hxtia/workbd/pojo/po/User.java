@@ -39,10 +39,6 @@ public class User implements Serializable {
      * 班级ID
      */
     private Long classId;
-    /**
-     * 组织ID
-     */
-    private Short orgId;
 
 }
 

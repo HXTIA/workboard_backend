@@ -1,10 +1,17 @@
 /*
  Navicat Premium Data Transfer
+
+ Source Server         : course_mysql
+ Source Server Type    : MySQL
+ Source Server Version : 80031 (8.0.31)
+ Source Host           : localhost:3306
+ Source Schema         : work_board
+
  Target Server Type    : MySQL
- Target Server Version : 80026
+ Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 27/09/2022 09:58:46
+ Date: 13/02/2023 23:09:38
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +31,7 @@ CREATE TABLE `admin_users`  (
   `org_id` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '组织ID',
   `salt` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '密码的盐值',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `admin_users_email_uindex`(`username`) USING BTREE
+  UNIQUE INDEX `admin_users_email_uindex`(`username` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'B端用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -58,8 +65,9 @@ CREATE TABLE `clazz`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '班级ID',
   `grade` smallint UNSIGNED NOT NULL DEFAULT 0 COMMENT '年级ID',
   `class_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '班级名称',
+  `org_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '组织ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '行政班表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '行政班表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clazz
@@ -76,7 +84,7 @@ CREATE TABLE `course`  (
   `course_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '课程名称',
   `course_type` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程类型【0：选修，1：必修】',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '教学班表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '教学班表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course
@@ -90,7 +98,7 @@ CREATE TABLE `courses_clazz`  (
   `course_id` smallint UNSIGNED NOT NULL COMMENT '课程ID',
   `class_id` smallint UNSIGNED NOT NULL COMMENT '班级ID',
   `org_id` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '组织ID',
-  UNIQUE INDEX `course-class_pk`(`course_id`, `class_id`) USING BTREE
+  UNIQUE INDEX `course-class_pk`(`course_id` ASC, `class_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '教学班-行政班表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -107,7 +115,7 @@ CREATE TABLE `organization`  (
   `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   `background` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '组织背景【旗帜】',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `organization_name_uindex`(`name`) USING BTREE
+  UNIQUE INDEX `organization_name_uindex`(`name` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组织表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -183,7 +191,7 @@ CREATE TABLE `roles`  (
   `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '角色名称',
   `intro` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '角色简介',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `roles_name_uindex`(`name`) USING BTREE
+  UNIQUE INDEX `roles_name_uindex`(`name` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -253,7 +261,7 @@ CREATE TABLE `semesters`  (
   `start_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '开始时间',
   `weeks` tinyint UNSIGNED NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学期表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '学期表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of semesters
@@ -267,8 +275,8 @@ CREATE TABLE `tags`  (
   `id` smallint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '标签ID',
   `detail` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '标签细节',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `tags_detail_uindex`(`detail`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '标签表' ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `tags_detail_uindex`(`detail` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '标签表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tags
@@ -285,10 +293,9 @@ CREATE TABLE `users`  (
   `nickname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '用户姓名',
   `student_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '学号',
   `class_id` int UNSIGNED NOT NULL DEFAULT 0 COMMENT '班级ID',
-  `org_id` tinyint UNSIGNED NOT NULL DEFAULT 0 COMMENT '组织ID',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `users_openid_uindex`(`openid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `users_openid_uindex`(`openid` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
@@ -343,7 +350,7 @@ CREATE TABLE `work`  (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '作业表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '作业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of work
