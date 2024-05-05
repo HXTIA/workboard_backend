@@ -35,7 +35,8 @@ public interface MapStructs {
     */
     UserVo po2vo(Student po);
     AdminLoginVo po2loginVo(AdminUsers po);
-    OrganizationVo po2vo(Organization po);
+//    OrganizationVo po2vo(Organization po);
+    CollegeVo po2vo(College po);
     RoleVo po2vo(Role po);
     @Mapping(
         source = "createdAt",
@@ -80,7 +81,7 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserRegisterReqVo reqVo);
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
-   Organization reqVo2po(OrganizationReqVo reqVo);
+//   Organization reqVo2po(OrganizationReqVo reqVo);
    Student reqVo2po(UserReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
     @Mapping(

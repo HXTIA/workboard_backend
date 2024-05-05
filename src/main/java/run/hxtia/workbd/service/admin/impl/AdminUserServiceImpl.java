@@ -1,25 +1,25 @@
-package run.hxtia.workbd.service.admin.impl;
-
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import run.hxtia.workbd.common.redis.Redises;
-import run.hxtia.workbd.mapper.AdminUserMapper;
-import run.hxtia.workbd.pojo.po.AdminUsers;
-import run.hxtia.workbd.service.admin.AdminUserService;
-import run.hxtia.workbd.service.admin.AdminUserRoleService;
-import run.hxtia.workbd.service.admin.RoleService;
-import run.hxtia.workbd.service.admin.*;
-
-@Service
-@RequiredArgsConstructor
-public class AdminUserServiceImpl
-    extends ServiceImpl<AdminUserMapper, AdminUsers> implements AdminUserService {
-
-    private final Redises redises;
-    private final AdminUserRoleService adminUserRoleService;
-    private final RoleService roleService;
-    private final ResourceService resourceService;
+//package run.hxtia.workbd.service.admin.impl;
+//
+//import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.stereotype.Service;
+//import run.hxtia.workbd.common.redis.Redises;
+//import run.hxtia.workbd.mapper.AdminUserMapper;
+//import run.hxtia.workbd.pojo.po.AdminUsers;
+//import run.hxtia.workbd.service.admin.AdminUserService;
+//import run.hxtia.workbd.service.admin.AdminUserRoleService;
+//import run.hxtia.workbd.service.admin.RoleService;
+//import run.hxtia.workbd.service.admin.*;
+//
+//@Service
+//@RequiredArgsConstructor
+//public class AdminUserServiceImpl
+//    extends ServiceImpl<AdminUserMapper, AdminUsers> implements AdminUserService {
+//
+//    private final Redises redises;
+//    private final AdminUserRoleService adminUserRoleService;
+//    private final RoleService roleService;
+//    private final ResourceService resourceService;
 //
 //    /**
 //     * 用户登录
@@ -369,4 +369,4 @@ public class AdminUserServiceImpl
 //            buildVo(MapStructs.INSTANCE::po2adminUserVo);
 //
 //    }
-}
+//}
