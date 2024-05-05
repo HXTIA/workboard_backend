@@ -26,6 +26,4 @@ public class CollegeEditReqVo {
 
     @ApiModelProperty(value = "学院logo", required = true)
     private String logoUrl;
-
-
 }

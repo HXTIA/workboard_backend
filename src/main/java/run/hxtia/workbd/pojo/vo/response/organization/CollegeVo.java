@@ -1,4 +1,4 @@
-package run.hxtia.workbd.pojo.vo.response;
+package run.hxtia.workbd.pojo.vo.response.organization;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

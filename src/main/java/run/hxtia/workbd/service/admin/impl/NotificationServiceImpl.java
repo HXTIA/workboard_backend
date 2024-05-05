@@ -122,6 +122,4 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
             }
         }
     }
-
-
 }

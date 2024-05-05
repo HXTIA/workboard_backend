@@ -10,11 +10,15 @@ import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.GradeEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.GradeReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.response.*;
+import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
+import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -41,6 +45,7 @@ public interface MapStructs {
 
     AdminUserVo po2adminUserVo(AdminUsers po);
     CollegeVo po2vo(College po);
+    GradeVo po2vo(Grade po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -59,6 +64,8 @@ public interface MapStructs {
    College reqVo2po(CollegeReqVo reqVo);
     @Mapping(source = "name", target = "name")
     College reqVo2po(CollegeEditReqVo reqVo);
+    Grade reqVo2po(GradeReqVo reqVo);
+    Grade reqVo2po(GradeEditReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

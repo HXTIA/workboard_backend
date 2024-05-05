@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
-import run.hxtia.workbd.pojo.vo.response.CollegeVo;
+import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
 /**
