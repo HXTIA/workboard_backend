@@ -30,7 +30,7 @@ public class Role implements Serializable {
     /**
      * 组织ID
      */
-    private Short orgId;
+    private Integer orgId;
 
 }
 

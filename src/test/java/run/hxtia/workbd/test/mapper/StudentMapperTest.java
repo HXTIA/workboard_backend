@@ -1,4 +1,4 @@
-package run.hxtia.workbd.test.service;
+package run.hxtia.workbd.test.mapper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,27 +6,27 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
-import run.hxtia.workbd.pojo.po.Homework;
-
-import java.util.ArrayList;
-import java.util.List;
+import run.hxtia.workbd.mapper.StudentMapper;
+import run.hxtia.workbd.pojo.po.Student;
 
 @SpringBootTest(classes = WorkBoardApplication.class)
 @Rollback
 @AutoConfigureMockMvc
-public class WorkServiceTest {
+public class StudentMapperTest {
 
     @Autowired
-    private WorkService workService;
+    StudentMapper studentMapper;
 
     @Test
-    public void testListByIds() {
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("4");
-        list.add("2");
-        List<Homework> homework = workService.listByIds(list);
-        System.out.println(homework);
-    }
+    public void testKey() {
 
+        Student student = new Student();
+        student.setNickname("222");
+
+        studentMapper.insert(student);
+
+        System.out.println(student.getId());
+        System.out.println(student.getNickname());
+
+    }
 }

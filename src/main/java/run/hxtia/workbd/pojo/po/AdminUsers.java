@@ -20,7 +20,7 @@ public class AdminUsers implements Serializable {
     /**
      * 用户ID
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 用户名
@@ -66,6 +66,21 @@ public class AdminUsers implements Serializable {
      * 所属学院ID
      */
     private Integer collegeId;
+
+    /**
+     * 密码的盐值
+     */
+    private String salt;
+
+    /**
+     * 用户状态【1：可用 0：禁用】
+     */
+    private Short status;
+
+    /**
+     * 姓名
+     */
+    private String nickname;
 
 }
 
