@@ -22,7 +22,6 @@ public class StudentMapperTest {
 
         Student student = new Student();
         student.setNickname("222");
-        student.setOpenid("221");
 
         studentMapper.insert(student);
 

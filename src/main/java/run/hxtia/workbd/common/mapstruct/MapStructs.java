@@ -35,40 +35,8 @@ public interface MapStructs {
     */
     UserVo po2vo(Student po);
     AdminLoginVo po2loginVo(AdminUsers po);
-    OrganizationVo po2vo(Organization po);
     RoleVo po2vo(Role po);
-    @Mapping(
-        source = "createdAt",
-        target = "createdAt",
-        qualifiedBy = MapStructFormatter.Date2Millis.class
-    )
-    @Mapping(
-        source = "deadline",
-        target = "deadline",
-        qualifiedBy = MapStructFormatter.Date2Millis.class
-    )
-    @Mapping(
-        source = "updatedAt",
-        target = "updatedAt",
-        qualifiedBy = MapStructFormatter.Date2Millis.class
-    )
-    WorkVo po2vo(Homework po);
-    @Mapping(
-        source = "createdAt",
-        target = "createdAt",
-        qualifiedBy = MapStructFormatter.Date2Millis.class
-    )
-    @Mapping(
-        source = "deadline",
-        target = "deadline",
-        qualifiedBy = MapStructFormatter.Date2Millis.class
-    )
-    @Mapping(
-        source = "updatedAt",
-        target = "updatedAt",
-        qualifiedBy = MapStructFormatter.Date2Millis.class
-    )
-    UserWorkVo po2userWorkVo(Homework po);
+
     AdminUserVo po2adminUserVo(AdminUsers po);
 
    // reqVo -> po  【用来做数据库保存】
@@ -80,15 +48,8 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserRegisterReqVo reqVo);
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
-   Organization reqVo2po(OrganizationReqVo reqVo);
    Student reqVo2po(UserReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
-    @Mapping(
-        source = "deadline",
-        target = "deadline",
-        qualifiedBy = MapStructFormatter.Mills2Date.class
-    )
-    Homework reqVo2po(WorkReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

@@ -9,7 +9,6 @@ import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.RoleMapper;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.po.RoleResource;
@@ -46,7 +45,7 @@ public class RoleServiceImpl
         // 构建查询条件
         MpLambdaQueryWrapper<Role> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.like(pageReqVo.getKeyword(), Role::getName, Role::getIntro).
-        eq(Role::getOrgId, Redises.getOrgIdByToken(token));
+        eq(Role::getOrgId, Redises.getClgIdByToken(token));
 
         // 构建分页结果
         return baseMapper.
@@ -66,7 +65,7 @@ public class RoleServiceImpl
         Short id = reqVo.getId();
         if (id == null || id <= 0) {
             // 设置组织ID
-            po.setOrgId(Redises.getOrgIdByToken(token));
+            po.setOrgId(Redises.getClgIdByToken(token));
         }
 
         // 保存角色信息
@@ -125,7 +124,7 @@ public class RoleServiceImpl
 
         // 通过组织ID过滤一下
         MpLambdaQueryWrapper<Role> wrapper = new MpLambdaQueryWrapper<>();
-        wrapper.eq(Role::getOrgId, Redises.getOrgIdByToken(token));
+        wrapper.eq(Role::getOrgId, Redises.getClgIdByToken(token));
 
         return list(wrapper);
     }

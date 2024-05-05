@@ -85,7 +85,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
             // 先去数据库查询
             LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Student::getOpenid, openId);
+            wrapper.eq(Student::getWechatId, openId);
             Student studentPo = baseMapper.selectOne(wrapper);
             userInfoDto = new UserInfoDto();
 
@@ -119,7 +119,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private Student registerUser(WxMaUserInfo userInfo, String token) {
         if (userInfo == null || !StringUtils.hasLength(token)) return null;
         Student po = MapStructs.INSTANCE.wxReqVo2po(userInfo);
-        po.setOpenid(MiniApps.getOpenId(token));
+        po.setWechatId(MiniApps.getOpenId(token));
         if (baseMapper.insert(po) <= 0) {
             return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
         }
@@ -134,10 +134,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public boolean update(UserReqVo reqVo) {
         Student po = MapStructs.INSTANCE.reqVo2po(reqVo);
-        // 判断组织是否存在
-        if (!orgService.isExist(reqVo.getOrgId())) {
-            return JsonVos.raise(CodeMsg.NO_ORG_INFO);
-        }
+        // TODO：判断组织是否存在
+//        if (!orgService.isExist(reqVo.getOrgId())) {
+//            return JsonVos.raise(CodeMsg.NO_ORG_INFO);
+//        }
 
         return baseMapper.updateById(po) > 0;
     }
