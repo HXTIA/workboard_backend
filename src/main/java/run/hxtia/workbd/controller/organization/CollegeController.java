@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.College;
-import run.hxtia.workbd.pojo.vo.request.save.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -43,7 +44,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 编辑学院
     @PostMapping("/edit")
     @ApiOperation("编辑学院")
-    public JsonVo edit(@Valid @RequestBody CollegeReqVo reqVo) {
+    public JsonVo edit(@Valid @RequestBody CollegeEditReqVo reqVo) {
         if (collegeService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
@@ -86,4 +87,27 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     protected Function<CollegeReqVo, College> getFunction() {
         return null;
     }
+
+    @GetMapping("/check/{id}")
+    @ApiOperation("验证学院是否存在")
+    public JsonVo checkClgInfo(@PathVariable Integer id) {
+        boolean exists = collegeService.checkClgInfo(id);
+        if (exists) {
+            return JsonVos.ok(CodeMsg.CHECK_OK);
+        } else {
+            return JsonVos.error(CodeMsg.CHECK_ERROR);
+        }
+    }
+
+    @PostMapping("/register")
+    @ApiOperation("注册默认学院")
+    public JsonVo saveDefaultRegisterClg(@Valid @RequestBody CollegeReqVo collegeInfo) {
+        boolean saved = collegeService.saveDefaultRegisterClg(collegeInfo);
+        if (saved) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
 }

@@ -3,7 +3,8 @@ package run.hxtia.workbd.service.organization;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.College;
-import run.hxtia.workbd.pojo.vo.request.save.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
@@ -24,7 +25,7 @@ public interface CollegeService extends IService<College> {
 
     // 更新学院信息
      @Transactional(readOnly = false)
-    boolean update(CollegeReqVo reqVo);
+    boolean update(CollegeEditReqVo reqVo);
 
 
     /**
@@ -48,7 +49,18 @@ public interface CollegeService extends IService<College> {
      */
     PageVo<CollegeVo> getList();
 
-    // 根据学院id，判断存不存在
+    /**
+     * 检查学院是否存在。
+     * @param collegeId 学院的ID。
+     * @return 如果学院存在，则为true，否则为false。
+     */
+    boolean checkClgInfo(Integer collegeId);
 
-    // 注册默认（空）组织的方法
+    /**
+     * 注册默认学院。
+     * @param collegeInfo 要注册的学院的信息。
+     * @return 如果注册成功，则为true，否则为false。
+     */
+    @Transactional(readOnly = false)
+    boolean saveDefaultRegisterClg(CollegeReqVo collegeInfo);
 }

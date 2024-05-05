@@ -7,6 +7,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.po.*;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
@@ -38,6 +40,7 @@ public interface MapStructs {
     RoleVo po2vo(Role po);
 
     AdminUserVo po2adminUserVo(AdminUsers po);
+    CollegeVo po2vo(College po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -50,6 +53,12 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
    Student reqVo2po(UserReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
+
+
+    @Mapping(source = "name", target = "name")
+   College reqVo2po(CollegeReqVo reqVo);
+    @Mapping(source = "name", target = "name")
+    College reqVo2po(CollegeEditReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

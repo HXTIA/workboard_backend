@@ -3,14 +3,18 @@ package run.hxtia.workbd.service.organization.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.CollegeMapper;
 import run.hxtia.workbd.pojo.po.College;
-import run.hxtia.workbd.pojo.vo.request.save.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.organization.CollegeService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Xiaojin
@@ -22,26 +26,59 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
 
     @Override
     public boolean save(CollegeReqVo reqVo) {
-        return false;
+        College po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        Boolean flag = save(po);
+        return flag;
     }
 
     @Override
-    public boolean update(CollegeReqVo reqVo) {
-        return false;
+    public boolean update(CollegeEditReqVo reqVo) {
+        College po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        return updateById(po);
     }
 
     @Override
     public boolean delete(Integer collegeId) {
-        return false;
+        return removeById(collegeId);
     }
 
     @Override
     public CollegeVo getCollegeInfoById(Integer collegeId) {
-        return null;
+        College college = getById(collegeId);
+        return MapStructs.INSTANCE.po2vo(college);
     }
 
     @Override
     public PageVo<CollegeVo> getList() {
-        return null;
+        List<College> colleges = list();
+        List<CollegeVo> collegeVos = colleges.stream()
+            .map(MapStructs.INSTANCE::po2vo)
+            .collect(Collectors.toList());
+
+        PageVo<CollegeVo> pageVo = new PageVo<>();
+        pageVo.setData(collegeVos);
+        pageVo.setCount((long) collegeVos.size());
+        pageVo.setPages(1L); // 这里假设所有的数据都在一个页面，可能需要根据分页逻辑来设置这个值
+
+        return pageVo;
+    }
+
+    @Override
+    public boolean checkClgInfo(Integer collegeId) {
+        // 使用MyBatis Plus的getById方法检查学院是否存在
+        // 如果getById返回的结果不为null，那么学院存在，返回true
+        // 否则，学院不存在，返回false
+        return getById(collegeId) != null;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public boolean saveDefaultRegisterClg(CollegeReqVo collegeInfo) {
+        // 使用MapStructs.INSTANCE.reqVo2po将CollegeReqVo转换为College
+        College college = MapStructs.INSTANCE.reqVo2po(collegeInfo);
+        // 使用MyBatis Plus的save方法保存学院信息
+        // 如果保存成功，save方法会返回true
+        // 否则，save方法会返回false
+        return save(college);
     }
 }

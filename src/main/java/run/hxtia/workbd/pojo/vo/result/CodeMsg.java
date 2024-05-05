@@ -47,7 +47,9 @@ public enum CodeMsg {
     TOKEN_EXPIRED(60002, "Token过期，请重新登录"),
     NO_APP_ID(60003, "未找到对应的appId"),
     NO_ORG_INFO(60004, "未找到组织信息！！！"),
-    NO_PERMISSION(60005, "没有相关的操作权限");
+    NO_PERMISSION(60005, "没有相关的操作权限"),
+    CHECK_OK(60004,"校验通过"),
+    CHECK_ERROR(60006,"校验失败");
 
     /**
      *     状态码
