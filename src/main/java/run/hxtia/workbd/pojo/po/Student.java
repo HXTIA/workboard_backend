@@ -20,7 +20,7 @@ public class Student implements Serializable {
     /**
      * 学生ID
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 微信ID
