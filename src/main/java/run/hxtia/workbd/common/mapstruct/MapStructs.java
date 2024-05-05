@@ -66,4 +66,9 @@ public interface MapStructs {
     // PO -> DTO
     ResourceDto po2dto(Resource po);
 
+
+    NotificationVo po2vo(Notification notification);
+
+
+    Notification reqVo2po(NotificationReqVo reqVo);
 }
