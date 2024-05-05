@@ -6,8 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
-import run.hxtia.workbd.pojo.po.Organization;
-import run.hxtia.workbd.service.admin.OrganizationService;
+import run.hxtia.workbd.service.admin.CollegeService;
 
 @SpringBootTest(classes = WorkBoardApplication.class)
 @Rollback
@@ -15,7 +14,7 @@ import run.hxtia.workbd.service.admin.OrganizationService;
 public class OrgServiceTest {
 
     @Autowired
-    private OrganizationService orgService;
+    private CollegeService orgService;
 
     @Test
     public void test() {

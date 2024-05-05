@@ -6,8 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
-import run.hxtia.workbd.pojo.po.Work;
-import run.hxtia.workbd.service.admin.WorkService;
+import run.hxtia.workbd.pojo.po.Homework;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,8 @@ public class WorkServiceTest {
         list.add("1");
         list.add("4");
         list.add("2");
-        List<Work> works = workService.listByIds(list);
-        System.out.println(works);
+        List<Homework> homework = workService.listByIds(list);
+        System.out.println(homework);
     }
 
 }

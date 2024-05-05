@@ -7,40 +7,40 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 行政班表(Clazz)实体类
+ * C端用户表(Users)实体类
  *
  * @author ZhiYan
  * @since 2022-09-21 10:23:51
  */
 @Data
-@TableName("classes")
-public class Clazz implements Serializable {
+@TableName("students")
+public class Student implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 班级ID
+     * 学生ID
      */
     private Integer id;
 
     /**
-     * 班级名称
+     * 微信ID
      */
-    private String name;
+    private String wechatId;
 
     /**
-     * 年级ID
+     * 昵称
      */
-    private Integer gradeId;
+    private String nickname;
 
     /**
-     * 创建者ID
+     * 头像URL
      */
-    private Integer createdId;
+    private String avatarUrl;
 
     /**
-     * 更新者ID
+     * 电话号码
      */
-    private Integer updatedId;
+    private String phone;
 
     /**
      * 创建时间
@@ -51,6 +51,21 @@ public class Clazz implements Serializable {
      * 更新时间
      */
     private Date updatedAt;
+
+    /**
+     * 学院ID
+     */
+    private Integer collegeId;
+
+    /**
+     * 年级ID
+     */
+    private Integer gradeId;
+
+    /**
+     * 班级ID
+     */
+    private Integer classId;
 
 }
 

@@ -13,49 +13,64 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-@TableName("work")
-public class Work implements Serializable {
-    private static final long serialVersionUID = -10748310609330681L;
+@TableName("homeworks")
+public class Homework implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * 作业ID
      */
-    private Long id;
-    /**
-     * 课程ID
-     */
-    private Integer courseId;
-    /**
-     * 学期ID
-     */
-    private Integer semesterId;
+    private Integer id;
+
     /**
      * 作业标题
      */
     private String title;
+
     /**
-     * 作业内容
+     * 作业描述
      */
-    private String detail;
+    private String description;
+
+    /**
+     * 图片链接
+     */
+    private String pictureLinks;
+
     /**
      * 截止日期
      */
     private Date deadline;
+
     /**
-     * 作业图片
+     * 课程ID
      */
-    private String pictures;
+    private Integer courseId;
+
+    /**
+     * 发布者ID
+     */
+    private Integer publisherId;
+
+    /**
+     * 发布平台
+     */
+    private String publishPlatform;
+
+    /**
+     * 状态
+     */
+    private String status;
+
     /**
      * 创建时间
      */
     private Date createdAt;
+
     /**
      * 更新时间
      */
     private Date updatedAt;
-    /**
-     * 是否展示【1：展示，0：不展示】
-     */
-    private Short enable;
 
 }
 

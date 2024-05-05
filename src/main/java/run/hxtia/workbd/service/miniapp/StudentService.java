@@ -1,17 +1,16 @@
 package run.hxtia.workbd.service.miniapp;
 
 
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.dto.UserInfoDto;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.Student;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 
 @Transactional(readOnly = true)
-public interface WxUserService extends IService<User> {
+public interface StudentService extends IService<Student> {
 
     /**
      * 根据 code验证码换取 session_key + openId

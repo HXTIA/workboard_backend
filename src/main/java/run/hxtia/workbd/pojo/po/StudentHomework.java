@@ -13,29 +13,36 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-@TableName("users_works")
-public class UserWork implements Serializable {
+@TableName("student_homeworks")
+public class StudentHomework implements Serializable {
     private static final long serialVersionUID = 714852878467288369L;
+
+
     /**
-     * 用户ID
+     * 学生ID
      */
-    private Long userId;
+    private Integer studentId;
+
     /**
      * 作业ID
      */
-    private Long workId;
+    private Integer homeworkId;
+
     /**
      * 作业状态【0：未读未完成，1：已读未完成，2：已读已完成】
      */
     private Short status;
+
     /**
      * 是否置顶【0：不置顶，1：置顶】
      */
     private Short pin;
+
     /**
      * 查看次数
      */
     private Integer times;
+
     /**
      * 创建时间
      */

@@ -5,30 +5,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 import run.hxtia.workbd.WorkBoardApplication;
-import run.hxtia.workbd.mapper.UserMapper;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.mapper.StudentMapper;
+import run.hxtia.workbd.pojo.po.Student;
 
 @SpringBootTest(classes = WorkBoardApplication.class)
 @Rollback
 @AutoConfigureMockMvc
-public class UserMapperTest {
+public class StudentMapperTest {
 
     @Autowired
-    UserMapper userMapper;
+    StudentMapper studentMapper;
 
     @Test
     public void testKey() {
 
-        User user = new User();
-        user.setNickname("222");
-        user.setOpenid("221");
+        Student student = new Student();
+        student.setNickname("222");
+        student.setOpenid("221");
 
-        userMapper.insert(user);
+        studentMapper.insert(student);
 
-        System.out.println(user.getId());
-        System.out.println(user.getNickname());
+        System.out.println(student.getId());
+        System.out.println(student.getNickname());
 
     }
 }

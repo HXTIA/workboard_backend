@@ -4,9 +4,9 @@
 # 开发环境
 spring:
   datasource:
-    username: ${work-board.mysql-cfg.user}
-    password: ${work-board.mysql-cfg.psd}
-    url: jdbc:mysql://${work-board.mysql-cfg.db-ip}:${work-board.mysql-cfg.port}/${work-board.mysql-cfg.db-name}?characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: ${homework-board.mysql-cfg.student}
+    password: ${homework-board.mysql-cfg.psd}
+    url: jdbc:mysql://${homework-board.mysql-cfg.db-ip}:${homework-board.mysql-cfg.port}/${homework-board.mysql-cfg.db-name}?characterEncoding=UTF-8&serverTimezone=GMT%2B8
     druid:
       max-wait: 5000
       max-active: 50
@@ -16,9 +16,9 @@ spring:
   # redis配置
   redis:
     # 主机
-    host: ${work-board.redis-cfg.host}
-    port: ${work-board.redis-cfg.port}
-    password: ${work-board.redis-cfg.psd}
+    host: ${homework-board.redis-cfg.host}
+    port: ${homework-board.redis-cfg.port}
+    password: ${homework-board.redis-cfg.psd}
     # 数据库索引REDIS_DB
     database: ${REDIS_DB:0}
     # 连接超时时间
@@ -35,10 +35,10 @@ spring:
       # 静态资源映射位置
 
   mail:
-    username: ${work-board.email.username}
-    password: ${work-board.email.password}
-    host: ${work-board.email.host}
-    port: ${work-board.email.port}
+    username: ${homework-board.email.username}
+    password: ${homework-board.email.password}
+    host: ${homework-board.email.host}
+    port: ${homework-board.email.port}
     default-encoding: UTF-8
 
 server:
@@ -50,7 +50,7 @@ logging:
     run.hxtia.workbd: debug
 
 # 自定义配置项
-work-board:
+homework-board:
   cfg:
     # 跨域相关配置
     cors-origins:
@@ -59,14 +59,14 @@ work-board:
 
   # 文件上传路径【可以修改路径，不要修改前面的key】
   upload:
-    base-path: /home/work-board/
+    base-path: /home/homework-board/
     upload-path: upload/
     image-path: image/
     video-path: video/
 
   # Mysql 数据库相关信息
   mysql-cfg:
-    user: root # 你的mysql用户
+    student: root # 你的mysql用户
     psd: root # 你的mysql密码
     db-ip: 127.0.0.1 # 你的mysql服务器IP
     db-name: work_board_test # 【数据库名称】

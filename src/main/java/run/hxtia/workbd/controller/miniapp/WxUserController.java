@@ -1,6 +1,5 @@
 package run.hxtia.workbd.controller.miniapp;
 
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +13,7 @@ import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
-import run.hxtia.workbd.service.miniapp.WxUserService;
+import run.hxtia.workbd.service.miniapp.StudentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -26,7 +25,7 @@ import javax.validation.constraints.NotNull;
 @Api(tags = "WxUserController")
 @Tag(name = "WxUserController", description = "小程序用户模块")
 public class WxUserController {
-    private final WxUserService wxUserService;
+    private final StudentService wxUserService;
 
     @GetMapping("/getSessionId")
     @ApiOperation("根据 code 获取 token")

@@ -2,45 +2,31 @@ package run.hxtia.workbd.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 行政班表(Clazz)实体类
- *
- * @author ZhiYan
- * @since 2022-09-21 10:23:51
+ * 年级表
  */
 @Data
-@TableName("classes")
-public class Clazz implements Serializable {
+@TableName("grades")
+public class Grade implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 班级ID
-     */
-    private Integer id;
-
-    /**
-     * 班级名称
-     */
-    private String name;
 
     /**
      * 年级ID
      */
-    private Integer gradeId;
+    private Integer id;
 
     /**
-     * 创建者ID
+     * 年级名称
      */
-    private Integer createdId;
+    private String name;
 
     /**
-     * 更新者ID
+     * 所属学院ID
      */
-    private Integer updatedId;
+    private Integer collegeId;
 
     /**
      * 创建时间
@@ -51,6 +37,4 @@ public class Clazz implements Serializable {
      * 更新时间
      */
     private Date updatedAt;
-
 }
-

@@ -10,12 +10,9 @@ import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
-import run.hxtia.workbd.pojo.vo.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.UserVo;
 import run.hxtia.workbd.pojo.vo.response.*;
-
-import java.util.List;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -36,7 +33,7 @@ public interface MapStructs {
     （2）target：目标对象
     （3）qualifiedBy：找转换器中的方法
     */
-    UserVo po2vo(User po);
+    UserVo po2vo(Student po);
     AdminLoginVo po2loginVo(AdminUsers po);
     OrganizationVo po2vo(Organization po);
     RoleVo po2vo(Role po);
@@ -55,7 +52,7 @@ public interface MapStructs {
         target = "updatedAt",
         qualifiedBy = MapStructFormatter.Date2Millis.class
     )
-    WorkVo po2vo(Work po);
+    WorkVo po2vo(Homework po);
     @Mapping(
         source = "createdAt",
         target = "createdAt",
@@ -71,27 +68,27 @@ public interface MapStructs {
         target = "updatedAt",
         qualifiedBy = MapStructFormatter.Date2Millis.class
     )
-    UserWorkVo po2userWorkVo(Work po);
+    UserWorkVo po2userWorkVo(Homework po);
     AdminUserVo po2adminUserVo(AdminUsers po);
 
    // reqVo -> po  【用来做数据库保存】
 
    @Mapping(source = "nickName", target = "nickname")
-   User wxReqVo2po(WxMaUserInfo wxReqVo);
+   Student wxReqVo2po(WxMaUserInfo wxReqVo);
    AdminUsers reqVo2po(AdminUserReqVo reqVo);
    @Mapping(source = "email", target = "username")
    AdminUsers reqVo2po(AdminUserRegisterReqVo reqVo);
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
    Organization reqVo2po(OrganizationReqVo reqVo);
-   User reqVo2po(UserReqVo reqVo);
+   Student reqVo2po(UserReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
     @Mapping(
         source = "deadline",
         target = "deadline",
         qualifiedBy = MapStructFormatter.Mills2Date.class
     )
-   Work reqVo2po(WorkReqVo reqVo);
+    Homework reqVo2po(WorkReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

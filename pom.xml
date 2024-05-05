@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>run.hxtia</groupId>
-    <artifactId>work-board</artifactId>
+    <artifactId>homework-board</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -207,7 +207,7 @@
 
     <build>
         <!-- 打包后的文件名 -->
-        <finalName>hxtia-work-board</finalName>
+        <finalName>hxtia-homework-board</finalName>
         <!-- 使用maven启动插件 -->
         <plugins>
             <plugin>

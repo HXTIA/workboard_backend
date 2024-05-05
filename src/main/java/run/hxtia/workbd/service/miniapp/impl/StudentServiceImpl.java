@@ -18,26 +18,24 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Strings;
-import run.hxtia.workbd.mapper.UserMapper;
+import run.hxtia.workbd.mapper.StudentMapper;
 import run.hxtia.workbd.pojo.dto.UserInfoDto;
-import run.hxtia.workbd.pojo.po.User;
+import run.hxtia.workbd.pojo.po.Student;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.service.admin.OrganizationService;
-import run.hxtia.workbd.service.miniapp.WxUserService;
+import run.hxtia.workbd.service.miniapp.StudentService;
 
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements WxUserService {
+public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
     private final WxMaService wxMaService;
     private final Redises redises;
-    private final OrganizationService orgService;
 
     /**
      * 根据 code验证码换取 session_key + openId
@@ -86,13 +84,13 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
             if (userInfoDto != null) return userInfoDto;
 
             // 先去数据库查询
-            LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(User::getOpenid, openId);
-            User userPo = baseMapper.selectOne(wrapper);
+            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Student::getOpenid, openId);
+            Student studentPo = baseMapper.selectOne(wrapper);
             userInfoDto = new UserInfoDto();
 
-            if (userPo != null) {
-                userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(userPo));
+            if (studentPo != null) {
+                userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(studentPo));
             } else {
                 // 来到这里说明用户是第一次授权，需要注册
                 // 解密用户信息并且返回
@@ -118,9 +116,9 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
      * @param token：用户令牌
      * @return ：是否成功。
      */
-    private User registerUser(WxMaUserInfo userInfo, String token) {
+    private Student registerUser(WxMaUserInfo userInfo, String token) {
         if (userInfo == null || !StringUtils.hasLength(token)) return null;
-        User po = MapStructs.INSTANCE.wxReqVo2po(userInfo);
+        Student po = MapStructs.INSTANCE.wxReqVo2po(userInfo);
         po.setOpenid(MiniApps.getOpenId(token));
         if (baseMapper.insert(po) <= 0) {
             return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
@@ -135,7 +133,7 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
      */
     @Override
     public boolean update(UserReqVo reqVo) {
-        User po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        Student po = MapStructs.INSTANCE.reqVo2po(reqVo);
         // 判断组织是否存在
         if (!orgService.isExist(reqVo.getOrgId())) {
             return JsonVos.raise(CodeMsg.NO_ORG_INFO);
@@ -151,11 +149,11 @@ public class WxUserServiceImpl extends ServiceImpl<UserMapper, User> implements 
      */
     @Override
     public boolean update(UserAvatarReqVo reqVo) throws Exception {
-        User po = new User();
+        Student po = new Student();
         po.setId(reqVo.getId());
         return Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getAvatarUrl(),
                 reqVo.getAvatarFile()),
-            baseMapper, User::setAvatarUrl);
+            baseMapper, Student::setAvatarUrl);
     }
 }
