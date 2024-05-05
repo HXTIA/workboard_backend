@@ -55,7 +55,7 @@ work-board:
     # 跨域相关配置
     cors-origins:
       - http://localhost:8080
-      - 课继续像上面一样配置跨域
+      # - 可继续像上面一样配置跨域
 
   # 文件上传路径【可以修改路径，不要修改前面的key】
   upload:
@@ -66,29 +66,29 @@ work-board:
 
   # Mysql 数据库相关信息
   mysql-cfg:
-    user: 你的mysql用户
-    psd: 你的mysql密码
-    db-ip: 你的mysql服务器IP
-    db-name: work_board_test【数据库名称】
-    port: 3306【端口号】
+    user: root # 你的mysql用户
+    psd: root # 你的mysql密码
+    db-ip: 127.0.0.1 # 你的mysql服务器IP
+    db-name: work_board_test # 【数据库名称】
+    port: 3306 # 【端口号】
 
   # Redis 数据库相关信息
   redis-cfg:
-    host: 你的redis服务器IP
-    psd: 你的redis密码
-    port: 你的redis端口
+    host: 127.0.0.1 # 你的redis服务器IP
+    psd: # 你的redis密码
+    port: 6379 # 你的redis端口
 
   # 微信配置
   wx:
-    app-id: 你的小程序appId
-    secret: 你的小程序secret
-    template-id: 消息订阅的模板
+    app-id: xx # 你的小程序appId
+    secret: xx # 你的小程序secret
+    template-id: xx # 消息订阅的模板
     msgDataFormat: JSON
 
   # 邮件配置
   email:
-    username: 你的邮箱用户名
-    password: 你邮箱获取的用户名
-    host: 使用的邮箱类型
-    port: 使用的端口
-    fromAddr: 你的邮箱地址
+    username: xx@qq.com # 你的邮箱用户名
+    password: xxx # 你邮箱获取的用户名
+    host: xxx # 使用的邮箱类型
+    port: 25 # 使用的端口
+    fromAddr: xx # 你的邮箱地址
