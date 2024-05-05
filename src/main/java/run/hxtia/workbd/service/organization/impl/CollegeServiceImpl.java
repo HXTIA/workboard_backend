@@ -10,6 +10,8 @@ import run.hxtia.workbd.pojo.vo.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.organization.CollegeService;
 
+import java.util.List;
+
 /**
  * @author Xiaojin
  * @date 2024/5/5
@@ -23,6 +25,10 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
         return false;
     }
 
+    @Override
+    public boolean update(CollegeReqVo reqVo) {
+        return false;
+    }
 
     @Override
     public boolean delete(Integer collegeId) {

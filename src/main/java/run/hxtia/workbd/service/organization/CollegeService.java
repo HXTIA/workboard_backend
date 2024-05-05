@@ -22,6 +22,10 @@ public interface CollegeService extends IService<College> {
     @Transactional(readOnly = false)
     boolean save(CollegeReqVo reqVo);
 
+    // 更新学院信息
+     @Transactional(readOnly = false)
+    boolean update(CollegeReqVo reqVo);
+
 
     /**
      * 删除学院

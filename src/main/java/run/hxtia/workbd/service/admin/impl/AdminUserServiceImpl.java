@@ -91,7 +91,7 @@
 //    @Override
 //    public boolean register(AdminUserRegisterReqVo reqVo) {
 //
-//        // 检查验证码并且返回 po
+//        // 检查验证码并且返回 poa
 //        AdminUsers po = checkCodeAndPo(reqVo.getEmail(), reqVo.getCode());
 //
 //        // 验证用户是否存在

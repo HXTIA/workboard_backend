@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin;
+package run.hxtia.workbd.controller.organization;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -40,6 +40,16 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
         }
     }
 
+    // 编辑学院
+    @PostMapping("/edit")
+    @ApiOperation("编辑学院")
+    public JsonVo edit(@Valid @RequestBody CollegeReqVo reqVo) {
+        if (collegeService.update(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
 
     // 根据ID获取学院信息
     @GetMapping("/{id}")

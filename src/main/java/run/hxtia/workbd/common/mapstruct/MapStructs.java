@@ -69,7 +69,7 @@ public interface MapStructs {
         target = "updatedAt",
         qualifiedBy = MapStructFormatter.Date2Millis.class
     )
-    UserWorkVo po2userWorkVo(Homework po);
+//    UserWorkVo po2userWorkVo(Homework po);
     AdminUserVo po2adminUserVo(AdminUsers po);
 
    // reqVo -> po  【用来做数据库保存】
