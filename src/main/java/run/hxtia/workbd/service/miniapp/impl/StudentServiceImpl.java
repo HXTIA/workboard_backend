@@ -18,6 +18,7 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Strings;
+import run.hxtia.workbd.mapper.StudentMapper;
 import run.hxtia.workbd.pojo.dto.UserInfoDto;
 import run.hxtia.workbd.pojo.po.Student;
 import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;

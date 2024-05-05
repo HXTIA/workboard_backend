@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import run.hxtia.workbd.pojo.po.StudentNotification;
 
 @Repository
-public interface StudentNotificationMapper extends BaseMapper<StudentNotification> {
+public interface NotificationMapper extends BaseMapper<StudentNotification> {
 }
