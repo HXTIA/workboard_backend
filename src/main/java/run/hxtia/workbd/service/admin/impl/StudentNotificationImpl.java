@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.mapper.NotificationMapper;
+import run.hxtia.workbd.mapper.StudentNotificationMapper;
+import run.hxtia.workbd.pojo.po.Student;
 import run.hxtia.workbd.pojo.po.StudentNotification;
 import run.hxtia.workbd.service.admin.StudentNotificationService;
 
@@ -13,7 +15,7 @@ import java.util.List;
 
 @Service
 public class StudentNotificationImpl
-    extends ServiceImpl<NotificationMapper,StudentNotification> implements StudentNotificationService{
+    extends ServiceImpl<StudentNotificationMapper,StudentNotification> implements StudentNotificationService{
 
     /**
      * 根据通知ID删除 通知作业
