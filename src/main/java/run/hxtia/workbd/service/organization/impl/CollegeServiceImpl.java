@@ -73,12 +73,8 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
 
     @Override
     @Transactional(readOnly = false)
-    public boolean saveDefaultRegisterClg(CollegeReqVo collegeInfo) {
-        // 使用MapStructs.INSTANCE.reqVo2po将CollegeReqVo转换为College
-        College college = MapStructs.INSTANCE.reqVo2po(collegeInfo);
-        // 使用MyBatis Plus的save方法保存学院信息
-        // 如果保存成功，save方法会返回true
-        // 否则，save方法会返回false
-        return save(college);
+    public boolean saveDefaultRegisterClg(College collegeInfo) {
+        if(collegeInfo == null) return false;
+        return baseMapper.insertDefaultRegisterCollege(collegeInfo) > 0;
     }
 }

@@ -62,5 +62,5 @@ public interface CollegeService extends IService<College> {
      * @return 如果注册成功，则为true，否则为false。
      */
     @Transactional(readOnly = false)
-    boolean saveDefaultRegisterClg(CollegeReqVo collegeInfo);
+    boolean saveDefaultRegisterClg(College collegeInfo);
 }

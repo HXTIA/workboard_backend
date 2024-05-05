@@ -101,7 +101,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
 
     @PostMapping("/register")
     @ApiOperation("注册默认学院")
-    public JsonVo saveDefaultRegisterClg(@Valid @RequestBody CollegeReqVo collegeInfo) {
+    public JsonVo saveDefaultRegisterClg(@Valid @RequestBody College collegeInfo) {
         boolean saved = collegeService.saveDefaultRegisterClg(collegeInfo);
         if (saved) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
