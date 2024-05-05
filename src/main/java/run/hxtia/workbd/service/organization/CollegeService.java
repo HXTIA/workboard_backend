@@ -43,4 +43,8 @@ public interface CollegeService extends IService<College> {
      * @return 所有学院信息
      */
     PageVo<CollegeVo> getList();
+
+    // 根据学院id，判断存不存在
+
+    // 注册默认（空）组织的方法
 }
