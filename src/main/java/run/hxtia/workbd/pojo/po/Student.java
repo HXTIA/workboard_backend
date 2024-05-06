@@ -67,5 +67,10 @@ public class Student implements Serializable {
      */
     private Integer classId;
 
+    /**
+     * 学号
+     */
+    private String studentId;
+
 }
 

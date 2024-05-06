@@ -22,6 +22,7 @@ public class Constants {
         public static final String WX_USER = "wx:user:";
         // 微信接口前缀
         public static final String WX_PREFIX = "/wx/";
+        public static final String WX_AT_PREFIX = "wx:accesstoken:";
     }
 
     /**
@@ -39,6 +40,7 @@ public class Constants {
     public static class Date {
         // 过期时间
         public static final int EXPIRE_DATS = 7;
+        public static final int WX_STUDENT_EXPIRE_DATS = 1;
     }
 
     /**
@@ -106,6 +108,25 @@ public class Constants {
         public static final String EMAIL_CODE_PREFIX = "Email:";
         // 图形验证码前缀
         public static final String IMAGE_CODE_PREFIX = "Captcha:";
+    }
+
+    /**
+     * HTTP
+     */
+    public static class HTTPClient {
+        public static int HTTP_SUCCESS = 200;
+        public static final String CONTENT_TYPE = "content-type";
+        public static final String APPLICATION_JSON = "application/json";
+        public static final String CHARSET_UFS8 = "UTF-8";
+    }
+
+    public static class WxApp {
+        public static String PREFIX = "https://api.weixin.qq.com/";
+        public static String GET_TOKEN = "sns/jscode2session";
+        public static String CHECK_TOKEN = "wxa/checksession";
+        public static String WX_ACCESS_TOKEN = "cgi-bin/token";
+        public static String WX_TOKEN = "WXToken";
+
     }
 
 }

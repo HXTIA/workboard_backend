@@ -3,16 +3,13 @@ package run.hxtia.workbd.pojo.vo.request.save;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.web.multipart.MultipartFile;
-import run.hxtia.workbd.common.upload.UploadReqParam;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel("【编辑】完善用户信息")
-public class UserReqVo {
+public class StudentReqVo {
 
     @NotNull
     @ApiModelProperty(value = "用户ID", required = true)
@@ -26,8 +23,16 @@ public class UserReqVo {
     private String studentId;
 
     @NotNull
-    @ApiModelProperty(value = "组织ID", required = true)
-    private Short orgId;
+    @ApiModelProperty(value = "学院 ID", required = true)
+    private Integer collegeId;
+
+    @NotNull
+    @ApiModelProperty(value = "年级 ID", required = true)
+    private Integer gradeId;
+
+    @NotNull
+    @ApiModelProperty(value = "班级 ID", required = true)
+    private Integer classId;
 
 }
 

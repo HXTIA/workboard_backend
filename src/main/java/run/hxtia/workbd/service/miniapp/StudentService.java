@@ -3,11 +3,10 @@ package run.hxtia.workbd.service.miniapp;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
-import run.hxtia.workbd.pojo.dto.UserInfoDto;
+import run.hxtia.workbd.pojo.dto.StudentInfoDto;
 import run.hxtia.workbd.pojo.po.Student;
-import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.StudentAvatarReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.StudentReqVo;
 
 @Transactional(readOnly = true)
 public interface StudentService extends IService<Student> {
@@ -17,15 +16,22 @@ public interface StudentService extends IService<Student> {
      * @param code：验证码
      * @return ：session_key + openId
      */
-    String getSessionId(String code) throws Exception;
+    String getToken(String code) throws Exception;
+
+    /**
+     * 验证 Token 是否有效
+     * @param token token
+     * @return 是否有效
+     */
+    Boolean checkToken(String token) throws Exception;
 
     /**
      * 认证登录信息
-     * @param wxAuth：认证参数
-     * @return ：解密后的参数
+     * @param token：认证参数
+     * @return ：用户信息
      */
     @Transactional(readOnly = false)
-    UserInfoDto authLogin(WxAuthLoginReqVo wxAuth, String token);
+    StudentInfoDto getStudentByToken(String token);
 
     /**
      * 完善用户信息
@@ -33,7 +39,7 @@ public interface StudentService extends IService<Student> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean update(UserReqVo reqVo);
+    boolean update(StudentReqVo reqVo);
 
     /**
      * 用户上传头像
@@ -41,5 +47,5 @@ public interface StudentService extends IService<Student> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean update(UserAvatarReqVo reqVo) throws Exception;
+    boolean update(StudentAvatarReqVo reqVo) throws Exception;
 }

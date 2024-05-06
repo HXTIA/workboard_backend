@@ -6,6 +6,7 @@ import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.prop.WorkBoardProperties;
 import run.hxtia.workbd.common.redis.Redises;
+import run.hxtia.workbd.pojo.vo.response.WxTokenVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 
 import java.util.Objects;
@@ -19,6 +20,10 @@ public class MiniApps {
      */
     public final static String APP_ID = WorkBoardProperties.getNotBeanWx().getAppId();
     /**
+     * 小程序密钥
+     */
+    public final static String SECRET = WorkBoardProperties.getNotBeanWx().getSecret();
+    /**
      * 小程序模板ID
      */
     public final static String TEMPLATE_ID = WorkBoardProperties.getNotBeanWx().getTemplateId();
@@ -27,6 +32,34 @@ public class MiniApps {
      * 拿到 Redis 工具类
      */
     private static final Redises REDISES = Redises.getRedises();
+
+    public static String buildGetTokenUrl(String code) {
+        StringBuilder url = new StringBuilder();
+        url.append(Constants.WxApp.PREFIX)
+            .append(Constants.WxApp.GET_TOKEN)
+            .append("?appid=")
+            .append(APP_ID)
+            .append("&secret=")
+            .append(SECRET)
+            .append("&js_code=")
+            .append(code)
+            .append("&grant_type=authorization_code");
+
+        return url.toString();
+    }
+
+    public static String buildGetWXAccessTokenUrl() {
+        StringBuilder url = new StringBuilder();
+        url.append(Constants.WxApp.PREFIX)
+            .append(Constants.WxApp.WX_ACCESS_TOKEN)
+            .append("?grant_type=client_credential")
+            .append("&appid=")
+            .append(APP_ID)
+            .append("&secret=")
+            .append(SECRET);
+
+        return url.toString();
+    }
 
     /**
      * 检查appId
@@ -75,8 +108,8 @@ public class MiniApps {
      * @param token：令牌
      * @return ：Session
      */
-    public static WxMaJscode2SessionResult getSession(String token) {
-        return getSession(Constants.WxMiniApp.WX_PREFIX , token);
+    public static WxTokenVo getWxTokenVo(String token) {
+        return getWxTokenVo(Constants.WxMiniApp.WX_PREFIX , token);
     }
 
     /**
@@ -86,9 +119,9 @@ public class MiniApps {
      * @return ：SessionKey
      */
     public static String getSessionKey(String prefix, String token) {
-        WxMaJscode2SessionResult session = getSession(prefix, token);
-        if (session == null) return null;
-        return  session.getSessionKey();
+        WxTokenVo tokenVo = getWxTokenVo(prefix, token);
+        if (tokenVo == null) return null;
+        return  tokenVo.getSessionKey();
     }
 
     /**
@@ -98,9 +131,9 @@ public class MiniApps {
      * @return ：OpenId
      */
     public static String getOpenId(String prefix, String token) {
-        WxMaJscode2SessionResult session = getSession(prefix, token);
-        if (session == null) return null;
-        return session.getOpenid();
+        WxTokenVo tokenVo = getWxTokenVo(prefix, token);
+        if (tokenVo == null) return null;
+        return tokenVo.getOpenid();
     }
 
     /**
@@ -109,9 +142,9 @@ public class MiniApps {
      * @param token：令牌
      * @return ：Session
      */
-    public static WxMaJscode2SessionResult getSession(String prefix, String token) {
+    public static WxTokenVo getWxTokenVo(String prefix, String token) {
         if (!StringUtils.hasLength(token)) return null;
-        return (WxMaJscode2SessionResult) REDISES.get(prefix + token);
+        return (WxTokenVo) REDISES.get(prefix + token);
     }
 
 }

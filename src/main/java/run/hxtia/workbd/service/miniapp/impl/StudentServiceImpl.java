@@ -1,15 +1,12 @@
 package run.hxtia.workbd.service.miniapp.impl;
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.api.WxMaUserService;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
-import cn.binarywang.wx.miniapp.util.WxMaConfigHolder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.HmacAlgorithms;
+import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.httpclient.HttpClient;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
@@ -19,11 +16,13 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Strings;
 import run.hxtia.workbd.mapper.StudentMapper;
-import run.hxtia.workbd.pojo.dto.UserInfoDto;
+import run.hxtia.workbd.pojo.dto.StudentInfoDto;
 import run.hxtia.workbd.pojo.po.Student;
-import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.StudentAvatarReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.StudentReqVo;
+import run.hxtia.workbd.pojo.vo.response.WxAccessTokenVo;
+import run.hxtia.workbd.pojo.vo.response.WxCodeMsg;
+import run.hxtia.workbd.pojo.vo.response.WxTokenVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.miniapp.StudentService;
 
@@ -34,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
-    private final WxMaService wxMaService;
     private final Redises redises;
 
     /**
@@ -43,83 +41,121 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return ：session_key + openId
      */
     @Override
-    public String getSessionId(String code) throws Exception {
-        MiniApps.checkAppId(wxMaService);
+    public String getToken(String code) throws Exception {
         try {
-            WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
+            String url = MiniApps.buildGetTokenUrl(code);
+            String resStr = HttpClient.httpGetRequest(url);
+            WxTokenVo wxTokenVo = WxTokenVo.parseFromJson(resStr);
+            if (wxTokenVo == null){
+                JsonVos.raise("得到的结果为 Null, URL = " + url);
+            }
+
+            if (wxTokenVo.getErrcode() != 0) {
+                JsonVos.raise("请求出错：code = " + wxTokenVo.getErrcode() + "msg = " + wxTokenVo.getErrmsg());
+            }
+
+            // 来到这里说明得到了结果
             String token = Strings.getUUID();
-            redises.set(Constants.WxMiniApp.WX_PREFIX, token, session, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
+            redises.set(Constants.WxMiniApp.WX_PREFIX, token, wxTokenVo, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
+
             return  token;
-        } finally {
-            //清理ThreadLocal
-            WxMaConfigHolder.remove();
+        } catch (Exception e) {
+            JsonVos.raise(CodeMsg.GET_TOKEN_ERR);
+            return null;
+        }
+    }
+
+    /**
+     * 验证 Token 是否有效
+     * @param token token
+     * @return 是否有效
+     */
+    public Boolean checkToken(String token) {
+
+        try {
+            // 获取 Token 的信息
+            WxTokenVo wxTokenVo = MiniApps.getWxTokenVo(token);
+            if (wxTokenVo == null) {
+                JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
+            }
+
+            // 先从缓存获取 Access Token
+            WxAccessTokenVo wxAccessTokenVo = (WxAccessTokenVo) redises.get(Constants.WxMiniApp.WX_AT_PREFIX, token);
+
+            if (wxAccessTokenVo == null) {
+                // 说明缓存没有，发请求获取
+                String atUrl = MiniApps.buildGetWXAccessTokenUrl();
+                String atRespStr = HttpClient.httpGetRequest(atUrl);
+                wxAccessTokenVo = WxAccessTokenVo.parseFromJson(atRespStr);
+                if (wxAccessTokenVo == null || wxAccessTokenVo.getErrcode() != 0) {
+                    JsonVos.raise(CodeMsg.GET_ACCESS_TOKEN_ERR);
+                }
+
+                // 存入缓存中
+                redises.set(Constants.WxMiniApp.WX_AT_PREFIX, token, wxAccessTokenVo.getAccessToken(), wxAccessTokenVo.getExpiresIn(), TimeUnit.SECONDS);
+            }
+
+            // 构建 TCheck Token 的 URL
+            String url = buildCheckSessionUrl(wxTokenVo, wxAccessTokenVo.getAccessToken());
+            String resp = HttpClient.httpGetRequest(url);
+            WxCodeMsg wxCodeMsg = WxCodeMsg.parseFromJson(resp);
+            if (wxCodeMsg == null || wxCodeMsg.getErrcode() != 0) {
+                JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
+            }
+
+            return  true;
+        } catch (Exception e) {
+            JsonVos.raise(CodeMsg.GET_TOKEN_ERR);
+            return false;
         }
     }
 
     /**
      * 获取用户信息
-     * @param wxAuth：认证时所需要的参数
+     * @param token：获取的 Token
      * @return ：用户信息
      */
     @Override
-    public UserInfoDto authLogin(WxAuthLoginReqVo wxAuth, String token) {
-        // 检查 AppId
-        MiniApps.checkAppId(wxMaService);
+    public StudentInfoDto getStudentByToken(String token) {
 
-        // 微信小程序相关的信息
-        WxMaUserService userService = wxMaService.getUserService();
-        WxMaJscode2SessionResult session = MiniApps.getSession(token);
-        String sessionKey = session.getSessionKey();
-        String openId = session.getOpenid();
-        try {
-            // 用户信息校验
-            MiniApps.checkUserInfo(
-                userService, sessionKey, wxAuth.getRawData(), wxAuth.getSignature()
-            );
 
-            // 从redis中读取 user 信息
-            UserInfoDto userInfoDto = (UserInfoDto) redises.get(Constants.WxMiniApp.WX_USER, openId);
+        String openId = MiniApps.getOpenId(token);
 
-            // 检查 redis中有无用户
-            if (userInfoDto != null) return userInfoDto;
+        // 从redis中读取 user 信息
+        StudentInfoDto studentInfoDto = (StudentInfoDto) redises.get(Constants.WxMiniApp.WX_USER, openId);
 
-            // 先去数据库查询
-            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Student::getWechatId, openId);
-            Student studentPo = baseMapper.selectOne(wrapper);
-            userInfoDto = new UserInfoDto();
+        // 检查 redis中有无用户
+        if (studentInfoDto != null) return studentInfoDto;
 
-            if (studentPo != null) {
-                userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(studentPo));
-            } else {
-                // 来到这里说明用户是第一次授权，需要注册
-                // 解密用户信息并且返回
-                WxMaUserInfo userInfo = userService.getUserInfo(
-                    sessionKey, wxAuth.getEncryptedData(), wxAuth.getIv()
-                );
-                userInfoDto.setUserVo(MapStructs.INSTANCE.po2vo(registerUser(userInfo, token)));
-            }
+        // 先去数据库查询
+        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Student::getWechatId, openId);
+        Student studentPo = baseMapper.selectOne(wrapper);
+        studentInfoDto = new StudentInfoDto();
 
-            // 将最新消息缓存到 redis
-            redises.set(Constants.WxMiniApp.WX_USER, openId, userInfoDto);
-            return userInfoDto;
-
-        } finally {
-            // 清理ThreadLocal
-            WxMaConfigHolder.remove();
+        if (studentPo != null) {
+            studentInfoDto.setStudentVo(MapStructs.INSTANCE.po2vo(studentPo));
+        } else {
+            // 来到这里说明用户是第一次授权，需要注册
+            studentInfoDto.setStudentVo(MapStructs.INSTANCE.po2vo(registerUser(openId)));
         }
+
+        // 将最新消息缓存到 redis
+        redises.set(Constants.WxMiniApp.WX_USER, openId, studentInfoDto, Constants.Date.WX_STUDENT_EXPIRE_DATS, TimeUnit.DAYS);
+        return studentInfoDto;
     }
 
     /**
      * 注册用户【存开发者服务器】
-     * @param userInfo：调用微信的接口，返回给
-     * @param token：用户令牌
+     * @param wechatId：
      * @return ：是否成功。
      */
-    private Student registerUser(WxMaUserInfo userInfo, String token) {
-        if (userInfo == null || !StringUtils.hasLength(token)) return null;
-        Student po = MapStructs.INSTANCE.wxReqVo2po(userInfo);
-        po.setWechatId(MiniApps.getOpenId(token));
+    private Student registerUser(String wechatId) {
+        Student po = new Student();
+        po.setWechatId(wechatId);
+        po.setNickname(Strings.getUUID(10));
+        // TODO：设置默认的头像
+        po.setAvatarUrl("");
         if (baseMapper.insert(po) <= 0) {
             return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
         }
@@ -132,7 +168,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return ：是否成功
      */
     @Override
-    public boolean update(UserReqVo reqVo) {
+    public boolean update(StudentReqVo reqVo) {
         Student po = MapStructs.INSTANCE.reqVo2po(reqVo);
         // TODO：判断组织是否存在
 //        if (!orgService.isExist(reqVo.getOrgId())) {
@@ -148,7 +184,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return ：是否成功
      */
     @Override
-    public boolean update(UserAvatarReqVo reqVo) throws Exception {
+    public boolean update(StudentAvatarReqVo reqVo) throws Exception {
         Student po = new Student();
         po.setId(reqVo.getId());
         return Uploads.uploadOneWithPo(po,
@@ -156,4 +192,27 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
                 reqVo.getAvatarFile()),
             baseMapper, Student::setAvatarUrl);
     }
+
+    /**
+     * 根据 wxTokenVo 构建验证登录状态的 URL
+     * @param wxTokenVo Token 缓存的信息
+     * @return 请求 url
+     */
+    private String buildCheckSessionUrl(WxTokenVo wxTokenVo, String accessToken) {
+
+        // 创建 HmacUtils 实例，指定算法和密钥
+        HmacUtils hmacUtils = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, wxTokenVo.getSessionKey());
+        // 对空字符串进行签名，并返回十六进制字符串形式的结果
+        String signature = hmacUtils.hmacHex("");
+
+
+        StringBuilder url = new StringBuilder(Constants.WxApp.PREFIX);
+        url.append("?access_token=").append(accessToken);
+        url.append("&openid=").append(wxTokenVo.getOpenid());
+        url.append("&signature=").append(signature);
+        url.append("&sig_method=").append("hmac_sha256");
+
+        return url.toString();
+    }
+
 }
