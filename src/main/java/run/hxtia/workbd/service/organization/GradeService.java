@@ -26,7 +26,7 @@ public interface GradeService extends IService<Grade> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean save(GradeReqVo reqVo, Integer collegeId);
+    boolean save(GradeReqVo reqVo);
 
     /**
      * 更新年级信息
@@ -72,14 +72,24 @@ public interface GradeService extends IService<Grade> {
      */
     List<GradeVo> getGradeInfoByCollegeId(Integer collegeId);
 
+    // TODO 根据学院ID分页获取年级信息
+    /**
+     * 根据学院ID分页获取年级信息
+     * @param collegeId 学院ID
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @return 该学院下的年级信息的分页列表
+     */
+    PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize);
+
     // TODO 年级是否存在接口
     /**
-     * 检查学院下是否存在指定的年级
-     * @param collegeId 学院ID
+     * 检查年级是否存在
      * @param gradeName 年级名称
+     * @param collegeId 学院ID
      * @return 如果年级存在，则为true，否则为false。
      */
-    boolean checkGradeExists(Integer collegeId, String gradeName);
+    boolean checkGradeExists(String gradeName, Integer collegeId);
 
     // TODO 创建年级去重接口
 }

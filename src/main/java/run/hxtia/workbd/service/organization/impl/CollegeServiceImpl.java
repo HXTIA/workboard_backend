@@ -1,5 +1,6 @@
 package run.hxtia.workbd.service.organization.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import run.hxtia.workbd.mapper.CollegeMapper;
 import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.organization.CollegeService;
@@ -40,6 +42,14 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
 
     @Override
     public boolean update(CollegeEditReqVo reqVo) {
+        // 检查新的名称是否已经存在
+        boolean exists = lambdaQuery().eq(College::getName, reqVo.getName()).ne(College::getId, reqVo.getId()).one() != null;
+        if (exists) {
+            // 如果新的名称已经存在，那么返回false，表示更新操作失败
+            return false;
+        }
+
+        // 如果新的名称不存在，那么更新学院信息
         College po = MapStructs.INSTANCE.reqVo2po(reqVo);
         return updateById(po);
     }
@@ -69,6 +79,28 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
 
         return pageVo;
     }
+
+     @Override
+     /**
+     * 分页获取学院信息
+     * @param reqVo ：分页请求参数
+     * @return 分页的学院信息
+     */
+        public PageVo<CollegeVo> getPageList(PageReqVo reqVo) {
+            Page<College> page = new Page<>(reqVo.getPage(), reqVo.getSize());
+            Page<College> result = page(page);
+            List<CollegeVo> collegeVos = result.getRecords().stream()
+                .map(MapStructs.INSTANCE::po2vo)
+                .collect(Collectors.toList());
+
+            PageVo<CollegeVo> pageVo = new PageVo<>();
+            pageVo.setData(collegeVos);
+            pageVo.setCount(result.getTotal());
+            pageVo.setPages(result.getPages());
+
+            return pageVo;
+        }
+
 
     @Override
     public boolean checkClgInfo(Integer collegeId) {

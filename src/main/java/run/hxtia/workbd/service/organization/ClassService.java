@@ -62,13 +62,13 @@ public interface ClassService extends IService<Classes> {
      */
     boolean checkClassInfo(Integer classId);
 
-    // TODO 根据年级ID获取班级信息接口
     /**
-     * 根据年级ID获取班级信息
+     * 根据年级ID分页获取班级信息
      * @param gradeId 年级ID
-     * @return 所有该年级下的班级信息
+     * @param pageNum 页码
+     * @param pageSize 每页数量
+     * @return 该年级下的班级信息的分页列表
      */
-    List<ClassVo> getClassInfoByGradeId(Integer gradeId);
+    PageVo<ClassVo> getClassInfoByGradeIdWithPagination(Integer gradeId, int pageNum, int pageSize);
 
-    // TODO 创建班级去重接口优化
 }

@@ -14,6 +14,8 @@ import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.GradeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.GradeReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.GradePageReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
 import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
@@ -40,10 +42,10 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     private final GradeService gradeService;
 
     // 创建年级
-    @PostMapping("/create/{collegeId}")
+    @PostMapping("/create")
     @ApiOperation("创建年级")
-    public JsonVo create(@Valid @RequestBody GradeReqVo reqVo, @PathVariable Integer collegeId) {
-        if (gradeService.save(reqVo, collegeId)) {
+    public JsonVo create(@Valid @RequestBody GradeReqVo reqVo) {
+        if (gradeService.save(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
@@ -87,10 +89,10 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
         }
     }
 
-    @GetMapping("/check/{id}")
+    @GetMapping("/check")
     @ApiOperation("验证年级是否存在")
-    public JsonVo checkClgInfo(@PathVariable Integer id) {
-        boolean exists = gradeService.checkGradeInfo(id);
+    public JsonVo checkGradeExists(@Valid @RequestBody GradeReqVo reqVo) {
+        boolean exists = gradeService.checkGradeExists(reqVo.getName(), reqVo.getCollegeId());
         if (exists) {
             return JsonVos.ok(CodeMsg.CHECK_OK);
         } else {
@@ -102,6 +104,12 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     @ApiOperation("根据学院ID获取年级信息")
     public List<GradeVo> getGradeInfoByCollegeId(@PathVariable Integer collegeId) {
         return gradeService.getGradeInfoByCollegeId(collegeId);
+    }
+
+    @PostMapping("/college/page")
+    @ApiOperation("根据学院ID分页获取年级信息")
+    public PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(@Valid @RequestBody GradePageReqVo reqVo) {
+        return gradeService.getGradeInfoByCollegeIdWithPagination(reqVo.getCollegeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
     }
 
     @Override

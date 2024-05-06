@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
@@ -24,7 +25,7 @@ public interface CollegeService extends IService<College> {
     boolean save(CollegeReqVo reqVo);
 
     // 更新学院信息
-     @Transactional(readOnly = false)
+    @Transactional(readOnly = false)
     boolean update(CollegeEditReqVo reqVo);
 
 
@@ -48,6 +49,13 @@ public interface CollegeService extends IService<College> {
      * @return 所有学院信息
      */
     PageVo<CollegeVo> getList();
+
+    /**
+     * 分页获取学院信息
+     * @param reqVo ：分页请求参数
+     * @return 分页的学院信息
+     */
+    PageVo<CollegeVo> getPageList(PageReqVo reqVo);
 
     /**
      * 检查学院是否存在。

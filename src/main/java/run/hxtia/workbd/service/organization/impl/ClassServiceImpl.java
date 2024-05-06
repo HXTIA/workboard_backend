@@ -1,8 +1,11 @@
 package run.hxtia.workbd.service.organization.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.ClassMapper;
 import run.hxtia.workbd.pojo.po.Classes;
@@ -38,7 +41,16 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean update(ClassEditReqVo reqVo) {
+        // 检查在同一个年级下是否已经存在相同的班级名称
+        boolean exists = lambdaQuery().eq(Classes::getName, reqVo.getName()).eq(Classes::getGradeId, reqVo.getGradeId()).one() != null;
+        if (exists) {
+            // 如果存在，那么抛出一个异常
+            throw new RuntimeException("A class with the same name already exists in the same grade.");
+        }
+
+        // 如果不存在，那么更新班级信息
         Classes po = MapStructs.INSTANCE.reqVo2po(reqVo);
         return updateById(po);
     }
@@ -70,11 +82,18 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
     }
 
     @Override
-    public List<ClassVo> getClassInfoByGradeId(Integer gradeId) {
-        List<Classes> classes = this.query().eq("grade_id", gradeId).list();
-        return classes.stream()
-            .map(MapStructs.INSTANCE::po2vo)
-            .collect(Collectors.toList());
+    public PageVo<ClassVo> getClassInfoByGradeIdWithPagination(Integer gradeId, int pageNum, int pageSize) {
+        // 创建分页条件
+        Page<Classes> page = new Page<>(pageNum, pageSize);
+        // 执行分页查询
+        IPage<Classes> classPage = lambdaQuery().eq(Classes::getGradeId, gradeId).page(page);
+        // 将查询结果转换为VO对象
+        List<ClassVo> classVos = classPage.getRecords().stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
+        // 创建并返回分页结果
+        PageVo<ClassVo> result = new PageVo<>();
+        result.setCount(classPage.getTotal());
+        result.setData(classVos);
+        return result;
     }
 
     @Override

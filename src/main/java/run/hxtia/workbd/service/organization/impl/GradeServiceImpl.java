@@ -1,5 +1,7 @@
 package run.hxtia.workbd.service.organization.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +28,9 @@ import java.util.stream.Collectors;
 public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements GradeService {
 
     @Override
-    public boolean save(GradeReqVo reqVo, Integer collegeId) {
+    public boolean save(GradeReqVo reqVo) {
         // 检查名称是否已经存在
-        boolean exists = lambdaQuery().eq(Grade::getName, reqVo.getName()).eq(Grade::getCollegeId, collegeId).one() != null;
+        boolean exists = lambdaQuery().eq(Grade::getName, reqVo.getName()).eq(Grade::getCollegeId, reqVo.getCollegeId()).one() != null;
         if (exists) {
             // 如果名称已经存在，那么返回false，表示保存操作失败
             return false;
@@ -40,7 +42,16 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
     }
 
     @Override
+    @Transactional(readOnly = false)
     public boolean update(GradeEditReqVo reqVo) {
+        // 检查在同一个学院下是否已经存在相同的name
+        boolean exists = lambdaQuery().eq(Grade::getName, reqVo.getName()).eq(Grade::getCollegeId, reqVo.getCollegeId()).one() != null;
+        if (exists) {
+            // 如果存在，那么抛出一个异常或者返回一个错误
+            throw new RuntimeException("A grade with the same name already exists in the same college.");
+        }
+
+        // 如果不存在，那么更新年级信息
         Grade po = MapStructs.INSTANCE.reqVo2po(reqVo);
         return updateById(po);
     }
@@ -85,7 +96,24 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
     }
 
     @Override
-    public boolean checkGradeExists(Integer collegeId, String gradeName) {
-        return this.query().eq("college_id", collegeId).eq("grade_name", gradeName).one() != null;
+    public PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize) {
+        // 创建分页条件
+        Page<Grade> page = new Page<>(pageNum, pageSize);
+        // 执行分页查询
+        IPage<Grade> gradePage = lambdaQuery().eq(Grade::getCollegeId, collegeId).page(page);
+        // 将查询结果转换为VO对象
+        List<GradeVo> gradeVos = gradePage.getRecords().stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
+        // 创建并返回分页结果
+        PageVo<GradeVo> result = new PageVo<>();
+        result.setCount(gradePage.getTotal());
+        result.setData(gradeVos);
+        return result;
+    }
+
+    @Override
+    public boolean checkGradeExists(String gradeName, Integer collegeId) {
+        // 检查名称是否已经存在
+        boolean exists = lambdaQuery().eq(Grade::getName, gradeName).eq(Grade::getCollegeId, collegeId).one() != null;
+        return exists;
     }
 }

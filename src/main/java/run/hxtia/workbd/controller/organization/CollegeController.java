@@ -11,6 +11,7 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -51,6 +52,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
         }
     }
 
+
     // 根据ID获取学院信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取学院信息")
@@ -63,6 +65,17 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     @ApiOperation("获取所有学院列表")
     public PageVo<CollegeVo> getList() {
         return collegeService.getList();
+    }
+
+    /**
+     * 分页获取学院信息
+     * @param reqVo ：分页请求参数
+     * @return 分页的学院信息
+     */
+    @PostMapping("/listPage")
+    @ApiOperation("分页获取学院信息")
+    public PageVo<CollegeVo> getPageList(@Valid @RequestBody PageReqVo reqVo) {
+        return collegeService.getPageList(reqVo);
     }
 
 

@@ -11,6 +11,7 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.Classes;
 import run.hxtia.workbd.pojo.vo.request.organization.ClassEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.ClassReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.ClassPageReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -35,15 +36,17 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     private final ClassService classService;
 
     // 创建班级
-    @PostMapping("/create/{gradeId}")
+    @PostMapping("/create")
     @ApiOperation("创建班级")
-    public JsonVo create(@Valid @RequestBody ClassReqVo reqVo, @PathVariable Integer gradeId) {
+    public JsonVo create(@Valid @RequestBody ClassReqVo reqVo) {
+        Integer gradeId = Integer.parseInt(reqVo.getGradeId());
         if (classService.save(reqVo, gradeId)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
+
 
     // 编辑班级
     @PostMapping("/edit")
@@ -102,9 +105,9 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
         }
     }
 
-    @GetMapping("/grade/{gradeId}")
-    @ApiOperation("根据年级ID获取班级信息")
-    public List<ClassVo> getClassInfoByGradeId(@PathVariable Integer gradeId) {
-        return classService.getClassInfoByGradeId(gradeId);
+    @PostMapping("/grade/page")
+    @ApiOperation("根据年级ID分页获取班级信息")
+    public PageVo<ClassVo> getClassInfoByGradeIdWithPagination(@Valid @RequestBody ClassPageReqVo reqVo) {
+        return classService.getClassInfoByGradeIdWithPagination(reqVo.getGradeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
     }
 }
