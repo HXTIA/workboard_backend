@@ -82,7 +82,6 @@ public interface GradeService extends IService<Grade> {
      */
     PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize);
 
-    // TODO 年级是否存在接口
     /**
      * 检查年级是否存在
      * @param gradeName 年级名称
@@ -91,5 +90,4 @@ public interface GradeService extends IService<Grade> {
      */
     boolean checkGradeExists(String gradeName, Integer collegeId);
 
-    // TODO 创建年级去重接口
 }
