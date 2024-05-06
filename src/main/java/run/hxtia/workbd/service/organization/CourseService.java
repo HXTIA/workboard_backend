@@ -76,4 +76,13 @@ public interface CourseService extends IService<Course> {
      */
     PageVo<CourseVo> getCourseInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize);
 
+
+    /**
+     * 根据学生ID和课程ID，保存学生的选课信息
+     * @param studentId 学生的ID
+     * @param courseId 课程的ID
+     * @return 如果保存成功，则为true，否则为false
+     */
+    @Transactional(readOnly = false)
+    boolean saveStudentCourse(Integer studentId, Integer courseId);
 }

@@ -1,6 +1,8 @@
 package run.hxtia.workbd.pojo.vo.request.organization;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotBlank;
  * @author Xiaojin
  * @date 2024/5/6
  */
+@Data
+@ApiModel("【保存】课程实体")
 public class CourseReqVo {
 
     @NotBlank

@@ -15,6 +15,7 @@ import run.hxtia.workbd.pojo.vo.response.StudentVo;
 import run.hxtia.workbd.pojo.vo.response.*;
 import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
+import run.hxtia.workbd.pojo.vo.response.organization.CourseVo;
 import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
 
 /**
@@ -44,6 +45,7 @@ public interface MapStructs {
     CollegeVo po2vo(College po);
     GradeVo po2vo(Grade po);
     ClassVo po2vo(Classes po);
+    CourseVo po2vo(Course po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -64,6 +66,9 @@ public interface MapStructs {
     Grade reqVo2po(GradeEditReqVo reqVo);
     Classes reqVo2po(ClassReqVo reqVo);
     Classes reqVo2po(ClassEditReqVo reqVo);
+    Course reqVo2po(CourseReqVo reqVo);
+    Course reqVo2po(CourseEditReqVo reqVo);
+    StudentCourse reqVo2po(StudentCourseReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);
