@@ -8,6 +8,8 @@ import run.hxtia.workbd.pojo.vo.request.organization.GradeReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
+import java.util.List;
+
 /**
  * @author Xiaojin
  * @date 2024/5/5
@@ -24,7 +26,7 @@ public interface GradeService extends IService<Grade> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean save(GradeReqVo reqVo);
+    boolean save(GradeReqVo reqVo, Integer collegeId);
 
     /**
      * 更新年级信息
@@ -61,4 +63,23 @@ public interface GradeService extends IService<Grade> {
      * @return 如果年级存在，则为true，否则为false。
      */
     boolean checkGradeInfo(Integer gradeId);
+
+    // TODO 根据学院ID获取年级信息
+    /**
+     * 根据学院ID获取年级信息
+     * @param collegeId 学院ID
+     * @return 所有该学院下的年级信息
+     */
+    List<GradeVo> getGradeInfoByCollegeId(Integer collegeId);
+
+    // TODO 年级是否存在接口
+    /**
+     * 检查学院下是否存在指定的年级
+     * @param collegeId 学院ID
+     * @param gradeName 年级名称
+     * @return 如果年级存在，则为true，否则为false。
+     */
+    boolean checkGradeExists(Integer collegeId, String gradeName);
+
+    // TODO 创建年级去重接口
 }

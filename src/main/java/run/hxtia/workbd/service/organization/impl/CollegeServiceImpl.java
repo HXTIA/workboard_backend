@@ -26,9 +26,16 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
 
     @Override
     public boolean save(CollegeReqVo reqVo) {
+        // 检查名称是否已经存在
+        boolean exists = lambdaQuery().eq(College::getName, reqVo.getName()).one() != null;
+        if (exists) {
+            // 如果名称已经存在，那么返回false，表示保存操作失败
+            return false;
+        }
+
+        // 如果名称不存在，那么创建新的学院
         College po = MapStructs.INSTANCE.reqVo2po(reqVo);
-        Boolean flag = save(po);
-        return flag;
+        return save(po);
     }
 
     @Override

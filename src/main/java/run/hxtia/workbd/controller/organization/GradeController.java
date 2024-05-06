@@ -23,6 +23,7 @@ import run.hxtia.workbd.service.organization.CollegeService;
 import run.hxtia.workbd.service.organization.GradeService;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -39,10 +40,10 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     private final GradeService gradeService;
 
     // 创建年级
-    @PostMapping("/create")
+    @PostMapping("/create/{collegeId}")
     @ApiOperation("创建年级")
-    public JsonVo create(@Valid @RequestBody GradeReqVo reqVo) {
-        if (gradeService.save(reqVo)) {
+    public JsonVo create(@Valid @RequestBody GradeReqVo reqVo, @PathVariable Integer collegeId) {
+        if (gradeService.save(reqVo, collegeId)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
@@ -97,6 +98,11 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
         }
     }
 
+    @GetMapping("/college/{collegeId}")
+    @ApiOperation("根据学院ID获取年级信息")
+    public List<GradeVo> getGradeInfoByCollegeId(@PathVariable Integer collegeId) {
+        return gradeService.getGradeInfoByCollegeId(collegeId);
+    }
 
     @Override
     protected IService<Grade> getService() {

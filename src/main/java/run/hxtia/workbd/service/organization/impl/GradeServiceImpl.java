@@ -26,7 +26,15 @@ import java.util.stream.Collectors;
 public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements GradeService {
 
     @Override
-    public boolean save(GradeReqVo reqVo) {
+    public boolean save(GradeReqVo reqVo, Integer collegeId) {
+        // 检查名称是否已经存在
+        boolean exists = lambdaQuery().eq(Grade::getName, reqVo.getName()).eq(Grade::getCollegeId, collegeId).one() != null;
+        if (exists) {
+            // 如果名称已经存在，那么返回false，表示保存操作失败
+            return false;
+        }
+
+        // 如果名称不存在，那么创建新的年级
         Grade po = MapStructs.INSTANCE.reqVo2po(reqVo);
         return save(po);
     }
@@ -66,5 +74,18 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
     @Override
     public boolean checkGradeInfo(Integer gradeId) {
         return getById(gradeId) != null;
+    }
+
+    @Override
+    public List<GradeVo> getGradeInfoByCollegeId(Integer collegeId) {
+        List<Grade> grades = this.query().eq("college_id", collegeId).list();
+        return grades.stream()
+            .map(MapStructs.INSTANCE::po2vo)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean checkGradeExists(Integer collegeId, String gradeName) {
+        return this.query().eq("college_id", collegeId).eq("grade_name", gradeName).one() != null;
     }
 }

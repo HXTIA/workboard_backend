@@ -24,7 +24,15 @@ import java.util.stream.Collectors;
 public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implements ClassService {
 
     @Override
-    public boolean save(ClassReqVo reqVo) {
+    public boolean save(ClassReqVo reqVo, Integer gradeId) {
+        // 检查名称是否已经存在
+        boolean exists = lambdaQuery().eq(Classes::getName, reqVo.getName()).eq(Classes::getGradeId, gradeId).one() != null;
+        if (exists) {
+            // 如果名称已经存在，那么返回false，表示保存操作失败
+            return false;
+        }
+
+        // 如果名称不存在，那么创建新的班级
         Classes po = MapStructs.INSTANCE.reqVo2po(reqVo);
         return save(po);
     }
@@ -59,6 +67,14 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
         pageVo.setPages(1L); // 这里假设所有的数据都在一个页面，可能需要根据分页逻辑来设置这个值
 
         return pageVo;
+    }
+
+    @Override
+    public List<ClassVo> getClassInfoByGradeId(Integer gradeId) {
+        List<Classes> classes = this.query().eq("grade_id", gradeId).list();
+        return classes.stream()
+            .map(MapStructs.INSTANCE::po2vo)
+            .collect(Collectors.toList());
     }
 
     @Override

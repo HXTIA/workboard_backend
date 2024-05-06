@@ -8,6 +8,8 @@ import run.hxtia.workbd.pojo.vo.request.organization.ClassReqVo;
 import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
+import java.util.List;
+
 /**
  * @author Xiaojin
  * @date 2024/5/5
@@ -18,10 +20,11 @@ public interface ClassService extends IService<Classes> {
     /**
      * 添加班级
      * @param reqVo ：班级信息
+     * @param gradeId ：年级ID
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean save(ClassReqVo reqVo);
+    boolean save(ClassReqVo reqVo, Integer gradeId);
 
     /**
      * 更新班级信息
@@ -58,4 +61,14 @@ public interface ClassService extends IService<Classes> {
      * @return 如果班级存在，则为true，否则为false。
      */
     boolean checkClassInfo(Integer classId);
+
+    // TODO 根据年级ID获取班级信息接口
+    /**
+     * 根据年级ID获取班级信息
+     * @param gradeId 年级ID
+     * @return 所有该年级下的班级信息
+     */
+    List<ClassVo> getClassInfoByGradeId(Integer gradeId);
+
+    // TODO 创建班级去重接口优化
 }
