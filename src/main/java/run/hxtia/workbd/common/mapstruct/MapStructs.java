@@ -1,7 +1,6 @@
 package run.hxtia.workbd.common.mapstruct;
 
 import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -11,7 +10,7 @@ import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
-import run.hxtia.workbd.pojo.vo.response.UserVo;
+import run.hxtia.workbd.pojo.vo.response.StudentVo;
 import run.hxtia.workbd.pojo.vo.response.*;
 
 /**
@@ -33,7 +32,7 @@ public interface MapStructs {
     （2）target：目标对象
     （3）qualifiedBy：找转换器中的方法
     */
-    UserVo po2vo(Student po);
+    StudentVo po2vo(Student po);
     AdminLoginVo po2loginVo(AdminUsers po);
     RoleVo po2vo(Role po);
 
@@ -41,14 +40,12 @@ public interface MapStructs {
 
    // reqVo -> po  【用来做数据库保存】
 
-   @Mapping(source = "nickName", target = "nickname")
-   Student wxReqVo2po(WxMaUserInfo wxReqVo);
    AdminUsers reqVo2po(AdminUserReqVo reqVo);
    @Mapping(source = "email", target = "username")
    AdminUsers reqVo2po(AdminUserRegisterReqVo reqVo);
    AdminUsers reqVo2po(AdminUserEditReqVo reqVo);
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
-   Student reqVo2po(UserReqVo reqVo);
+   Student reqVo2po(StudentReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
 
    // reqVo -> wxSdk

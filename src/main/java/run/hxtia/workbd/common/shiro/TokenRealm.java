@@ -13,9 +13,7 @@ import org.springframework.util.CollectionUtils;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.dto.AdminUserPermissionDto;
-import run.hxtia.workbd.pojo.dto.UserInfoDto;
 import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.Role;
 

@@ -5,11 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.pojo.dto.UserInfoDto;
-import run.hxtia.workbd.pojo.vo.request.WxAuthLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserAvatarReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.UserReqVo;
+import run.hxtia.workbd.pojo.dto.StudentInfoDto;
+import run.hxtia.workbd.pojo.vo.request.save.StudentAvatarReqVo;
+import run.hxtia.workbd.pojo.vo.request.save.StudentReqVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -20,29 +20,38 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/wx/users")
+@RequestMapping("/wx/student")
 @RequiredArgsConstructor
 @Api(tags = "WxUserController")
 @Tag(name = "WxUserController", description = "小程序用户模块")
 public class WxUserController {
-    private final StudentService wxUserService;
+    private final StudentService studentService;
 
-    @GetMapping("/getSessionId")
+    @GetMapping("/getToken")
     @ApiOperation("根据 code 获取 token")
-    public DataJsonVo<String> getSessionId(@NotNull(message = "code不能为空") String code) throws Exception {
-        return JsonVos.ok(wxUserService.getSessionId(code), "Token获取成功");
+    public DataJsonVo<String> getToken(@NotNull(message = "code 不能为空") String code) throws Exception {
+        return JsonVos.ok(studentService.getToken(code), "Token 获取成功");
     }
 
-    @PostMapping("/loginAuth")
+    @GetMapping("/getStudent")
     @ApiOperation("获取微信用户的数据")
-    public DataJsonVo<UserInfoDto> loginAuth(@RequestBody WxAuthLoginReqVo wxAuth, HttpServletRequest request) {
-        return JsonVos.ok(wxUserService.authLogin(wxAuth, request.getHeader("Token")));
+    public DataJsonVo<StudentInfoDto> getStudent(HttpServletRequest request) {
+        return JsonVos.ok(studentService.getStudentByToken(request.getHeader(Constants.WxApp.WX_TOKEN)));
+    }
+
+    @GetMapping("/checkToken")
+    @ApiOperation("获取微信用户的数据, 请求头：WXToken, 返回 code = 0 代表验证成功")
+    public JsonVo checkToken(HttpServletRequest request) throws Exception {
+        if (!studentService.checkToken(request.getHeader(Constants.WxApp.WX_TOKEN))) {
+            return JsonVos.error(CodeMsg.CHECK_TOKEN_ERR);
+        }
+        return JsonVos.ok();
     }
 
     @PostMapping("/update")
     @ApiOperation("编辑完善用户信息")
-    public JsonVo update(@Valid @RequestBody UserReqVo reqVo) {
-        if (wxUserService.update(reqVo)) {
+    public JsonVo update(@Valid @RequestBody StudentReqVo reqVo) {
+        if (studentService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
@@ -51,8 +60,8 @@ public class WxUserController {
 
     @PostMapping("/uploadAvatar")
     @ApiOperation("用户头像上传")
-    public JsonVo uploadAvatar(@Valid UserAvatarReqVo reqVo) throws Exception  {
-        if (wxUserService.update(reqVo)) {
+    public JsonVo uploadAvatar(@Valid StudentAvatarReqVo reqVo) throws Exception  {
+        if (studentService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
