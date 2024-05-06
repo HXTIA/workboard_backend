@@ -6,12 +6,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.po.*;
+import run.hxtia.workbd.pojo.vo.request.organization.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
 import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.StudentVo;
 import run.hxtia.workbd.pojo.vo.response.*;
+import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
+import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
+import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -37,6 +41,9 @@ public interface MapStructs {
     RoleVo po2vo(Role po);
 
     AdminUserVo po2adminUserVo(AdminUsers po);
+    CollegeVo po2vo(College po);
+    GradeVo po2vo(Grade po);
+    ClassVo po2vo(Classes po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -47,6 +54,16 @@ public interface MapStructs {
    AdminUsers reqVo2po(AdminUserInfoEditReqVo reqVo);
    Student reqVo2po(StudentReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
+
+
+    @Mapping(source = "name", target = "name")
+   College reqVo2po(CollegeReqVo reqVo);
+    @Mapping(source = "name", target = "name")
+    College reqVo2po(CollegeEditReqVo reqVo);
+    Grade reqVo2po(GradeReqVo reqVo);
+    Grade reqVo2po(GradeEditReqVo reqVo);
+    Classes reqVo2po(ClassReqVo reqVo);
+    Classes reqVo2po(ClassEditReqVo reqVo);
 
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);

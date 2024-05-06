@@ -7,14 +7,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 行政班表(Clazz)实体类
+ * 行政班表(Classes)实体类
  *
  * @author ZhiYan
  * @since 2022-09-21 10:23:51
  */
 @Data
 @TableName("classes")
-public class Clazz implements Serializable {
+public class Classes implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -31,16 +31,6 @@ public class Clazz implements Serializable {
      * 年级ID
      */
     private Integer gradeId;
-
-    /**
-     * 创建者ID
-     */
-    private Integer createdId;
-
-    /**
-     * 更新者ID
-     */
-    private Integer updatedId;
 
     /**
      * 创建时间

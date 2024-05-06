@@ -49,9 +49,10 @@ public enum CodeMsg {
     NO_APP_ID(60003, "未找到对应的appId"),
     NO_ORG_INFO(60004, "未找到组织信息！！！"),
     NO_PERMISSION(60005, "没有相关的操作权限"),
-
-    CHECK_TOKEN_ERR(60006, "Token Check 失效"),
-    GET_ACCESS_TOKEN_ERR(60007, "获取 ACCESS Token 失败");
+    CHECK_OK(60005,"校验通过"),
+    CHECK_ERROR(60006,"校验失败"),
+    CHECK_TOKEN_ERR(60007, "Token Check 失效"),
+    GET_ACCESS_TOKEN_ERR(60008, "获取 ACCESS Token 失败");
 
     /**
      *     状态码

@@ -1,6 +1,7 @@
 package run.hxtia.workbd.service.admin;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
@@ -11,6 +12,7 @@ import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 
+@Service
 @Transactional(readOnly = true)
 public interface AdminUserService extends IService<AdminUsers> {
 
