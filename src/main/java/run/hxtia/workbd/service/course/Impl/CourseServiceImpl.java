@@ -1,9 +1,10 @@
-package run.hxtia.workbd.service.organization.impl;
+package run.hxtia.workbd.service.course.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +13,11 @@ import run.hxtia.workbd.mapper.CourseMapper;
 import run.hxtia.workbd.mapper.StudentCourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.po.StudentCourse;
-import run.hxtia.workbd.pojo.vo.request.organization.CourseEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.organization.CourseReqVo;
-import run.hxtia.workbd.pojo.vo.response.organization.CourseVo;
+import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
-import run.hxtia.workbd.service.organization.CourseService;
+import run.hxtia.workbd.service.course.CourseService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +27,10 @@ import java.util.stream.Collectors;
  * @date 2024/5/6
  */
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements CourseService {
 
-    @Autowired
-    private StudentCourseMapper studentCourseMapper;
+
 
     @Override
     @Transactional(readOnly = false)
@@ -120,28 +121,4 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return result;
     }
 
-    @Override
-    @Transactional(readOnly = false)
-    public boolean saveStudentCourse(Integer studentId, Integer courseId) {
-        // 创建一个QueryWrapper对象
-        QueryWrapper<StudentCourse> queryWrapper = new QueryWrapper<>();
-        // 设置查询条件
-        queryWrapper.eq("student_id", studentId).eq("course_id", courseId);
-        // 检查学生是否已经选过这门课
-        boolean exists = studentCourseMapper.selectOne(queryWrapper) != null;
-        if (exists) {
-            // 如果学生已经选过这门课，那么返回false，表示选课操作失败
-            return false;
-        }
-
-        // 如果学生没有选过这门课，那么创建新的选课记录
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudentId(studentId);
-        studentCourse.setCourseId(courseId);
-        // 使用StudentCourseMapper的insert方法保存StudentCourse对象到数据库
-        int result = studentCourseMapper.insert(studentCourse);
-        // 如果插入操作成功，返回true，否则返回false
-        return result > 0;
-
-    }
 }

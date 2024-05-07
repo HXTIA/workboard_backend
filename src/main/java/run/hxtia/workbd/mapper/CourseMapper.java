@@ -8,4 +8,5 @@ import run.hxtia.workbd.pojo.po.Course;
  * @date 2024/5/6
  */
 public interface CourseMapper extends BaseMapper<Course> {
+
 }

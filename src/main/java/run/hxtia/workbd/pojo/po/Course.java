@@ -43,16 +43,6 @@ public class Course implements Serializable {
     private Integer collegeId;
 
     /**
-     * 创建者ID
-     */
-    private Integer createdId;
-
-    /**
-     * 更新者ID
-     */
-    private Integer updatedId;
-
-    /**
      * 创建时间
      */
     private Date createdAt;

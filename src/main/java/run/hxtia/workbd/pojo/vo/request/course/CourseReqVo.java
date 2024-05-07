@@ -1,4 +1,4 @@
-package run.hxtia.workbd.pojo.vo.request.organization;
+package run.hxtia.workbd.pojo.vo.request.course;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

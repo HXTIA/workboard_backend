@@ -100,10 +100,10 @@ public class SwaggerCfg implements InitializingBean {
     @Bean
     public Docket orgDocket() {
         return groupDocket(
-            "07_组织",
-            "/organization/(colleges.*|grades.*|classes.*)",
+            "07_组织、课程",
+            "/organization/(colleges.*|grades.*|classes.*|courses.*)",
             "组织管理模块文档",
-            "获取学院、年级、班级...");
+            "获取学院、年级、班级、课程...");
     }
 
     // 构建分组模块

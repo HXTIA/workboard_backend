@@ -1,4 +1,4 @@
-package run.hxtia.workbd.pojo.vo.response.organization;
+package run.hxtia.workbd.pojo.vo.response.course;
 
 /**
  * @author Xiaojin

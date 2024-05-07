@@ -6,6 +6,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.po.*;
+import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
+import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.request.course.StudentCourseReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.*;
@@ -15,7 +18,7 @@ import run.hxtia.workbd.pojo.vo.response.StudentVo;
 import run.hxtia.workbd.pojo.vo.response.*;
 import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
-import run.hxtia.workbd.pojo.vo.response.organization.CourseVo;
+import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
 
 /**
@@ -46,6 +49,7 @@ public interface MapStructs {
     GradeVo po2vo(Grade po);
     ClassVo po2vo(Classes po);
     CourseVo po2vo(Course po);
+
 
    // reqVo -> po  【用来做数据库保存】
 
