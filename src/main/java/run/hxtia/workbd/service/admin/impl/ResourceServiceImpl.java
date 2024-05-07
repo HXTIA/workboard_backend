@@ -34,7 +34,7 @@ public class ResourceServiceImpl
         if (!StringUtils.hasLength(roleStrIds)) return null;
 
         // 解析角色IDString
-        List<Short> roleIds = Streams.map(Arrays.asList(roleStrIds.split(",")), Short::valueOf);
+        List<Short> roleIds = Streams.list2List(Arrays.asList(roleStrIds.split(",")), Short::valueOf);
         // 获取所有角色对应的资源ID【去重后的】
         List<Short> resourceIds = roleResourceService.listResourceIds(roleIds);
         // 获取排序后的资源

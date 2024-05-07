@@ -21,12 +21,12 @@ public class StudentHomework implements Serializable {
     /**
      * 学生ID
      */
-    private Integer studentId;
+    private Long studentId;
 
     /**
      * 作业ID
      */
-    private Integer homeworkId;
+    private Long homeworkId;
 
     /**
      * 作业状态【0：未读未完成，1：已读未完成，2：已读已完成】
@@ -37,11 +37,6 @@ public class StudentHomework implements Serializable {
      * 是否置顶【0：不置顶，1：置顶】
      */
     private Short pin;
-
-    /**
-     * 查看次数
-     */
-    private Integer times;
 
     /**
      * 创建时间

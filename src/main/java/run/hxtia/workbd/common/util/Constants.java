@@ -58,6 +58,11 @@ public class Constants {
         // 对标索引状态
         public static final short MATCH_INDEX_NO_EDIT = 0;
         public static final short MATCH_INDEX_EDIT = 1;
+        // 学生作业完成情况
+        public static final Short WORK_UNREAD = 0; // 未读
+        // 作业是否展示
+        public static final Short WORK_UNDONE = 1; // 已读未完成
+        public static final Short WORK_DONE = 2; // 已完成
     }
 
     /**

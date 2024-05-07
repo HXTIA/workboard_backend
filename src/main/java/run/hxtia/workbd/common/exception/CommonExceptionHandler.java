@@ -81,7 +81,7 @@ public class CommonExceptionHandler {
      * 处理后端验证【ConstraintViolationException】异常
      */
     private JsonVo handle(ConstraintViolationException cve) {
-        List<String> msgs = Streams.map(cve.getConstraintViolations(), ConstraintViolation::getMessage);
+        List<String> msgs = Streams.list2List(cve.getConstraintViolations(), ConstraintViolation::getMessage);
         String msg = StringUtils.collectionToDelimitedString(msgs, ", ");
         return JsonVos.error(msg);
     }
@@ -111,7 +111,7 @@ public class CommonExceptionHandler {
             1、利用Map将 List<ObjectError> -> List<String>
             2、ObjectError::getDefaultMessage：lambda的方法引用
          */
-        List<String> defaultMsgs = Streams.map(errors, (err) ->
+        List<String> defaultMsgs = Streams.list2List(errors, (err) ->
             Objects.requireNonNull(err.getCodes())[1] + ":" + err.getDefaultMessage());
         return  StringUtils.collectionToDelimitedString(defaultMsgs, ", ");
     }

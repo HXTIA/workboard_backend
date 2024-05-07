@@ -20,7 +20,7 @@ public class Homework implements Serializable {
     /**
      * 作业ID
      */
-    private Integer id;
+    private Long id;
 
     /**
      * 作业标题
@@ -60,7 +60,7 @@ public class Homework implements Serializable {
     /**
      * 状态
      */
-    private String status;
+    private Short status;
 
     /**
      * 创建时间

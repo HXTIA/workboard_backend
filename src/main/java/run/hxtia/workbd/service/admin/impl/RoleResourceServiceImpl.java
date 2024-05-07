@@ -34,7 +34,7 @@ public class RoleResourceServiceImpl
 
         // 去重
         Set<Object> resIds = new HashSet<>(res);
-        return Streams.map(resIds, (resId) -> ((Integer) resId).shortValue());
+        return Streams.list2List(resIds, (resId) -> ((Integer) resId).shortValue());
     }
 
     /**

@@ -85,7 +85,7 @@ public class AdminUserServiceImpl
             dto.setRoles(roles);
 
             // 查询资源信息
-            List<Short> roleIds = Streams.map(roles, Role::getId);
+            List<Short> roleIds = Streams.list2List(roles, Role::getId);
             List<Resource> resources = resourceService.listByRoleIds(roleIds);
             dto.setResources(resources);
         }

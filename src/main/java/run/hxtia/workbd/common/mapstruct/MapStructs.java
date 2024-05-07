@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
+import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
 import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.organization.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
@@ -44,6 +45,22 @@ public interface MapStructs {
     CollegeVo po2vo(College po);
     GradeVo po2vo(Grade po);
     ClassVo po2vo(Classes po);
+    @Mapping(
+        source = "createdAt",
+        target = "createdAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    @Mapping(
+        source = "updatedAt",
+        target = "updatedAt",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    HomeworkVo po2vo(Homework po);
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -55,7 +72,6 @@ public interface MapStructs {
    Student reqVo2po(StudentReqVo reqVo);
    Role reqVo2po(RoleReqVo reqVo);
 
-
     @Mapping(source = "name", target = "name")
    College reqVo2po(CollegeReqVo reqVo);
     @Mapping(source = "name", target = "name")
@@ -65,15 +81,29 @@ public interface MapStructs {
     Classes reqVo2po(ClassReqVo reqVo);
     Classes reqVo2po(ClassEditReqVo reqVo);
 
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Mills2Date.class
+    )
+    Homework reqVo2po(HomeworkReqVo reqVo);
+
    // reqVo -> wxSdk
     WxMaSubscribeMessage reqVo2wxVo(WxSubscribeMessageReqVo reqVo);
 
     // PO -> DTO
     ResourceDto po2dto(Resource po);
+    @Mapping(
+        source = "deadline",
+        target = "deadline",
+        qualifiedBy = MapStructFormatter.Date2Millis.class
+    )
+    StudentHomeworkDetailDto po2dto(Homework po);
 
 
     NotificationVo po2vo(Notification notification);
 
 
     Notification reqVo2po(NotificationReqVo reqVo);
+
 }
