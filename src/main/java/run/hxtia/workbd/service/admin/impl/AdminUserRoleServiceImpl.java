@@ -12,7 +12,6 @@ import run.hxtia.workbd.service.admin.AdminUserRoleService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * 用户角色模块 业务层
@@ -70,7 +69,7 @@ public class AdminUserRoleServiceImpl
         // 查询角色ID
         List<Object> roleIds = baseMapper.selectObjs(wrapper);
 
-        return Streams.map(roleIds, roleId -> ((Integer) roleId).shortValue());
+        return Streams.list2List(roleIds, roleId -> ((Integer) roleId).shortValue());
     }
 
     /**
@@ -84,6 +83,6 @@ public class AdminUserRoleServiceImpl
         MpLambdaQueryWrapper<AdminUserRole> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.select(AdminUserRole::getUserId).eq(AdminUserRole::getRoleId, roleId);
         List<Object> userIds = baseMapper.selectObjs(wrapper);
-        return Streams.map(userIds, (userId) -> (Long) userId);
+        return Streams.list2List(userIds, (userId) -> (Long) userId);
     }
 }

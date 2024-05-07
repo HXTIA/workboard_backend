@@ -14,7 +14,6 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.NotificationMapper;
 import run.hxtia.workbd.pojo.po.Notification;
-import run.hxtia.workbd.pojo.po.StudentNotification;
 import run.hxtia.workbd.pojo.vo.request.page.NotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.response.NotificationVo;
@@ -72,7 +71,7 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
         if (CollectionUtils.isEmpty(notificationIds)) return false;
 
         // 查出所有通知【并且设置不可见】
-        List<Notification> notifications = Streams.map(baseMapper.selectBatchIds(notificationIds), (notification -> {
+        List<Notification> notifications = Streams.list2List(baseMapper.selectBatchIds(notificationIds), (notification -> {
             notification.setStatus(String.valueOf(Constants.Status.WORK_DISABLE));
             return notification;
         }));

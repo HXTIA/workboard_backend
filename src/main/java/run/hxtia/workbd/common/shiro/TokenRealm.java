@@ -59,12 +59,12 @@ public class TokenRealm extends AuthorizingRealm {
         // 添加角色
         List<Role> roles = userInfoDto.getRoles();
         if (CollectionUtils.isEmpty(roles)) return info;
-        info.addRoles(Streams.map(roles, Role::getName));
+        info.addRoles(Streams.list2List(roles, Role::getName));
 
         // 添加权限
         List<Resource> resources = userInfoDto.getResources();
         if (CollectionUtils.isEmpty(resources)) return info;
-        info.addStringPermissions(Streams.map(resources, Resource::getPermission));
+        info.addStringPermissions(Streams.list2List(resources, Resource::getPermission));
 
         return info;
     }

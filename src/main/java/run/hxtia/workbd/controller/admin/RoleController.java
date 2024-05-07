@@ -1,18 +1,15 @@
 package run.hxtia.workbd.controller.admin;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
-import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.request.page.RolePageReqVo;
 import run.hxtia.workbd.pojo.vo.request.save.RoleReqVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
@@ -26,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 @RestController
 @RequestMapping("/admin/roles")
@@ -50,7 +46,7 @@ public class RoleController {
     @RequiresPermissions(Constants.Permission.SYS_ROLE_READ)
     public DataJsonVo<List<RoleVo>> searchList(HttpServletRequest request) {
         String token = request.getHeader(Constants.Web.HEADER_TOKEN);
-        return JsonVos.ok(Streams.map(roleService.list(token), MapStructs.INSTANCE::po2vo));
+        return JsonVos.ok(Streams.list2List(roleService.list(token), MapStructs.INSTANCE::po2vo));
     }
 
     @PostMapping("/create")

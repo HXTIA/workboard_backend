@@ -29,7 +29,7 @@ public class MpPage<T> extends Page<T> {
      * @return ：分页结果
      */
     public <R> PageVo<R> buildVo(Function<T, R> function) {
-        return commonBuildVo(Streams.map(getRecords(), function));
+        return commonBuildVo(Streams.list2List(getRecords(), function));
     }
 
     /**
