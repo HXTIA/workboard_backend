@@ -1,12 +1,18 @@
 package run.hxtia.workbd.controller.course;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.vo.request.course.SaveCoursesAndHomeworksReqVo;
+import run.hxtia.workbd.pojo.vo.request.course.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.StudentCourseReqVo;
+import run.hxtia.workbd.pojo.vo.request.page.StudentCoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
@@ -41,7 +47,7 @@ public class StudentCourseController {
 
     @PostMapping("/edit")
     @ApiOperation("编辑学生课程")
-    public JsonVo edit(@Valid @RequestBody StudentCourseReqVo reqVo) {
+    public JsonVo edit(@Valid @RequestBody StudentCourseEditReqVo reqVo) {
         if (studentCourseService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
@@ -74,4 +80,22 @@ public class StudentCourseController {
             return JsonVos.error(CodeMsg.CHECK_ERROR);
         }
     }
+
+    @PostMapping("/courses")
+    @ApiOperation("根据学生ID获取分页的学生课程信息")
+    public ResponseEntity<IPage<CourseVo>> getStudentCoursesByStudentIdWithPagination(@Valid @RequestBody StudentCoursePageReqVo reqVo) {
+        IPage<CourseVo> courses = studentCourseService.getStudentCoursesByStudentIdWithPagination(reqVo.getStudentId(), new Page<>(reqVo.getPage(), reqVo.getSize()));
+        return ResponseEntity.ok(courses);
+    }
+
+    @PostMapping("/saveCoursesAndHomeworks")
+    @ApiOperation("批量保存学生课程和作业信息")
+    public JsonVo saveCoursesAndHomeworks(@Valid @RequestBody SaveCoursesAndHomeworksReqVo reqVo) {
+        if (studentCourseService.saveCoursesAndHomeworks(reqVo.getCourseIds(), reqVo.getStudentId())) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
 }

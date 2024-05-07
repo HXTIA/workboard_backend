@@ -9,6 +9,7 @@ import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
 import run.hxtia.workbd.pojo.po.*;
 import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.request.course.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.StudentCourseReqVo;
 import run.hxtia.workbd.pojo.vo.request.organization.*;
 import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
@@ -17,6 +18,7 @@ import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
 import run.hxtia.workbd.pojo.vo.response.RoleVo;
 import run.hxtia.workbd.pojo.vo.response.StudentVo;
 import run.hxtia.workbd.pojo.vo.response.*;
+import run.hxtia.workbd.pojo.vo.response.course.StudentCourseVo;
 import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
 import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
@@ -50,6 +52,8 @@ public interface MapStructs {
     GradeVo po2vo(Grade po);
     ClassVo po2vo(Classes po);
     CourseVo po2vo(Course po);
+    StudentCourseVo po2vo(StudentCourse po);
+
     @Mapping(
         source = "createdAt",
         target = "createdAt",
@@ -88,6 +92,8 @@ public interface MapStructs {
     Course reqVo2po(CourseReqVo reqVo);
     Course reqVo2po(CourseEditReqVo reqVo);
     StudentCourse reqVo2po(StudentCourseReqVo reqVo);
+    @Mapping(source = "id", target = "id")
+    StudentCourse reqVo2po(StudentCourseEditReqVo reqVo);
 
     @Mapping(
         source = "deadline",

@@ -69,4 +69,12 @@ public interface HomeworkService extends IService<Homework> {
      * @return ：学生所有作业
      */
     List<StudentHomeworkDetailDto> getWorkInfoListByStuId(Long stuId);
+
+    //TODO 根据课程id，获取作业id列表。传入 courseidlist ——> 获取作业idlist
+    /**
+     * 根据课程ID获取作业ID列表
+     * @param courseIdList 课程ID列表
+     * @return 作业ID列表
+     */
+    List<Long> getWorkIdsByCourseIds(List<Integer> courseIdList);
 }

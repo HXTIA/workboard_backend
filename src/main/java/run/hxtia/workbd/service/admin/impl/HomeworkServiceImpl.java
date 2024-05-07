@@ -204,6 +204,13 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         });
     }
 
+    @Override
+    public List<Long> getWorkIdsByCourseIds(List<Integer> courseIdList) {
+        MpLambdaQueryWrapper<Homework> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.in(Homework::getCourseId, courseIdList).eq(Homework::getStatus, Constants.Status.WORK_ENABLE);
+        return Streams.list2List(baseMapper.selectList(wrapper), Homework::getId);
+    }
+
     /**
      * 检查作业是否能删除【只有是历史作业才能彻底删除】
      * @param workIds ：检查的作业ID

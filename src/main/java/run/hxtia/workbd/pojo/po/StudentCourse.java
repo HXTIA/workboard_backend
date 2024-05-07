@@ -13,6 +13,12 @@ public class StudentCourse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * ID
+     */
+    private Integer id;
+
+
+    /**
      * 学生ID
      */
     private Integer studentId;
