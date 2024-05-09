@@ -33,8 +33,8 @@ public class NotificationController {
 
     @PostMapping("/list")
     @ApiOperation(value = "分页查询通知")
-    public PageVo list(@RequestBody NotificationPageReqVo pageReqVo, @RequestParam String type) {
-        return notificationService.list(pageReqVo, type);
+    public PageVo list(@RequestBody NotificationPageReqVo pageReqVo) {
+        return notificationService.list(pageReqVo, pageReqVo.getType());
     }
 
     @PostMapping("/saveOrUpdate")
