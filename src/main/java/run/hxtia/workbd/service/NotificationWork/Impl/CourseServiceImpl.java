@@ -1,23 +1,19 @@
-package run.hxtia.workbd.service.course.Impl;
+package run.hxtia.workbd.service.NotificationWork.Impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.CourseMapper;
-import run.hxtia.workbd.mapper.StudentCourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
-import run.hxtia.workbd.pojo.po.StudentCourse;
 import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
-import run.hxtia.workbd.service.course.CourseService;
+import run.hxtia.workbd.service.NotificationWork.CourseService;
 
 import java.util.List;
 import java.util.stream.Collectors;

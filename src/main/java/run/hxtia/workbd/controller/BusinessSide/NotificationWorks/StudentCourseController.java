@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.course;
+package run.hxtia.workbd.controller.BusinessSide.NotificationWorks;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -16,7 +16,7 @@ import run.hxtia.workbd.pojo.vo.request.page.StudentCoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
-import run.hxtia.workbd.service.course.StudentCourseService;
+import run.hxtia.workbd.service.NotificationWork.StudentCourseService;
 
 import javax.validation.Valid;
 import java.util.List;

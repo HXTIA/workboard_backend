@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.miniapp;
+package run.hxtia.workbd.controller.ClientSide.UserManagement;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

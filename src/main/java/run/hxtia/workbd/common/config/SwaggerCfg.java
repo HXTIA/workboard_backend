@@ -129,7 +129,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notiworkdBDocket() {
         return groupDocket(
             "【B端】_03_通知作业管理",
-            "/B/notificationWorks/(works/*,notification/*)",
+            "/B/notificationWorks/(works.*|notification.*)",
             "通知和作业管理模块文档",
             "获取通知、作业...");
     }
@@ -138,7 +138,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket userCDocket() {
         return groupDocket(
             "【C端】_01_用户管理",
-            "/C/student/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/student/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
             "用户管理模块文档",
             "获取学生信息...");
     }
@@ -147,7 +147,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket orgCDocket() {
         return groupDocket(
             "【C端】_02_组织管理",
-            "/C/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
             "组织管理模块文档",
             "获取组织...");
     }
@@ -156,7 +156,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notificationWorksCDocket() {
         return groupDocket(
             "【C端】_03_通知作业管理",
-            "/C/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
             "通知作业管理模块文档",
             "获取作业、通知...");
     }

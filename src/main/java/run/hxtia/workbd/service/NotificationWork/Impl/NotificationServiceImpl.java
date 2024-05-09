@@ -1,5 +1,7 @@
 package run.hxtia.workbd.service.NotificationWork.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import run.hxtia.workbd.service.NotificationWork.StudentNotificationService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,25 +35,32 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
     private final StudentNotificationService studentNotificationService;
 
     /**
-     * 分页查询作业
+     * 分页查询通知
      * @param pageReqVo：分页信息
-     * @param status：作业状态 【1：可用作业 0：历史作业】
+     * @param type：通知类型·
      * @return 分页后的数据
      */
     @Override
-    public PageVo<NotificationVo> list(NotificationPageReqVo pageReqVo, Short status) {
-        // 构建分页sql
-        MpLambdaQueryWrapper<Notification> wrapper = new MpLambdaQueryWrapper<>();
-        wrapper.like(pageReqVo.getKeyword(), Notification::getTitle, Notification::getMessage).
-            between(pageReqVo.getCreatedTime(), Notification::getCreatedAt).
-            eq(Notification::getType, pageReqVo.getType()).
-            eq(Notification::getStatus, status);
+    public PageVo<NotificationVo> list(NotificationPageReqVo pageReqVo, String type) {
+        // 构建查询条件
+    //        1. 创建一个查询包装器（`QueryWrapper`）来构建查询条件。
+        QueryWrapper<Notification> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(Notification::getTitle, pageReqVo.getKeyword())
+            .or().like(Notification::getMessage, pageReqVo.getKeyword())
+            .eq(Notification::getType, type);
 
-        return baseMapper.
-            selectPage(new MpPage<>(pageReqVo), wrapper).
-            buildVo(MapStructs.INSTANCE::po2vo);
+        // 构建分页结果
+        Page<Notification> resultPage = baseMapper.selectPage(new MpPage<>(pageReqVo), queryWrapper);
+        // 返回分页结果
+        return baseMapper.selectPage(new MpPage<>(pageReqVo),queryWrapper)
+            .buildVo(MapStructs.INSTANCE::po2vo);
     }
 
+    /**
+     * 保存 or 编辑通知
+     * @param reqVo：通知信息
+     * @return ：是否成功
+     */
     @Override
     public boolean saveOrUpdate(NotificationReqVo reqVo) throws Exception {
         Notification po = MapStructs.INSTANCE.reqVo2po(reqVo);
@@ -58,13 +68,17 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
             // 保存数据
             return saveOrUpdate(po);
         } catch (Exception e) {
-            // 出现异常将刚上传的图片给删掉
             log.error(e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
+    /**
+     * 删除一条or多条通知【逻辑删除】
+     * @param ids：需要删除的通知ID
+     * @return ：是否成功
+     */
     @Override
     public boolean removeByIds(String ids) {
         List<String> notificationIds = Arrays.asList(ids.split(","));
@@ -92,13 +106,18 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
         return MapStructs.INSTANCE.po2vo(baseMapper.selectOne(wrapper));
     }
 
+    /**
+     * 删除一条or多条通知【彻底删除】
+     * @param ids：需要删除的通知ID
+     * @return ：是否成功
+     */
     @Override
     public boolean removeHistory(String ids) {
         if (!StringUtils.hasLength(ids)) return false;
 
         List<String> notificationIds = Arrays.asList(ids.split(","));
         // 检查通知是否能删除
-        checkNotificationRemove(notificationIds);
+//        checkNotificationRemove(notificationIds);
         boolean deleteNotification = removeByIds(notificationIds);
         boolean deleteStudentNotification = studentNotificationService.removeByNotificationId(notificationIds);
         // 在用户作业表里删除通知

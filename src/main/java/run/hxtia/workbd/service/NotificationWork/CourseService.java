@@ -1,4 +1,4 @@
-package run.hxtia.workbd.service.course;
+package run.hxtia.workbd.service.NotificationWork;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.stereotype.Service;

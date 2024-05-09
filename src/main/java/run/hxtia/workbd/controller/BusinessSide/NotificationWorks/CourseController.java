@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.course;
+package run.hxtia.workbd.controller.BusinessSide.NotificationWorks;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -16,7 +16,7 @@ import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
-import run.hxtia.workbd.service.course.CourseService;
+import run.hxtia.workbd.service.NotificationWork.CourseService;
 
 import javax.validation.Valid;
 import java.util.function.Function;
@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @date 2024/5/7
  */
 @RestController
-@RequestMapping("/organization/courses")
+@RequestMapping("/B/notificationWorks/courses")
 @Api(tags = "CourseController")
 @Tag(name = "CourseController", description = "课程管理模块")
 @RequiredArgsConstructor
