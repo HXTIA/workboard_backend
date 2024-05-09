@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin;
+package run.hxtia.workbd.controller.BusinessSide.NotificationWorks;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,13 +24,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-
+/**
+ * @author Xiaojin
+ * @date 2024/5/9
+ */
 @RestController
-@RequestMapping("/admin/works")
+@RequestMapping("/B/admin/works")
 @RequiredArgsConstructor
 @Api(tags = "WorkController")
-@Tag(name = "WorkController", description = "后台管理作业模块")
-public class HomeworkController {
+@Tag(name = "WorkController", description = "【B端】后台作业管理模块")
+public class HomeWorkController {
 
     private final HomeworkService workService;
 

@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin;
+package run.hxtia.workbd.controller.BusinessSide.UserManagement;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,10 +24,14 @@ import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Xiaojin
+ * @date 2024/5/9
+ */
 @RestController
-@RequestMapping("/admin/roles")
+@RequestMapping("/B/admin/roles")
 @Api(tags = "RoleController")
-@Tag(name = "RoleController", description = "角色模块")
+@Tag(name = "RoleController", description = "【B端】角色模块")
 @RequiredArgsConstructor
 public class RoleController {
 

@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.organization;
+package run.hxtia.workbd.controller.BusinessSide.Organization;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -21,10 +21,14 @@ import run.hxtia.workbd.service.Organization.CollegeService;
 import javax.validation.Valid;
 import java.util.function.Function;
 
+/**
+ * @author Xiaojin
+ * @date 2024/5/9
+ */
 @RestController
-@RequestMapping("/organization/colleges")
+@RequestMapping("/B/organization/colleges")
 @Api(tags = "CollegeController")
-@Tag(name = "CollegeController", description = "学院管理模块")
+@Tag(name = "CollegeController", description = "【B端】学院管理模块")
 @RequiredArgsConstructor
 public class CollegeController extends BaseController<College, CollegeReqVo> {
 

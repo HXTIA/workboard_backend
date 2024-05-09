@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.organization;
+package run.hxtia.workbd.controller.BusinessSide.Organization;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -24,12 +24,12 @@ import java.util.function.Function;
 
 /**
  * @author Xiaojin
- * @date 2024/5/5
+ * @date 2024/5/9
  */
 @RestController
-@RequestMapping("/organization/grades")
+@RequestMapping("/B/organization/grades")
 @Api(tags = "GradeController")
-@Tag(name = "GradeController", description = "年级管理模块")
+@Tag(name = "GradeController", description = "【B端】年级管理模块")
 @RequiredArgsConstructor
 public class GradeController extends BaseController<Grade, GradeReqVo> {
 

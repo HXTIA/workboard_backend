@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
 import run.hxtia.workbd.pojo.po.RoleResource;
-import run.hxtia.workbd.service.admin.RoleResourceService;
+import run.hxtia.workbd.service.UserManagement.admin.RoleResourceService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin;
+package run.hxtia.workbd.controller.BusinessSide.UserManagement;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -34,13 +34,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.function.Function;
 
+/**
+ * @author Xiaojin
+ * @date 2024/5/9
+ */
 
 @RestController
-@RequestMapping("/admin/users")
-@Api(tags = "AdminUserController")
-@Tag(name = "AdminUserController", description = "用户模块")
+@RequestMapping("/B/admin/users")
+@Api(tags = "AdminController")
+@Tag(name = "AdminController", description = "【B端】用户模块")
 @RequiredArgsConstructor
-public class AdminUserController extends BaseController<AdminUsers, AdminUserReqVo> {
+public class AdminController extends BaseController<AdminUsers, AdminUserReqVo> {
 
     private final AdminUserService adminUserService;
     private final EmailService emailService;
@@ -48,7 +52,7 @@ public class AdminUserController extends BaseController<AdminUsers, AdminUserReq
     @GetMapping("/sendEmail")
     @ApiOperation("发送邮箱验证码")
     public JsonVo sendEmail(@Email(message = "请输入正确的邮件地址")
-                                @RequestParam String email) throws Exception {
+                            @RequestParam String email) throws Exception {
         emailService.sendHTMLEmail(email, "验证码");
         return JsonVos.ok("发送成功，请查收邮件");
     }

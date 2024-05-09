@@ -106,6 +106,64 @@ public class SwaggerCfg implements InitializingBean {
             "获取学院、年级、班级、课程...");
     }
 
+    // TODO  试图拆分
+    @Bean
+    public Docket adminBDocket() {
+        return groupDocket(
+            "【B端】_01_用户管理",
+            "/B/admin/(users.*|roles.*|resources.*)",
+            "用户管理模块文档",
+            "获取用户、角色、资源...");
+    }
+
+    @Bean
+    public Docket orgBDocket() {
+        return groupDocket(
+            "【B端】_02_组织管理",
+            "/B/organization/(colleges.*|grades.*|classes.*|courses.*)",
+            "组织管理模块文档",
+            "获取学院、年级、班级、课程...");
+    }
+
+    @Bean
+    public Docket notiworkdBDocket() {
+        return groupDocket(
+            "【B端】_03_通知作业管理",
+            "/B/notificationWorks/(works/*,notification/*)",
+            "通知和作业管理模块文档",
+            "获取通知、作业...");
+    }
+
+    @Bean
+    public Docket userCDocket() {
+        return groupDocket(
+            "【C端】_01_用户管理",
+            "/C/student/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "用户管理模块文档",
+            "获取学生信息...");
+    }
+
+    @Bean
+    public Docket orgCDocket() {
+        return groupDocket(
+            "【C端】_02_组织管理",
+            "/C/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "组织管理模块文档",
+            "获取组织...");
+    }
+
+    @Bean
+    public Docket notificationWorksCDocket() {
+        return groupDocket(
+            "【C端】_03_通知作业管理",
+            "/C/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "通知作业管理模块文档",
+            "获取作业、通知...");
+    }
+
+
+
+
     // 构建分组模块
     private Docket groupDocket(String group,
                                String regex,

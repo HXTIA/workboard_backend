@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
-import run.hxtia.workbd.service.admin.ResourceService;
+import run.hxtia.workbd.service.UserManagement.admin.ResourceService;
 
 import java.util.List;
 
