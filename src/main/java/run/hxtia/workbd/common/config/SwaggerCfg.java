@@ -43,69 +43,6 @@ public class SwaggerCfg implements InitializingBean {
      */
     private boolean enable;
 
-    @Bean
-    public Docket adminUserDocket() {
-        return groupDocket(
-            "01_用户【管理】",              // 分组模块
-            "/admin/(users.*)",             // 正则表达式，想要的模块。
-            "用户、模块文档",          // 模块标题
-            "测试文档");        // 描述信息
-    }
-
-    @Bean
-    public Docket adminSkillDocket() {
-        return groupDocket(
-                "02_角色、资源【管理】",
-                "/admin/(roles.*|resources.*)",
-                "角色、资源模块文档",
-                "角色、资源文档");
-    }
-
-    @Bean
-    public Docket adminWorkDocket() {
-        return groupDocket(
-            "03_作业【管理】",
-            "/admin/works.*",
-            "作业模块文档",
-            "作业的增删改查、图片编辑...文档");
-    }
-
-    @Bean
-    public Docket wxUserDocket() {
-        return groupDocket(
-            "04_用户【小程序】",
-            "/wx/student.*",
-            "小程序用户模块文档",
-            "小程序用户文档");
-    }
-
-    @Bean
-    public Docket wxMsgDocket() {
-        return groupDocket(
-            "05_消息【小程序】",
-            "/wx/messages.*",
-            "小程序消息模块文档",
-            "小程序消息文档");
-    }
-
-    @Bean
-    public Docket wxWorkDocket() {
-        return groupDocket(
-            "06_作业【小程序】",
-            "/wx/(works.*|userWork.*)",
-            "作业模块文档",
-            "获取所有作业、获取历史作业...");
-    }
-
-    @Bean
-    public Docket orgDocket() {
-        return groupDocket(
-            "07_组织、课程管理模块",
-            "/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
-            "组织管理模块文档",
-            "获取学院、年级、班级、课程...");
-    }
-
     // TODO  试图拆分
     @Bean
     public Docket adminBDocket() {
