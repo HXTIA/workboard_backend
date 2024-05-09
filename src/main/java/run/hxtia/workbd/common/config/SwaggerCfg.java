@@ -75,7 +75,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket userCDocket() {
         return groupDocket(
             "【C端】_01_用户管理",
-            "/wx/student/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/user/(student.*|grades.*|classes.*|courses.*|studentCourses.*)",
             "用户管理模块文档",
             "获取学生信息...");
     }
@@ -93,7 +93,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notificationWorksCDocket() {
         return groupDocket(
             "【C端】_03_通知作业管理",
-            "/wx/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/notification/(messages.*|)",
             "通知作业管理模块文档",
             "获取作业、通知...");
     }

@@ -17,7 +17,7 @@ import run.hxtia.workbd.service.miniapp.WxMsgService;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/wx/messages")
+@RequestMapping("/wx/notification/messages")
 @RequiredArgsConstructor
 @Api(tags = "WxMsgController")
 @Tag(name = "WxMsgController", description = "小程序消息模块")

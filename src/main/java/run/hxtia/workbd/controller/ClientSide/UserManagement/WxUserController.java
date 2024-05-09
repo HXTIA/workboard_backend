@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/wx/student")
+@RequestMapping("/wx/user/student")
 @RequiredArgsConstructor
 @Api(tags = "WxUserController")
 @Tag(name = "WxUserController", description = "小程序用户模块")
