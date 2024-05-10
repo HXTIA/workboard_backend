@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
 import run.hxtia.workbd.pojo.po.Role;
-import run.hxtia.workbd.service.UserManagement.admin.AdminUserRoleService;
-import run.hxtia.workbd.service.UserManagement.admin.RoleService;
+import run.hxtia.workbd.service.usermanagement.AdminUserRoleService;
+import run.hxtia.workbd.service.usermanagement.RoleService;
 
 import java.util.List;
 

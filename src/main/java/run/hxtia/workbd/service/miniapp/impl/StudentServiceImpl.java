@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.httpclient.HttpClient;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
@@ -26,6 +27,7 @@ import run.hxtia.workbd.pojo.vo.response.WxTokenVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.service.miniapp.StudentService;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -42,27 +44,24 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      */
     @Override
     public String getToken(String code) throws Exception {
-        try {
-            String url = MiniApps.buildGetTokenUrl(code);
-            String resStr = HttpClient.httpGetRequest(url);
-            WxTokenVo wxTokenVo = WxTokenVo.parseFromJson(resStr);
-            if (wxTokenVo == null){
-                JsonVos.raise("得到的结果为 Null, URL = " + url);
-            }
 
-            if (wxTokenVo.getErrcode() != 0) {
-                JsonVos.raise("请求出错：code = " + wxTokenVo.getErrcode() + "msg = " + wxTokenVo.getErrmsg());
-            }
-
-            // 来到这里说明得到了结果
-            String token = Strings.getUUID();
-            redises.set(Constants.WxMiniApp.WX_PREFIX, token, wxTokenVo, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
-
-            return  token;
-        } catch (Exception e) {
-            JsonVos.raise(CodeMsg.GET_TOKEN_ERR);
-            return null;
+        String url = MiniApps.buildGetTokenUrl(code);
+        String resStr = HttpClient.httpGetRequest(url);
+        WxTokenVo wxTokenVo = WxTokenVo.parseFromJson(resStr);
+        if (wxTokenVo == null){
+            JsonVos.raise("得到的结果为 Null, URL = " + url);
         }
+
+        // TODO：增加默认值，还是使用 errCode 判断
+        if (!StringUtils.hasLength(wxTokenVo.getOpenid())) {
+            JsonVos.raise("请求出错：code = " + wxTokenVo.getErrcode() + "msg = " + wxTokenVo.getErrmsg());
+        }
+
+        // 来到这里说明得到了结果
+        String token = Strings.getUUID();
+        redises.set(Constants.WxMiniApp.WX_PREFIX, token, wxTokenVo, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
+
+        return  token;
     }
 
     /**
@@ -70,44 +69,40 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @param token token
      * @return 是否有效
      */
-    public Boolean checkToken(String token) {
+    public Boolean checkToken(String token) throws Exception {
 
-        try {
-            // 获取 Token 的信息
-            WxTokenVo wxTokenVo = MiniApps.getWxTokenVo(token);
-            if (wxTokenVo == null) {
-                JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
-            }
-
-            // 先从缓存获取 Access Token
-            WxAccessTokenVo wxAccessTokenVo = (WxAccessTokenVo) redises.get(Constants.WxMiniApp.WX_AT_PREFIX, token);
-
-            if (wxAccessTokenVo == null) {
-                // 说明缓存没有，发请求获取
-                String atUrl = MiniApps.buildGetWXAccessTokenUrl();
-                String atRespStr = HttpClient.httpGetRequest(atUrl);
-                wxAccessTokenVo = WxAccessTokenVo.parseFromJson(atRespStr);
-                if (wxAccessTokenVo == null || wxAccessTokenVo.getErrcode() != 0) {
-                    JsonVos.raise(CodeMsg.GET_ACCESS_TOKEN_ERR);
-                }
-
-                // 存入缓存中
-                redises.set(Constants.WxMiniApp.WX_AT_PREFIX, token, wxAccessTokenVo.getAccessToken(), wxAccessTokenVo.getExpiresIn(), TimeUnit.SECONDS);
-            }
-
-            // 构建 TCheck Token 的 URL
-            String url = buildCheckSessionUrl(wxTokenVo, wxAccessTokenVo.getAccessToken());
-            String resp = HttpClient.httpGetRequest(url);
-            WxCodeMsg wxCodeMsg = WxCodeMsg.parseFromJson(resp);
-            if (wxCodeMsg == null || wxCodeMsg.getErrcode() != 0) {
-                JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
-            }
-
-            return  true;
-        } catch (Exception e) {
-            JsonVos.raise(CodeMsg.GET_TOKEN_ERR);
-            return false;
+        // 获取 Token 的信息
+        WxTokenVo wxTokenVo = MiniApps.getWxTokenVo(token);
+        if (wxTokenVo == null) {
+            JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
         }
+
+        // 先从缓存获取 Access Token
+        WxAccessTokenVo wxAccessTokenVo = (WxAccessTokenVo) redises.get(Constants.WxMiniApp.WX_AT_PREFIX, token);
+
+        if (wxAccessTokenVo == null) {
+            // 说明缓存没有，发请求获取
+            String atUrl = MiniApps.buildGetWXAccessTokenUrl();
+            String atRespStr = HttpClient.httpGetRequest(atUrl);
+            wxAccessTokenVo = WxAccessTokenVo.parseFromJson(atRespStr);
+            if (!StringUtils.hasLength(wxAccessTokenVo.getAccessToken())) {
+                JsonVos.raise(CodeMsg.GET_ACCESS_TOKEN_ERR);
+            }
+
+            // 存入缓存中
+            redises.set(Constants.WxMiniApp.WX_AT_PREFIX, token, wxAccessTokenVo.getAccessToken(), wxAccessTokenVo.getExpiresIn(), TimeUnit.SECONDS);
+        }
+
+        // 构建 TCheck Token 的 URL
+        String url = buildCheckSessionUrl(wxTokenVo, wxAccessTokenVo.getAccessToken());
+        String resp = HttpClient.httpGetRequest(url);
+        WxCodeMsg wxCodeMsg = WxCodeMsg.parseFromJson(resp);
+        if (wxCodeMsg == null) {
+            JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
+        }
+
+        return  true;
+
     }
 
     /**
