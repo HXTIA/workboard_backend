@@ -66,7 +66,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notiworkdBDocket() {
         return groupDocket(
             "【B端】_03_通知、作业、课程管理",
-            "/admin/notificationWorks/(works.*|notification.*)",
+            "/admin/notificationWorks/(works.*|notification.*|courses.*)",
             "通知和作业管理模块文档",
             "获取通知、作业...");
     }

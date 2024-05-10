@@ -48,11 +48,17 @@ public class StudentHomeworkServiceImpl
      */
     public boolean addStudentHomeworks(List<Long> workIds, Long stuId) {
         // 批量插入
-        return saveBatch(Streams.list2List(workIds, (workId) -> {
+        boolean result = saveBatch(Streams.list2List(workIds, (workId) -> {
             StudentHomework po = new StudentHomework();
             po.setStudentId(stuId);
             po.setHomeworkId(workId);
             return po;
         }));
+
+        if (!result) {
+            throw new RuntimeException("Failed to save student homework");
+        }
+
+        return true;
     }
 }

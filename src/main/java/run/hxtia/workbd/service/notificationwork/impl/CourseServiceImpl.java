@@ -6,15 +6,20 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.mapper.CourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
+import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.CourseService;
+import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> implements CourseService {
-
+    private final StudentCourseService studentCourseService;
 
 
     @Override
@@ -63,6 +68,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Transactional(readOnly = false)
     public boolean delete(Integer courseId) {
         // 使用removeById方法从数据库中删除Course对象
+        studentCourseService.deleteByCourseId(courseId);
         return removeById(courseId);
     }
 
@@ -100,6 +106,22 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         // 检查名称是否已经存在
         boolean exists = lambdaQuery().eq(Course::getName, courseName).eq(Course::getCollegeId, collegeId).one() != null;
         return exists;
+    }
+
+    @Override
+    public boolean removeHistory(String ids) {
+        if (!StringUtils.hasLength(ids)) return false;
+
+        List<String> courseIds = Arrays.asList(ids.split(","));
+        // 检查是否能删除
+//        checkNotificationRemove(notificationIds);
+        boolean deleteCourse = removeByIds(courseIds);
+        boolean deleteStudentCourse = studentCourseService.removeByCourseId(courseIds);
+        // 在用户作业表里删除通知
+        if (!deleteCourse || !deleteStudentCourse) {
+            return JsonVos.raise(CodeMsg.REMOVE_ERROR);
+        }
+        return true;
     }
 
     @Override

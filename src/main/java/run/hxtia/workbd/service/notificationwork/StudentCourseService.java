@@ -78,6 +78,21 @@ public interface StudentCourseService extends IService<StudentCourse> {
      */
     IPage<CourseVo> getStudentCoursesByStudentIdWithPagination(Integer studentId, Page<StudentCourse> page);
 
+    // 批量删除学生课程信息接口。传入一个课程id ——> 删除学生课程表中 course_id = 课程id 的所有记录
+    /**
+     * 根据课程ID删除所有相关的学生课程记录
+     * @param courseId 课程ID
+     * @return 是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean deleteByCourseId(Integer courseId);
 
+    /**
+     * 根据课程ID删除 学生课程
+     * @param courseIds：课程 ID 列表
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean removeByCourseId(List<String> courseIds);
 
 }

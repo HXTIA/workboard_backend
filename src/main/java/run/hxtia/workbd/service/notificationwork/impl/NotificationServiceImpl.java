@@ -42,7 +42,7 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
     @Override
     public PageVo<NotificationVo> list(NotificationPageReqVo pageReqVo, String type) {
         // 构建查询条件
-    //        1. 创建一个查询包装器（`QueryWrapper`）来构建查询条件。
+        // 1. 创建一个查询包装器（`QueryWrapper`）来构建查询条件。
         QueryWrapper<Notification> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().like(Notification::getTitle, pageReqVo.getKeyword())
             .or().like(Notification::getMessage, pageReqVo.getKeyword())

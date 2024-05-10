@@ -64,6 +64,10 @@ public class StudentCourseController {
             return JsonVos.error(CodeMsg.REMOVE_ERROR);
         }
     }
+
+
+
+
     @PostMapping("/{studentId}")
     @ApiOperation("根据学生ID获取学生课程信息")
     public List<CourseVo> getStudentCoursesByStudentId(@PathVariable Integer studentId) {
@@ -88,14 +92,6 @@ public class StudentCourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @PostMapping("/saveCoursesAndHomeworks")
-    @ApiOperation("批量保存学生课程和作业信息")
-    public JsonVo saveCoursesAndHomeworks(@Valid @RequestBody SaveCoursesAndHomeworksReqVo reqVo) {
-        if (studentCourseService.saveCoursesAndHomeworks(reqVo.getCourseIds(), reqVo.getStudentId())) {
-            return JsonVos.ok(CodeMsg.SAVE_OK);
-        } else {
-            return JsonVos.error(CodeMsg.SAVE_ERROR);
-        }
-    }
+
 
 }

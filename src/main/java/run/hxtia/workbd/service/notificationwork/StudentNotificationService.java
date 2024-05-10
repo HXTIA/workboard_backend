@@ -14,6 +14,7 @@ public interface StudentNotificationService extends IService<StudentNotification
      * @param notificationIds：通知ID
      * @return ：是否成功
      */
+    @Transactional(readOnly = false)
     boolean removeByNotificationId(List<String> notificationIds);
 }
 

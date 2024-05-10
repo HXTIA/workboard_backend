@@ -68,6 +68,14 @@ public interface CourseService extends IService<Course> {
     boolean checkCourseExists(String courseName, Integer collegeId);
 
     /**
+     * 删除一门or多门课程
+     * @param ids：需要删除的课程ID
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean removeHistory(String ids);
+
+    /**
      * 根据学院ID分页获取课程信息
      * @param collegeId 学院ID
      * @param pageNum 页码

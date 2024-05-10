@@ -1,25 +1,23 @@
 package run.hxtia.workbd.controller.admin.notificationwork;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.request.course.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
 import run.hxtia.workbd.pojo.vo.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.result.JsonVo;
 import run.hxtia.workbd.pojo.vo.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.CourseService;
+import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 
 import javax.validation.Valid;
-import java.util.function.Function;
 
 /**
  * @author Xiaojin
@@ -30,9 +28,10 @@ import java.util.function.Function;
 @Api(tags = "CourseController")
 @Tag(name = "CourseController", description = "课程管理模块")
 @RequiredArgsConstructor
-public class CourseController extends BaseController<Course, CourseReqVo> {
+public class CourseController  {
 
     private final CourseService courseService;
+    private final StudentCourseService studentCourseService;
 
     @PostMapping("/create")
     @ApiOperation("创建课程")
@@ -66,14 +65,10 @@ public class CourseController extends BaseController<Course, CourseReqVo> {
         return courseService.getList();
     }
 
-    @DeleteMapping("/remove/{courseId}")
-    @ApiOperation("删除课程")
-    public JsonVo remove(@PathVariable Integer courseId) {
-        if (courseService.delete(courseId)) {
-            return JsonVos.ok(CodeMsg.REMOVE_OK);
-        } else {
-            return JsonVos.error(CodeMsg.REMOVE_ERROR);
-        }
+    @DeleteMapping("/remove")
+    @ApiOperation("删除一条或者多条课程")
+    public boolean remove(@RequestParam String ids) {
+        return courseService.removeHistory(ids);
     }
 
     @PostMapping("/check")
@@ -93,13 +88,14 @@ public class CourseController extends BaseController<Course, CourseReqVo> {
         return courseService.getCourseInfoByCollegeIdWithPagination(reqVo.getCollegeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
     }
 
-    @Override
-    protected IService<Course> getService() {
-        return null;
-    }
 
-    @Override
-    protected Function<CourseReqVo, Course> getFunction() {
-        return null;
+    @PostMapping("/saveCoursesAndHomeworks")
+    @ApiOperation("批量保存学生课程和作业信息")
+    public JsonVo saveCoursesAndHomeworks(@Valid @RequestBody SaveCoursesAndHomeworksReqVo reqVo) {
+        if (studentCourseService.saveCoursesAndHomeworks(reqVo.getCourseIds(), reqVo.getStudentId())) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
     }
 }

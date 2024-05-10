@@ -31,5 +31,6 @@ public interface StudentHomeworkService extends IService<StudentHomework> {
      * @param stuId 学生ID
      * @return 是否成功
      */
+    @Transactional(readOnly = false)
     boolean addStudentHomeworks(List<Long> workIds, Long stuId);
 }

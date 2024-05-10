@@ -6,10 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.util.CollectionUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.StudentCourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.po.StudentCourse;
+import run.hxtia.workbd.pojo.po.StudentNotification;
 import run.hxtia.workbd.pojo.vo.request.course.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.request.course.StudentCourseReqVo;
 import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
@@ -132,22 +136,68 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
     }
 
     @Override
-    @Transactional(readOnly = false)
-    public boolean saveCoursesAndHomeworks(List<Integer> courseIds, Integer studentId) {
-        // 保存学生课程信息
-        for (Integer courseId : courseIds) {
-            StudentCourseReqVo reqVo = new StudentCourseReqVo();
-            reqVo.setStudentId(studentId);
-            reqVo.setCourseId(courseId);
-            if (!save(reqVo)) {
-                return false;
-            }
-        }
-        // 获取作业ID
-        List<Long> workIdsByCourseIds = homeworkService.getWorkIdsByCourseIds(courseIds);
-
-        // 保存学生作业信息
-        return studentHomeworkService.addStudentHomeworks(workIdsByCourseIds, Long.valueOf(studentId));
+    public boolean deleteByCourseId(Integer courseId) {
+        // 使用 lambdaUpdate 删除 courseId 等于提供的课程 ID 的所有记录
+        return lambdaUpdate().eq(StudentCourse::getCourseId, courseId).remove();
     }
+
+    @Override
+    public boolean removeByCourseId(List<String> courseIds) {
+        // 如果提供的通知ID列表为空，立即返回false
+        if (CollectionUtils.isEmpty(courseIds)) return false;
+
+        // 创建一个新的查询包装器
+        MpLambdaQueryWrapper<StudentCourse> wrapper = new MpLambdaQueryWrapper<>();
+
+        // 添加一个条件，指定notificationId必须在提供的列表中
+        wrapper.in(StudentCourse::getCourseId, courseIds);
+
+        // 删除所有符合条件的记录，并返回是否成功
+        return baseMapper.delete(wrapper) >= 0;
+    }
+
+    /**
+     * 批量保存学生课程和作业信息
+     * @param courseIds 课程ID列表
+     * @param studentId 学生ID
+     * @return 是否成功
+     */
+    @Override
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    public boolean saveCoursesAndHomeworks(List<Integer> courseIds, Integer studentId) {
+        try {
+            // 保存学生课程信息
+            boolean saveStudentCourse = saveBatch(courseIds.stream().map(courseId -> {
+                StudentCourse studentCourse = new StudentCourse();
+                studentCourse.setStudentId(studentId);
+                studentCourse.setCourseId(courseId);
+                return studentCourse;
+            }).collect(Collectors.toList()));
+
+            // 如果保存学生课程信息失败，抛出异常
+            if (!saveStudentCourse) {
+                throw new RuntimeException("Failed to save student course");
+            }
+
+            // 获取作业ID
+            List<Long> workIdsByCourseIds = homeworkService.getWorkIdsByCourseIds(courseIds);
+
+            // 保存学生作业信息
+            boolean saveStudentHomework = studentHomeworkService.addStudentHomeworks(workIdsByCourseIds, Long.valueOf(studentId));
+
+            // 如果保存学生作业信息失败，抛出异常
+            if (!saveStudentHomework) {
+                throw new RuntimeException("Failed to save student homework");
+            }
+
+            return true;
+        } catch (Exception e) {
+            // 如果有任何异常，回滚事务并返回false
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return false;
+        }
+    }
+
+
 
 }
