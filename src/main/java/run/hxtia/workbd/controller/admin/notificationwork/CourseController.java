@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @date 2024/5/7
  */
 @RestController
-@RequestMapping("/B/notificationWorks/courses")
+@RequestMapping("/admin/notificationWorks/courses")
 @Api(tags = "CourseController")
 @Tag(name = "CourseController", description = "课程管理模块")
 @RequiredArgsConstructor

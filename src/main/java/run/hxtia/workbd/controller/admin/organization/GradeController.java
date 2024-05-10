@@ -27,7 +27,7 @@ import java.util.function.Function;
  * @date 2024/5/9
  */
 @RestController
-@RequestMapping("/B/organization/grades")
+@RequestMapping("/admin/organization/grades")
 @Api(tags = "GradeController")
 @Tag(name = "GradeController", description = "【B端】年级管理模块")
 @RequiredArgsConstructor

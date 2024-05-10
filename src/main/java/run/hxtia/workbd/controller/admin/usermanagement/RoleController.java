@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2024/5/9
  */
 @RestController
-@RequestMapping("/B/admin/roles")
+@RequestMapping("/admin/admin/roles")
 @Api(tags = "RoleController")
 @Tag(name = "RoleController", description = "【B端】角色模块")
 @RequiredArgsConstructor

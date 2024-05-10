@@ -40,7 +40,7 @@ import java.util.function.Function;
  */
 
 @RestController
-@RequestMapping("/B/admin/users")
+@RequestMapping("/admin/admin/users")
 @Api(tags = "AdminController")
 @Tag(name = "AdminController", description = "【B端】用户模块")
 @RequiredArgsConstructor

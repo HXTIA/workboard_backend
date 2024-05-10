@@ -61,13 +61,13 @@ public class ShiroConfig {
 //        uriMap.put("/admin/users/captcha", "anon");
 
         // 放行登录&注册接口&发送验证码&忘记密码
-        uriMap.put("/B/admin/users/login", "anon");
-        uriMap.put("/B/admin/users/register", "anon");
-        uriMap.put("/B/admin/users/sendEmail", "anon");
-        uriMap.put("/B/admin/users/sendTest", "anon");
+        uriMap.put("/admin/admin/users/login", "anon");
+        uriMap.put("/admin/admin/users/register", "anon");
+        uriMap.put("/admin/admin/users/sendEmail", "anon");
+        uriMap.put("/admin/admin/users/sendTest", "anon");
         uriMap.put("/wx/student/getToken", "anon");
-        uriMap.put("/B/admin/users/forgotPwd", "anon");
-        uriMap.put("/B/admin/users/captcha", "anon");
+        uriMap.put("/admin/admin/users/forgotPwd", "anon");
+        uriMap.put("/admin/admin/users/captcha", "anon");
 
 
         // 放行Swagger文档

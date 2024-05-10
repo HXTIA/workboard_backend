@@ -19,7 +19,7 @@ import run.hxtia.workbd.service.notificationwork.NotificationService;
  */
 
 @RestController
-@RequestMapping("/B/notificationWorks/notification")
+@RequestMapping("/admin/notificationWorks/notification")
 @RequiredArgsConstructor
 @Api(tags = "NotificationController")
 @Tag(name = "NotificationController", description = "【B端】后台通知管理模块")

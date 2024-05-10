@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @date 2024/5/9
  */
 @RestController
-@RequestMapping("/B/organization/colleges")
+@RequestMapping("/admin/organization/colleges")
 @Api(tags = "CollegeController")
 @Tag(name = "CollegeController", description = "【B端】学院管理模块")
 @RequiredArgsConstructor

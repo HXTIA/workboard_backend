@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2024/5/9
  */
 @RestController
-@RequestMapping("/B/notificationWorks/works")
+@RequestMapping("/admin/notificationWorks/works")
 @RequiredArgsConstructor
 @Api(tags = "WorkController")
 @Tag(name = "WorkController", description = "【B端】后台作业管理模块")
