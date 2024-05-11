@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin.usermanagement;
+package run.hxtia.workbd.controller.admin.usermanager;
 
 /**
  * @author Xiaojin

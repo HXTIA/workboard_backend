@@ -54,7 +54,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
         // TODO：增加默认值，还是使用 errCode 判断
         if (!StringUtils.hasLength(wxTokenVo.getOpenid())) {
-            JsonVos.raise("请求出错：code = " + wxTokenVo.getErrcode() + "msg = " + wxTokenVo.getErrmsg());
+            JsonVos.raise("请求出错：code = " + wxTokenVo.getErrcode() + ", msg = " + wxTokenVo.getErrmsg());
         }
 
         // 来到这里说明得到了结果

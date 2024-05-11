@@ -48,7 +48,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket adminBDocket() {
         return groupDocket(
             "【B端】_01_用户、角色、权限资源管理",
-            "/admin/admin/(users.*|roles.*|resources.*)",
+            "/admin/userManager/(users.*|roles.*|resources.*)",
             "用户管理模块文档",
             "获取用户、角色、资源...");
     }
@@ -66,7 +66,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notiworkdBDocket() {
         return groupDocket(
             "【B端】_03_通知、作业、课程管理",
-            "/admin/notificationWorks/(works.*|notification.*|courses.*)",
+            "/admin/notificationWork/(works.*|notification.*|courses.*)",
             "通知和作业管理模块文档",
             "获取通知、作业...");
     }
@@ -75,7 +75,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket userCDocket() {
         return groupDocket(
             "【C端】_01_用户管理",
-            "/wx/user/(student.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/studentManager/(student.*|grades.*|classes.*|courses.*|studentCourses.*)",
             "用户管理模块文档",
             "获取学生信息...");
     }
@@ -93,7 +93,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notificationWorksCDocket() {
         return groupDocket(
             "【C端】_03_通知作业管理",
-            "/wx/notification/(messages.*|)",
+            "/wx/notificationWork/(messages.*|)",
             "通知作业管理模块文档",
             "获取作业、通知...");
     }

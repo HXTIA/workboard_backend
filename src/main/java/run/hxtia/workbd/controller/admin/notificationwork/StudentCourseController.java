@@ -27,7 +27,7 @@ import java.util.List;
  * @date 2024/5/7
  */
 @RestController
-@RequestMapping("/organization/studentCourses")
+@RequestMapping("/admin/notificationWork/studentCourses")
 @Api(tags = "StudentCourseController")
 @Tag(name = "StudentCourseController", description = "学生课程管理模块")
 @RequiredArgsConstructor

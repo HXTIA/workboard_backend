@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin.usermanagement;
+package run.hxtia.workbd.controller.admin.usermanager;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.annotations.Api;
@@ -40,7 +40,7 @@ import java.util.function.Function;
  */
 
 @RestController
-@RequestMapping("/admin/admin/users")
+@RequestMapping("/admin/userManager/users")
 @Api(tags = "AdminController")
 @Tag(name = "AdminController", description = "【B端】用户模块")
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.admin.usermanagement;
+package run.hxtia.workbd.controller.admin.usermanager;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2024/5/9
  */
 @RestController
-@RequestMapping("/admin/admin/roles")
+@RequestMapping("/admin/userManager/roles")
 @Api(tags = "RoleController")
 @Tag(name = "RoleController", description = "【B端】角色模块")
 @RequiredArgsConstructor

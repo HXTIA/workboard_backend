@@ -1,4 +1,4 @@
-package run.hxtia.workbd.controller.miniapp.usermanagement;
+package run.hxtia.workbd.controller.miniapp.studentmanager;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,11 +20,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/wx/user/student")
+@RequestMapping("/wx/studentManager/student")
 @RequiredArgsConstructor
 @Api(tags = "WxUserController")
 @Tag(name = "WxUserController", description = "小程序用户模块")
-public class WxUserController {
+public class StudentController {
     private final StudentService studentService;
 
     @GetMapping("/getToken")
