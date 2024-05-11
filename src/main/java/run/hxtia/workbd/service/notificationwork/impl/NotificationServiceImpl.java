@@ -16,11 +16,11 @@ import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.NotificationMapper;
 import run.hxtia.workbd.pojo.po.Notification;
-import run.hxtia.workbd.pojo.vo.request.page.NotificationPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.NotificationReqVo;
-import run.hxtia.workbd.pojo.vo.response.NotificationVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.NotificationPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.NotificationService;
 import run.hxtia.workbd.service.notificationwork.StudentNotificationService;
 

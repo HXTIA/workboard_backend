@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.function.Function;
 

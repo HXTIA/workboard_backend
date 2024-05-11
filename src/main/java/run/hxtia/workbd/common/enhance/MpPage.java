@@ -2,8 +2,8 @@ package run.hxtia.workbd.common.enhance;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 import java.util.List;
 import java.util.function.Function;

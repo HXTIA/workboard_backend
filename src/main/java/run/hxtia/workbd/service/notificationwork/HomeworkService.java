@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
 import run.hxtia.workbd.pojo.po.Homework;
-import run.hxtia.workbd.pojo.vo.request.page.HomeworkPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.HomeworkReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.HomeworkUploadReqVo;
-import run.hxtia.workbd.pojo.vo.response.HomeworkVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CourseIdWorkPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.HomeworkPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkUploadReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 import java.util.List;
 
@@ -77,4 +79,11 @@ public interface HomeworkService extends IService<Homework> {
      * @return 作业ID列表
      */
     List<Long> getWorkIdsByCourseIds(List<Integer> courseIdList);
+
+    /**
+     * 根据课程Ids获取作业信息列表
+     * @param reqVo 带 courseIds的req参数
+     * @return 作业信息列表
+     */
+    ExtendedPageVo<HomeworkVo> getWorkInfoByCourseIds(CourseIdWorkPageReqVo reqVo);
 }

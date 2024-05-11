@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.GradeMapper;
 import run.hxtia.workbd.pojo.po.Grade;
-import run.hxtia.workbd.pojo.vo.request.organization.GradeEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.organization.GradeReqVo;
-import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.organization.request.GradeEditReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.GradeReqVo;
+import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.GradeService;
 
 import java.util.List;

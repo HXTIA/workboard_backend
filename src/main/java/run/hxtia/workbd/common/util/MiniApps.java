@@ -2,14 +2,11 @@ package run.hxtia.workbd.common.util;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.api.WxMaUserService;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.prop.WorkBoardProperties;
 import run.hxtia.workbd.common.redis.Redises;
-import run.hxtia.workbd.pojo.vo.response.WxTokenVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-
-import java.util.Objects;
+import run.hxtia.workbd.pojo.vo.common.response.WxTokenVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 
 /**
  * 小程序工具类

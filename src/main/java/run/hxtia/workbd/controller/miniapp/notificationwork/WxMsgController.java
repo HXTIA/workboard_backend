@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.JsonVo;
-import run.hxtia.workbd.service.miniapp.WxMsgService;
+import run.hxtia.workbd.pojo.vo.common.request.WxSubscribeMessageReqVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
+import run.hxtia.workbd.service.notificationwork.WxMsgService;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -2,7 +2,7 @@ package run.hxtia.workbd.common.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 
 /**
  * 自定义异常类

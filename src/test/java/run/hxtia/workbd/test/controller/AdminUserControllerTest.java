@@ -8,7 +8,7 @@
 //import org.springframework.validation.annotation.Validated;
 //import run.hxtia.workbd.WorkBoardApplication;
 //import run.hxtia.workbd.controller.admin.AdminUserController;
-//import run.hxtia.workbd.pojo.vo.request.save.AdminUserRegisterReqVo;
+//import run.hxtia.workbd.pojo.vo.usermanagement.request.AdminUserRegisterReqVo;
 //
 //import javax.validation.Valid;
 //import javax.validation.constraints.NotNull;

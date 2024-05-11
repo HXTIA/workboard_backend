@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.StudentInfoDto;
-import run.hxtia.workbd.pojo.vo.request.save.StudentAvatarReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.StudentReqVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
-import run.hxtia.workbd.pojo.vo.result.JsonVo;
-import run.hxtia.workbd.service.miniapp.StudentService;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.StudentVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentAvatarReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentReqVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
+import run.hxtia.workbd.service.usermanagement.StudentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -67,5 +68,12 @@ public class StudentController {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
+
+    // 通过学生的id获取学生的信息
+    //    @GetMapping("/getStudentInfo")
+    //    @ApiOperation("通过学生的ID获取学生的信息")
+    //    public DataJsonVo<StudentVo> getStudentInfo(@NotNull(message = "学生ID不能为空") Long studentId) throws Exception {
+    //        return JsonVos.ok(studentService.getStudentById(studentId));
+    //    }
 
 }

@@ -3,10 +3,10 @@ package run.hxtia.workbd.service.notificationwork;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Notification;
-import run.hxtia.workbd.pojo.vo.request.page.NotificationPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.NotificationReqVo;
-import run.hxtia.workbd.pojo.vo.response.NotificationVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.NotificationPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 /**
  * @author Xiaojin

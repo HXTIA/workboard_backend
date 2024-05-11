@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

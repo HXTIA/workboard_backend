@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
-import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
 import run.hxtia.workbd.service.usermanagement.ResourceService;
 
 import java.util.List;

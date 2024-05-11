@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;

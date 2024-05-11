@@ -11,11 +11,11 @@ import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.mapper.CourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
-import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
-import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseEditReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.CourseService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 

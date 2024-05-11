@@ -7,22 +7,18 @@ import org.mapstruct.factory.Mappers;
 import run.hxtia.workbd.pojo.dto.ResourceDto;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
 import run.hxtia.workbd.pojo.po.*;
-import run.hxtia.workbd.pojo.vo.request.course.CourseEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.course.CourseReqVo;
-import run.hxtia.workbd.pojo.vo.request.course.StudentCourseEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.course.StudentCourseReqVo;
-import run.hxtia.workbd.pojo.vo.request.organization.*;
-import run.hxtia.workbd.pojo.vo.request.WxSubscribeMessageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.*;
-import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
-import run.hxtia.workbd.pojo.vo.response.RoleVo;
-import run.hxtia.workbd.pojo.vo.response.StudentVo;
-import run.hxtia.workbd.pojo.vo.response.*;
-import run.hxtia.workbd.pojo.vo.response.course.StudentCourseVo;
-import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
-import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
-import run.hxtia.workbd.pojo.vo.response.course.CourseVo;
-import run.hxtia.workbd.pojo.vo.response.organization.GradeVo;
+import run.hxtia.workbd.pojo.vo.common.response.*;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.*;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.*;
+import run.hxtia.workbd.pojo.vo.organization.request.*;
+import run.hxtia.workbd.pojo.vo.common.request.WxSubscribeMessageReqVo;
+import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
+import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
+import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.*;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.RoleVo;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】

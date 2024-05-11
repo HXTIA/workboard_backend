@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.ClassMapper;
 import run.hxtia.workbd.pojo.po.Classes;
-import run.hxtia.workbd.pojo.vo.request.organization.ClassEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.organization.ClassReqVo;
-import run.hxtia.workbd.pojo.vo.response.organization.ClassVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.organization.request.ClassEditReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.ClassReqVo;
+import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.ClassService;
 
 import java.util.List;

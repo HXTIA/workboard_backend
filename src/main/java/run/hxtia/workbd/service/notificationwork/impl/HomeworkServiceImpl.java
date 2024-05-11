@@ -1,5 +1,6 @@
 package run.hxtia.workbd.service.notificationwork.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +20,14 @@ import run.hxtia.workbd.mapper.HomeworkMapper;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
 import run.hxtia.workbd.pojo.po.Homework;
 import run.hxtia.workbd.pojo.po.StudentHomework;
-import run.hxtia.workbd.pojo.vo.request.page.HomeworkPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.HomeworkReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.HomeworkUploadReqVo;
-import run.hxtia.workbd.pojo.vo.response.HomeworkVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CourseIdWorkPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.HomeworkPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkUploadReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
 
@@ -207,6 +210,39 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         MpLambdaQueryWrapper<Homework> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.in(Homework::getCourseId, courseIdList).eq(Homework::getStatus, Constants.Status.WORK_ENABLE);
         return Streams.list2List(baseMapper.selectList(wrapper), Homework::getId);
+    }
+
+    /**
+     * 根据课程ID列表分页查询作业信息。
+     * @param reqVo 请求参数对象，包含课程ID列表及分页信息
+     * @return 分页的作业视图对象列表
+     */
+    @Override
+    public ExtendedPageVo<HomeworkVo> getWorkInfoByCourseIds(CourseIdWorkPageReqVo reqVo) {
+        // 初始化分页参数
+        Page<Homework> pageParam = new Page<>(reqVo.getPage(), reqVo.getSize());
+
+        // 构建查询条件
+        MpLambdaQueryWrapper<Homework> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.in(Homework::getCourseId, reqVo.getCourseIds())
+            .eq(Homework::getStatus, Constants.Status.WORK_ENABLE);
+
+        // 执行分页查询
+        Page<Homework> resultPage = baseMapper.selectPage(pageParam, wrapper);
+
+        // 转换查询结果为VO对象
+        List<HomeworkVo> homeworkVos = Streams.list2List(resultPage.getRecords(), MapStructs.INSTANCE::po2vo);
+
+        // 构建扩展分页结果对象
+        ExtendedPageVo<HomeworkVo> pageVo = new ExtendedPageVo<>();
+        pageVo.setCount(resultPage.getTotal());
+        pageVo.setPages(resultPage.getPages());
+        pageVo.setData(homeworkVos);
+        pageVo.setCurrentPage(resultPage.getCurrent());
+        pageVo.setPageSize(resultPage.getSize());
+
+        // 返回分页结果
+        return pageVo;
     }
 
     /**

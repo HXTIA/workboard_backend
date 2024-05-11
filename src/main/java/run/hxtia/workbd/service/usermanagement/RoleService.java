@@ -3,10 +3,10 @@ package run.hxtia.workbd.service.usermanagement;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Role;
-import run.hxtia.workbd.pojo.vo.request.page.RolePageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.RoleReqVo;
-import run.hxtia.workbd.pojo.vo.response.RoleVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.RolePageReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.RoleReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.RoleVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 import java.util.List;
 

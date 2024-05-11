@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.pojo.vo.request.page.NotificationPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.NotificationReqVo;
-import run.hxtia.workbd.pojo.vo.response.NotificationVo;
-import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.NotificationPageReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.NotificationService;
 
 /**

@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
-import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.*;
-import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
-import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.AdminUserPageReqVo;
+import run.hxtia.workbd.pojo.vo.common.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.*;
 
 @Service
 @Transactional(readOnly = true)

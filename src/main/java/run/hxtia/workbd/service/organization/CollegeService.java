@@ -3,11 +3,11 @@ package run.hxtia.workbd.service.organization;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.College;
-import run.hxtia.workbd.pojo.vo.request.organization.CollegeEditReqVo;
-import run.hxtia.workbd.pojo.vo.request.organization.CollegeReqVo;
-import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
-import run.hxtia.workbd.pojo.vo.response.organization.CollegeVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.organization.request.CollegeEditReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.CollegeReqVo;
+import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
+import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 /**
  * @author Xiaojin

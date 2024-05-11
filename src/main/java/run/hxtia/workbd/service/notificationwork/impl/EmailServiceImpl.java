@@ -12,7 +12,7 @@ import run.hxtia.workbd.common.thymeleaf.Thymeleafs;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Strings;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.service.notificationwork.EmailService;
 
 import javax.mail.internet.MimeMessage;

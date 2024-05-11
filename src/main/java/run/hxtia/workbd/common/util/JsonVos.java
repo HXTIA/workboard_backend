@@ -2,7 +2,7 @@ package run.hxtia.workbd.common.util;
 
 
 import run.hxtia.workbd.common.exception.CommonException;
-import run.hxtia.workbd.pojo.vo.result.*;
+import run.hxtia.workbd.pojo.vo.common.response.result.*;
 
 /**
  * controller中统一返回的包装类

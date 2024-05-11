@@ -15,16 +15,16 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
-import run.hxtia.workbd.pojo.vo.request.AdminLoginReqVo;
-import run.hxtia.workbd.pojo.vo.request.page.AdminUserPageReqVo;
-import run.hxtia.workbd.pojo.vo.request.save.*;
-import run.hxtia.workbd.pojo.vo.response.AdminLoginVo;
-import run.hxtia.workbd.pojo.vo.response.AdminUserVo;
-import run.hxtia.workbd.pojo.vo.response.CaptchaVo;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.DataJsonVo;
-import run.hxtia.workbd.pojo.vo.result.JsonVo;
-import run.hxtia.workbd.pojo.vo.result.PageJsonVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.AdminLoginReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.AdminUserPageReqVo;
+import run.hxtia.workbd.pojo.vo.common.response.AdminLoginVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.common.response.CaptchaVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.*;
 import run.hxtia.workbd.service.usermanagement.AdminUserService;
 import run.hxtia.workbd.service.notificationwork.EmailService;
 
@@ -44,7 +44,7 @@ import java.util.function.Function;
 @Api(tags = "AdminController")
 @Tag(name = "AdminController", description = "【B端】用户模块")
 @RequiredArgsConstructor
-public class AdminController extends BaseController<AdminUsers, AdminUserReqVo> {
+public class  AdminController extends BaseController<AdminUsers, AdminUserReqVo> {
 
     private final AdminUserService adminUserService;
     private final EmailService emailService;

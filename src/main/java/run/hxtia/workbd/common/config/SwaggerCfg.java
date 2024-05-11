@@ -84,7 +84,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket orgCDocket() {
         return groupDocket(
             "【C端】_02_组织管理",
-            "/wx/organization/(colleges.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "/wx/organization/(complexAll.*)",
             "组织管理模块文档",
             "获取组织...");
     }
