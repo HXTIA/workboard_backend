@@ -8,6 +8,8 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
+import java.util.List;
+
 /**
  * @author Xiaojin
  * @date 2024/5/9
@@ -57,10 +59,4 @@ public interface NotificationService extends IService<Notification> {
     @Transactional(readOnly = false)
     boolean removeHistory(String ids);
 
-//    /**
-//     * 根据学生 ID 获取学生通知
-//     * @param stuId：学生 ID
-//     * @return ：学生所有通知
-//     */
-//    List<NotificationDetailDto> getNotificationListByStuId(Long stuId);
 }

@@ -93,7 +93,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket notificationWorksCDocket() {
         return groupDocket(
             "【C端】_03_通知作业管理",
-            "/wx/notificationWork/(messages.*|)",
+            "/wx/notificationWork/(messages.*|notifyAndWork.*)",
             "通知作业管理模块文档",
             "获取作业、通知...");
     }

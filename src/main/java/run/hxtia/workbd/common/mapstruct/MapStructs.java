@@ -67,6 +67,10 @@ public interface MapStructs {
     )
     HomeworkVo po2vo(Homework po);
 
+    // 通知
+    NotificationVo po2vo(Notification po);
+    NotificationVo po2vo(StudentNotification studentNotification);
+
    // reqVo -> po  【用来做数据库保存】
 
    AdminUsers reqVo2po(AdminUserReqVo reqVo);
@@ -111,9 +115,8 @@ public interface MapStructs {
     StudentHomeworkDetailDto po2dto(Homework po);
 
 
-    NotificationVo po2vo(Notification notification);
-
 
     Notification reqVo2po(NotificationReqVo reqVo);
+
 
 }

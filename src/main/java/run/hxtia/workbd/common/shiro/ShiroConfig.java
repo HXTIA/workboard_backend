@@ -60,7 +60,7 @@ public class ShiroConfig {
         uriMap.put("/admin/userManager/users/captcha", "anon");
 
         // test
-        uriMap.put("/wx/organization/**", "anon");
+        uriMap.put("/wx/notificationWork/notifyAndWork/**", "anon");
 
 
         // 放行Swagger文档
