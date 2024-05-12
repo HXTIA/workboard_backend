@@ -55,6 +55,8 @@ public class MpPage<T> extends Page<T> {
         PageVo<R> pageVo = new PageVo<>();
         pageVo.setCount(getTotal());
         pageVo.setPages(getPages());
+        pageVo.setCurrentPage(getCurrent());
+        pageVo.setPageSize(getSize());
         pageVo.setData(data);
 
         return pageVo;

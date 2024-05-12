@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CourseIdWorkPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.CollegePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.GradePageReqVo;
 import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
@@ -66,8 +69,8 @@ public class OrganizationController {
      */
     @PostMapping("/collegePage")
     @ApiOperation("分页获取学院信息")
-    public PageVo<CollegeVo> getPageList(@Valid @RequestBody PageReqVo reqVo) {
-        return collegeService.getPageList(reqVo);
+    public PageJsonVo<CollegeVo> getPageList(@Valid @RequestBody CollegePageReqVo reqVo) {
+        return JsonVos.ok(collegeService.getPageList(reqVo));
     }
 
     // 选择年级

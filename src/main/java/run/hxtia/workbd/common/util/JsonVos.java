@@ -2,6 +2,7 @@ package run.hxtia.workbd.common.util;
 
 
 import run.hxtia.workbd.common.exception.CommonException;
+import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
 
 /**
@@ -78,7 +79,11 @@ public class JsonVos {
     public static <T> PageJsonVo<T> ok(PageVo<T> pageVo) {
         PageJsonVo<T> pageJsonVo = new PageJsonVo<>();
         pageJsonVo.setCount(pageVo.getCount());
+        pageJsonVo.setPages(pageVo.getPages());
+        pageJsonVo.setCurrentPage(pageVo.getCurrentPage());
+        pageJsonVo.setPageSize(pageVo.getPageSize());
         pageJsonVo.setData(pageVo.getData());
+
         return pageJsonVo;
     }
 

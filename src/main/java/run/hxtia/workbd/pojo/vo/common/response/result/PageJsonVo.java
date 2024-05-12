@@ -19,4 +19,12 @@ public class PageJsonVo<T> extends DataJsonVo<List<T>> {
     @ApiModelProperty("总数")
     private Long count;
 
+    @ApiModelProperty("总页数")
+    private Long pages;
+
+    @ApiModelProperty("当前页")
+    private Long currentPage;
+
+    @ApiModelProperty("每页显示的记录数")
+    private Long pageSize;
 }

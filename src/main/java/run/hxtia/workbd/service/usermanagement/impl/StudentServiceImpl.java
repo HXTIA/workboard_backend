@@ -155,8 +155,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         Student po = new Student();
         po.setWechatId(wechatId);
         po.setNickname(Strings.getUUID(10));
-        // TODO：设置默认的头像
-        po.setAvatarUrl("");
+        // TODO：改成可配置项，目前硬编码了
+        po.setAvatarUrl("https://hx.404fwf.cn/notifyBoard/img/default-avatar.png");
         if (baseMapper.insert(po) <= 0) {
             return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
         }

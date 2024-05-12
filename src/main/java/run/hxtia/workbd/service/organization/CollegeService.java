@@ -6,6 +6,7 @@ import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.CollegePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
@@ -55,7 +56,7 @@ public interface CollegeService extends IService<College> {
      * @param reqVo ：分页请求参数
      * @return 分页的学院信息
      */
-    PageVo<CollegeVo> getPageList(PageReqVo reqVo);
+    PageVo<CollegeVo> getPageList(CollegePageReqVo reqVo);
 
     /**
      * 检查学院是否存在。

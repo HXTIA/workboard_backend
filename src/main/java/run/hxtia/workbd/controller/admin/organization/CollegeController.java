@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.College;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.CollegePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
@@ -78,8 +80,8 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
      */
     @PostMapping("/listPage")
     @ApiOperation("分页获取学院信息")
-    public PageVo<CollegeVo> getPageList(@Valid @RequestBody PageReqVo reqVo) {
-        return collegeService.getPageList(reqVo);
+    public PageJsonVo<CollegeVo> getPageList(@Valid @RequestBody CollegePageReqVo reqVo) {
+        return JsonVos.ok(collegeService.getPageList(reqVo));
     }
 
 

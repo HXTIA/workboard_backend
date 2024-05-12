@@ -7,17 +7,21 @@ import lombok.Data;
 
 import java.util.List;
 
-@ApiModel("分页结果")
+// Service 分页结果
 @Data
 public class PageVo<T> {
-
-
-    @ApiModelProperty("总数")
+    // 总数
     private Long count;
 
-    @ApiModelProperty("总页数")
+    // 总页数
     private Long pages;
 
-    @ApiModelProperty("数据")
+    // 当前页
+    private Long currentPage;
+
+    // 每页显示的记录数
+    private Long pageSize;
+
+    // 数据
     private List<T> data;
 }

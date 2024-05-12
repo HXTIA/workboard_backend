@@ -386,6 +386,7 @@ public class AdminUserServiceImpl
     @Override
     public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo, String token) {
 
+        // TODO：查组织信息？？？
         MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname).
             eq(AdminUsers::getCollegeId, Redises.getClgIdByToken(token));

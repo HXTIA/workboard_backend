@@ -5,12 +5,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.mapper.CollegeMapper;
+import run.hxtia.workbd.pojo.po.AdminUsers;
 import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.CollegePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.CollegeService;
@@ -86,19 +91,14 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
      * @param reqVo ：分页请求参数
      * @return 分页的学院信息
      */
-        public PageVo<CollegeVo> getPageList(PageReqVo reqVo) {
-            Page<College> page = new Page<>(reqVo.getPage(), reqVo.getSize());
-            Page<College> result = page(page);
-            List<CollegeVo> collegeVos = result.getRecords().stream()
-                .map(MapStructs.INSTANCE::po2vo)
-                .collect(Collectors.toList());
+        public PageVo<CollegeVo> getPageList(CollegePageReqVo pageReqVo) {
+         MpLambdaQueryWrapper<College> wrapper = new MpLambdaQueryWrapper<>();
+         wrapper.like(pageReqVo.getKeyword(), College::getName).
+             eq(College::getId, pageReqVo.getId());
 
-            PageVo<CollegeVo> pageVo = new PageVo<>();
-            pageVo.setData(collegeVos);
-            pageVo.setCount(result.getTotal());
-            pageVo.setPages(result.getPages());
-
-            return pageVo;
+         return baseMapper.
+             selectPage(new MpPage<>(pageReqVo), wrapper).
+             buildVo(MapStructs.INSTANCE::po2vo);
         }
 
 
