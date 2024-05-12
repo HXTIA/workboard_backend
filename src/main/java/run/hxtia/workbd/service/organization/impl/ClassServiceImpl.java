@@ -6,11 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.mapper.ClassMapper;
 import run.hxtia.workbd.pojo.po.Classes;
+import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.ClassService;
@@ -82,18 +87,17 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
     }
 
     @Override
-    public PageVo<ClassVo> getClassInfoByGradeIdWithPagination(Integer gradeId, int pageNum, int pageSize) {
-        // 创建分页条件
-        Page<Classes> page = new Page<>(pageNum, pageSize);
-        // 执行分页查询
-        IPage<Classes> classPage = lambdaQuery().eq(Classes::getGradeId, gradeId).page(page);
-        // 将查询结果转换为VO对象
-        List<ClassVo> classVos = classPage.getRecords().stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
-        // 创建并返回分页结果
-        PageVo<ClassVo> result = new PageVo<>();
-        result.setCount(classPage.getTotal());
-        result.setData(classVos);
-        return result;
+    public PageVo<ClassVo> listPage(ClassPageReqVo pageReqVo) {
+
+        // 构建查询条件
+        MpLambdaQueryWrapper<Classes> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.like(pageReqVo.getKeyword(), Classes::getName).
+            eq(Classes::getGradeId, pageReqVo.getGradeId());
+
+        // 构建分页结果
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo), wrapper)
+            .buildVo(MapStructs.INSTANCE::po2vo);
     }
 
     @Override

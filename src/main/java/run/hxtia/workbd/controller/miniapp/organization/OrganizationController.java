@@ -17,7 +17,6 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.CollegePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.GradePageReqVo;
-import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
 import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
@@ -95,8 +94,8 @@ public class OrganizationController {
      */
     @PostMapping("/classPage")
     @ApiOperation("根据年级ID分页获取班级信息")
-    public PageVo<ClassVo> getClassInfoByGradeIdWithPagination(@Valid @RequestBody ClassPageReqVo reqVo) {
-        return classService.getClassInfoByGradeIdWithPagination(reqVo.getGradeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
+    public PageJsonVo<ClassVo> getClassInfoByGradeIdWithPagination(@Valid @RequestBody ClassPageReqVo reqVo) {
+        return JsonVos.ok(classService.listPage(reqVo));
     }
 
     // 选择课程
@@ -108,8 +107,8 @@ public class OrganizationController {
      */
     @PostMapping("/coursePage")
     @ApiOperation("根据学院ID分页获取课程信息")
-    public PageVo<CourseVo> getCourseInfoByCollegeIdWithPagination(@Valid @RequestBody CoursePageReqVo reqVo) {
-        return courseService.getCourseInfoByCollegeIdWithPagination(reqVo.getCollegeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
+    public PageJsonVo<CourseVo> getCourseInfoByCollegeIdWithPagination(@Valid @RequestBody CoursePageReqVo reqVo) {
+        return JsonVos.ok(courseService.getPage(reqVo));
     }
 
     // 查看作业列表

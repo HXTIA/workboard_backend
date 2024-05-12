@@ -13,9 +13,11 @@ import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.mapper.StudentCourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.po.StudentCourse;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentCoursePageReqVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
@@ -121,8 +123,6 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
 
     /**
      * 根据学生ID获取分页的学生课程信息
-     * @param studentId ：学生ID
-     * @param page ：分页信息
      * @return 学生课程信息
      */
     @Override

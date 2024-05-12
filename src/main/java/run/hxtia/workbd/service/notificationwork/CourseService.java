@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
@@ -77,11 +78,8 @@ public interface CourseService extends IService<Course> {
 
     /**
      * 根据学院ID分页获取课程信息
-     * @param collegeId 学院ID
-     * @param pageNum 页码
-     * @param pageSize 每页数量
      * @return 该学院下的课程信息的分页列表
      */
-    PageVo<CourseVo> getCourseInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize);
+    PageVo<CourseVo> getPage(CoursePageReqVo reqVo);
 
 }

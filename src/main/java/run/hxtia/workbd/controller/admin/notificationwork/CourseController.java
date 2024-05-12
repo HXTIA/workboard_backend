@@ -6,14 +6,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.CourseService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 
@@ -55,12 +53,13 @@ public class CourseController  {
 
     @GetMapping("/{courseId}")
     @ApiOperation("根据ID获取课程信息")
-    public CourseVo getCourseInfoById(@PathVariable Integer courseId) {
-        return courseService.getCourseInfoById(courseId);
+    public DataJsonVo<CourseVo> getCourseInfoById(@PathVariable Integer courseId) {
+        return JsonVos.ok(courseService.getCourseInfoById(courseId));
     }
 
     @GetMapping("/list")
     @ApiOperation("获取所有课程列表")
+    // TODO：这个接口暂时用不到，到时候再修改返回值。
     public PageVo<CourseVo> getList() {
         return courseService.getList();
     }
@@ -84,8 +83,8 @@ public class CourseController  {
 
     @PostMapping("/college/page")
     @ApiOperation("根据学院ID分页获取课程信息")
-    public PageVo<CourseVo> getCourseInfoByCollegeIdWithPagination(@Valid @RequestBody CoursePageReqVo reqVo) {
-        return courseService.getCourseInfoByCollegeIdWithPagination(reqVo.getCollegeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
+    public PageJsonVo<CourseVo> getCourseInfoByCollegeIdWithPagination(@Valid @RequestBody CoursePageReqVo reqVo) {
+        return JsonVos.ok(courseService.getPage(reqVo));
     }
 
 

@@ -19,7 +19,4 @@ public class NotificationPageReqVo extends KeywordPageReqVo {
 
     @ApiModelProperty("通知类型")
     private String type;
-
-
-
 }

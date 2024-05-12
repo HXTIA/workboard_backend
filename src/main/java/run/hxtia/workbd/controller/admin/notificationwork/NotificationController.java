@@ -6,11 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.NotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.NotificationService;
 
 /**
@@ -28,24 +27,28 @@ public class NotificationController {
 
     @PostMapping("/list")
     @ApiOperation(value = "分页查询通知")
-    public PageVo list(@RequestBody NotificationPageReqVo pageReqVo) {
-        return notificationService.list(pageReqVo, pageReqVo.getType());
+    public PageJsonVo<NotificationVo> list(@RequestBody NotificationPageReqVo pageReqVo) {
+        return JsonVos.ok(notificationService.listPage(pageReqVo, pageReqVo.getType()));
     }
 
     @PostMapping("/saveOrUpdate")
     @ApiOperation(value = "保存或更新通知")
-    public boolean saveOrUpdate(@RequestBody NotificationReqVo reqVo) {
-        try {
-            return notificationService.saveOrUpdate(reqVo);
-        } catch (Exception e) {
-            return false;
+    public JsonVo saveOrUpdate(@RequestBody NotificationReqVo reqVo) {
+        if (notificationService.saveOrUpdate(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
 
     @PostMapping("/removeByIds")
     @ApiOperation(value = "删除一条或多条通知【逻辑删除】")
-    public boolean removeByIds(@RequestParam String ids) {
-        return notificationService.removeByIds(ids);
+    public JsonVo removeByIds(@RequestParam String ids) {
+        if (notificationService.removeByIds(ids)) {
+            return JsonVos.ok(CodeMsg.REMOVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.REMOVE_ERROR);
+        }
     }
 
     @GetMapping("/getByNotificationId")

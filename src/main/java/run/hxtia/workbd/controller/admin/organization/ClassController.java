@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.Classes;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
@@ -45,7 +46,6 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
-
 
     // 编辑班级
     @PostMapping("/edit")
@@ -106,7 +106,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
 
     @PostMapping("/grade/page")
     @ApiOperation("根据年级ID分页获取班级信息")
-    public PageVo<ClassVo> getClassInfoByGradeIdWithPagination(@Valid @RequestBody ClassPageReqVo reqVo) {
-        return classService.getClassInfoByGradeIdWithPagination(reqVo.getGradeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
+    public PageJsonVo<ClassVo> getClassInfoByGradeIdWithPagination(@Valid @RequestBody ClassPageReqVo reqVo) {
+        return JsonVos.ok(classService.listPage(reqVo));
     }
 }

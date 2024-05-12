@@ -72,8 +72,6 @@ public interface StudentCourseService extends IService<StudentCourse> {
 
     /**
      * 根据学生ID获取分页的学生课程信息
-     * @param studentId ：学生ID
-     * @param page ：分页信息
      * @return 学生课程信息列表
      */
     IPage<CourseVo> getStudentCoursesByStudentIdWithPagination(Integer studentId, Page<StudentCourse> page);

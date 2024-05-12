@@ -15,6 +15,7 @@ import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.NotificationMapper;
+import run.hxtia.workbd.pojo.po.Homework;
 import run.hxtia.workbd.pojo.po.Notification;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.NotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
@@ -40,18 +41,16 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
      * @return 分页后的数据
      */
     @Override
-    public PageVo<NotificationVo> list(NotificationPageReqVo pageReqVo, String type) {
+    public PageVo<NotificationVo> listPage(NotificationPageReqVo pageReqVo, String type) {
         // 构建查询条件
         // 1. 创建一个查询包装器（`QueryWrapper`）来构建查询条件。
-        QueryWrapper<Notification> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().like(Notification::getTitle, pageReqVo.getKeyword())
-            .or().like(Notification::getMessage, pageReqVo.getKeyword())
-            .eq(Notification::getType, type);
+        MpLambdaQueryWrapper<Notification> queryWrapper = new MpLambdaQueryWrapper<>();
+        queryWrapper.like(pageReqVo.getKeyword(), Notification::getTitle, Notification::getMessage).
+            between(pageReqVo.getCreatedTime(), Notification::getCreatedAt).
+            eq(Notification::getType, type);
 
-        // 构建分页结果
-        Page<Notification> resultPage = baseMapper.selectPage(new MpPage<>(pageReqVo), queryWrapper);
         // 返回分页结果
-        return baseMapper.selectPage(new MpPage<>(pageReqVo),queryWrapper)
+        return baseMapper.selectPage(new MpPage<>(pageReqVo), queryWrapper)
             .buildVo(MapStructs.INSTANCE::po2vo);
     }
 
@@ -61,16 +60,8 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
      * @return ：是否成功
      */
     @Override
-    public boolean saveOrUpdate(NotificationReqVo reqVo) throws Exception {
-        Notification po = MapStructs.INSTANCE.reqVo2po(reqVo);
-        try {
-            // 保存数据
-            return saveOrUpdate(po);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
+    public boolean saveOrUpdate(NotificationReqVo reqVo) {
+        return saveOrUpdate(MapStructs.INSTANCE.reqVo2po(reqVo));
     }
 
     /**

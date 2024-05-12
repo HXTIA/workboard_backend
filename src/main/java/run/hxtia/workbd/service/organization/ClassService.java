@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Classes;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
@@ -62,11 +63,8 @@ public interface ClassService extends IService<Classes> {
 
     /**
      * 根据年级ID分页获取班级信息
-     * @param gradeId 年级ID
-     * @param pageNum 页码
-     * @param pageSize 每页数量
      * @return 该年级下的班级信息的分页列表
      */
-    PageVo<ClassVo> getClassInfoByGradeIdWithPagination(Integer gradeId, int pageNum, int pageSize);
+    PageVo<ClassVo> listPage(ClassPageReqVo pageReqVo);
 
 }

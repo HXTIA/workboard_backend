@@ -8,8 +8,6 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
-import java.util.List;
-
 /**
  * @author Xiaojin
  * @date 2024/5/9
@@ -26,7 +24,7 @@ public interface NotificationService extends IService<Notification> {
      * @param type：通知类型
      * @return 分页后的数据
      */
-    PageVo<NotificationVo> list(NotificationPageReqVo pageReqVo, String type);
+    PageVo<NotificationVo> listPage(NotificationPageReqVo pageReqVo, String type);
 
     /**
      * 保存 or 编辑通知
@@ -34,7 +32,7 @@ public interface NotificationService extends IService<Notification> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean saveOrUpdate(NotificationReqVo reqVo) throws Exception;
+    boolean saveOrUpdate(NotificationReqVo reqVo);
 
     /**
      * 删除一条or多条通知【逻辑删除】

@@ -7,12 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.mapper.CourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
+import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
@@ -125,18 +130,16 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public PageVo<CourseVo> getCourseInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize) {
-        // 创建分页条件
-        Page<Course> page = new Page<>(pageNum, pageSize);
-        // 执行分页查询
-        IPage<Course> coursePage = lambdaQuery().eq(Course::getCollegeId, collegeId).page(page);
-        // 将查询结果转换为VO对象
-        List<CourseVo> courseVos = coursePage.getRecords().stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
-        // 创建并返回分页结果
-        PageVo<CourseVo> result = new PageVo<>();
-        result.setCount(coursePage.getTotal());
-        result.setData(courseVos);
-        return result;
+    public PageVo<CourseVo> getPage(CoursePageReqVo pageReqVo) {
+        // 构建查询条件
+        MpLambdaQueryWrapper<Course> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.like(pageReqVo.getKeyword(), Course::getName, Course::getDescription).
+            eq(Course::getCollegeId, pageReqVo.getCollegeId());
+
+        // 构建分页结果
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo), wrapper)
+            .buildVo(MapStructs.INSTANCE::po2vo);
     }
 
 }
