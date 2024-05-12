@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin/notificationWork/courses")
 @Api(tags = "CourseController")
-@Tag(name = "CourseController", description = "课程管理模块")
+@Tag(name = "CourseController", description = "【B端】课程管理模块")
 @RequiredArgsConstructor
 public class CourseController  {
 
