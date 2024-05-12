@@ -6,12 +6,12 @@ package run.hxtia.workbd.pojo.vo.common.response.result;
  */
 public enum CodeMsg {
 
-    OPERATE_OK(1, "操作成功"),
-    SAVE_OK(1, "保存成功"),
-    REMOVE_OK(1, "删除成功"),
-    SUB_MSG_OK(1, "成功订阅消息"),
-    REGISTER_OK(1, "注册成功"),
-    UPDATE_PWD_OK(1, "密码修改成功，请重新登录"),
+    OPERATE_OK(0, "操作成功"),
+    SAVE_OK(0, "保存成功"),
+    REMOVE_OK(0, "删除成功"),
+    SUB_MSG_OK(0, "成功订阅消息"),
+    REGISTER_OK(0, "注册成功"),
+    UPDATE_PWD_OK(0, "密码修改成功，请重新登录"),
 
     BAD_REQUEST(400, "请求出错"),
     UNAUTHORIZED(401, "未授权"),

@@ -16,12 +16,6 @@ import java.util.Date;
 @TableName("students")
 public class Student implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 学生ID
-     */
-    private Long id;
-
     /**
      * 微信ID
      */

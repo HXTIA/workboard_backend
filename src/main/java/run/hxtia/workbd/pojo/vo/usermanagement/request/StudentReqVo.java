@@ -13,7 +13,7 @@ public class StudentReqVo {
 
     @NotNull
     @ApiModelProperty(value = "用户ID", required = true)
-    private Long id;
+    private String wechatId;
 
     @ApiModelProperty("用户姓名")
     private String nickname;

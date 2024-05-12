@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * 自定义Shiro过滤器
  */
 @Slf4j
-public class TokenFilter extends AccessControlFilter {
+public class WxTokenFilter extends AccessControlFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
@@ -31,12 +31,8 @@ public class TokenFilter extends AccessControlFilter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-        // 来到这，去验证后台的接口，并且返回token，需要去加载权限
-        String token = Tokens.checkToken(request, Constants.Web.HEADER_TOKEN, Constants.Web.ADMIN_PREFIX);
-
-        // 去认证且授权
-        SecurityUtils.getSubject().login(new Token(token));
-
+        // 来到这，去验证后台的接口，并且返回token
+        Tokens.checkToken(request, Constants.WxMiniApp.WX_TOKEN, Constants.WxMiniApp.WX_PREFIX);
         return true;
     }
 }

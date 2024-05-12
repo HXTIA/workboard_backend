@@ -37,13 +37,13 @@ public class StudentController {
     @GetMapping("/getStudent")
     @ApiOperation("获取微信用户的数据")
     public DataJsonVo<StudentInfoDto> getStudent(HttpServletRequest request) {
-        return JsonVos.ok(studentService.getStudentByToken(request.getHeader(Constants.WxApp.WX_TOKEN)));
+        return JsonVos.ok(studentService.getStudentByToken(request.getHeader(Constants.WxMiniApp.WX_TOKEN)));
     }
 
     @GetMapping("/checkToken")
     @ApiOperation("获取微信用户的数据, 请求头：WXToken, 返回 code = 0 代表验证成功")
     public JsonVo checkToken(HttpServletRequest request) throws Exception {
-        if (!studentService.checkToken(request.getHeader(Constants.WxApp.WX_TOKEN))) {
+        if (!studentService.checkToken(request.getHeader(Constants.WxMiniApp.WX_TOKEN))) {
             return JsonVos.error(CodeMsg.CHECK_TOKEN_ERR);
         }
         return JsonVos.ok();

@@ -23,6 +23,8 @@ public class Constants {
         // 微信接口前缀
         public static final String WX_PREFIX = "/wx/";
         public static final String WX_AT_PREFIX = "wx:accesstoken:";
+
+        public static String WX_TOKEN = "WXToken";
     }
 
     /**
@@ -130,7 +132,6 @@ public class Constants {
         public static String GET_TOKEN = "sns/jscode2session";
         public static String CHECK_TOKEN = "wxa/checksession";
         public static String WX_ACCESS_TOKEN = "cgi-bin/token";
-        public static String WX_TOKEN = "WXToken";
 
     }
 

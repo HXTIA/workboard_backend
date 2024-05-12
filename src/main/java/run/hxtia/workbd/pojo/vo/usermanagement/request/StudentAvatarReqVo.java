@@ -13,7 +13,7 @@ public class StudentAvatarReqVo {
 
     @NotNull
     @ApiModelProperty(value = "用户ID", required = true)
-    private Long id;
+    private String wechatId;
 
     @ApiModelProperty("原先url地址")
     private String avatarUrl;

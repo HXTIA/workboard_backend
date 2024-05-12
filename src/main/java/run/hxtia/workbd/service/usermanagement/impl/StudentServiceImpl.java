@@ -21,9 +21,6 @@ import run.hxtia.workbd.mapper.StudentMapper;
 import run.hxtia.workbd.pojo.dto.StudentInfoDto;
 import run.hxtia.workbd.pojo.po.Student;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.StudentVo;
-import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
-import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
-import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
 import run.hxtia.workbd.pojo.vo.organization.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentAvatarReqVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentReqVo;
@@ -31,9 +28,6 @@ import run.hxtia.workbd.pojo.vo.common.response.WxAccessTokenVo;
 import run.hxtia.workbd.pojo.vo.common.response.WxCodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.WxTokenVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
-import run.hxtia.workbd.service.organization.ClassService;
-import run.hxtia.workbd.service.organization.CollegeService;
-import run.hxtia.workbd.service.organization.GradeService;
 import run.hxtia.workbd.service.usermanagement.StudentService;
 
 import java.util.concurrent.TimeUnit;
@@ -102,14 +96,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             }
 
             // 存入缓存中
-            redises.set(Constants.WxMiniApp.WX_AT_PREFIX, token, wxAccessTokenVo.getAccessToken(), wxAccessTokenVo.getExpiresIn(), TimeUnit.SECONDS);
+            redises.set(Constants.WxMiniApp.WX_AT_PREFIX, token, wxAccessTokenVo, wxAccessTokenVo.getExpiresIn(), TimeUnit.SECONDS);
         }
 
         // 构建 TCheck Token 的 URL
         String url = buildCheckSessionUrl(wxTokenVo, wxAccessTokenVo.getAccessToken());
         String resp = HttpClient.httpGetRequest(url);
         WxCodeMsg wxCodeMsg = WxCodeMsg.parseFromJson(resp);
-        if (wxCodeMsg == null) {
+        if (wxCodeMsg == null || wxCodeMsg.getErrcode() != 0) {
             JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
         }
 
@@ -177,11 +171,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public boolean update(StudentReqVo reqVo) {
         Student po = MapStructs.INSTANCE.reqVo2po(reqVo);
-        // TODO：判断组织是否存在
-//        if (!orgService.isExist(reqVo.getOrgId())) {
-//            return JsonVos.raise(CodeMsg.NO_ORG_INFO);
-//        }
-
         return baseMapper.updateById(po) > 0;
     }
 
@@ -193,7 +182,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public boolean update(StudentAvatarReqVo reqVo) throws Exception {
         Student po = new Student();
-        po.setId(reqVo.getId());
+        po.setWechatId(reqVo.getWechatId());
         return Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getAvatarUrl(),
                 reqVo.getAvatarFile()),
@@ -238,6 +227,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
 
         StringBuilder url = new StringBuilder(Constants.WxApp.PREFIX);
+        url.append(Constants.WxApp.CHECK_TOKEN);
         url.append("?access_token=").append(accessToken);
         url.append("&openid=").append(wxTokenVo.getOpenid());
         url.append("&signature=").append(signature);
