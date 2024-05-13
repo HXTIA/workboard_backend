@@ -13,7 +13,7 @@ import java.util.Date;
 public class StudentVo {
 
     @ApiModelProperty("学生 ID")
-    private Long id;
+    private String wechat_id;
 
     @ApiModelProperty("头像地址")
     private String avatarUrl;
@@ -36,4 +36,6 @@ public class StudentVo {
     @ApiModelProperty("班级 ID")
     private Integer classId;
 
+    @ApiModelProperty("是否是 C 端管理员")
+    private Short author;
 }

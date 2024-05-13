@@ -66,5 +66,9 @@ public class Student implements Serializable {
      */
     private String studentId;
 
+    /**
+     * 是否是 C 端管理员「1：是，0：不是」
+     */
+    private Short author;
 }
 
