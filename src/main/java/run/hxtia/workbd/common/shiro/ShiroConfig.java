@@ -66,8 +66,8 @@ public class ShiroConfig {
 
 
         // 放行Swagger文档
-        uriMap.put("/swagger**/**", "anon");
-        uriMap.put("/v3/api-docs/**", "anon");
+//        uriMap.put("/swagger**/**", "anon");
+//        uriMap.put("/v3/api-docs/**", "anon");
 
         // 放行获取静态资源的URI
         uriMap.put("/" + properties.getUpload().getUploadPath() + "**", "anon");
