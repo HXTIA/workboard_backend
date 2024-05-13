@@ -39,7 +39,7 @@ public class NotificationWorksController {
         // 通知
         private final StudentNotificationService studentNotificationService;
 
-        // 查看通知列表  TODO 留你一手
+        // 查看通知列表   已经解决
         @PostMapping("/notifications")
         @ApiOperation("获取学生通知列表")
         public PageJsonVo<NotificationVo> getStudentNotifications(@RequestBody StudentNotificationPageReqVo reqVo) {
