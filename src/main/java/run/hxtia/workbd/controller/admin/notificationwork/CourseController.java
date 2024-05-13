@@ -60,8 +60,8 @@ public class CourseController  {
     @GetMapping("/list")
     @ApiOperation("获取所有课程列表")
     // TODO：这个接口暂时用不到，到时候再修改返回值。
-    public PageVo<CourseVo> getList() {
-        return courseService.getList();
+    public PageJsonVo<CourseVo> getList() {
+        return JsonVos.ok(courseService.getList());
     }
 
     @DeleteMapping("/remove")

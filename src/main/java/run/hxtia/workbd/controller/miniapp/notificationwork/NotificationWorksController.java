@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
+import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentNotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
@@ -31,19 +33,14 @@ public class NotificationWorksController {
         // 通知
         private final StudentNotificationService studentNotificationService;
 
-        // 查看通知列表
+        // 查看通知列表  TODO 留你一手
         @PostMapping("/notifications")
         @ApiOperation("获取学生通知列表")
-        public ResponseEntity<ExtendedPageVo<NotificationVo>> getStudentNotifications(
-            @RequestBody StudentNotificationPageReqVo reqVo) {
-            try {
-                ExtendedPageVo<NotificationVo> notifications =  studentNotificationService.getNotificationListByStuId(reqVo);
-                return ResponseEntity.ok(notifications);
-            } catch (Exception e) {
-                return ResponseEntity.internalServerError().build();
-            }
-        }
+        public PageJsonVo<NotificationVo> getStudentNotifications(@RequestBody StudentNotificationPageReqVo reqVo) {
 
+                PageVo<NotificationVo> notifications =  studentNotificationService.getNotificationListByStuId(reqVo);
+                return JsonVos.ok(notifications);
+        }
 
         //查看作业列表
 

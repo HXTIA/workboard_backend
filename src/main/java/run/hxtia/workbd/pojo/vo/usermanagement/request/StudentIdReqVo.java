@@ -15,5 +15,5 @@ import javax.validation.constraints.NotNull;
 public class StudentIdReqVo {
     @ApiModelProperty("学生ID")
     @NotNull(message = "学生ID不能为空")
-    private Long studentId;
+    private String studentId;
 }

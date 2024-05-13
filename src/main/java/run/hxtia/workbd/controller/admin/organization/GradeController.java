@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.Grade;
+import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.vo.organization.request.GradeEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.GradeReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.GradePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.GradeService;
 
 import javax.validation.Valid;
@@ -60,15 +58,15 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     // 根据ID获取年级信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取年级信息")
-    public GradeVo getCollegeInfoById(@PathVariable Integer id) {
-        return gradeService.getGradeInfoById(id);
+    public DataJsonVo<GradeVo> getCollegeInfoById(@PathVariable Integer id) {
+        return JsonVos.ok(gradeService.getGradeInfoById(id));
     }
 
     // 获取所有年级列表
     @GetMapping("/list")
     @ApiOperation("获取所有年级列表")
-    public PageVo<GradeVo> getList() {
-        return gradeService.getList();
+    public PageJsonVo<GradeVo> getList() {
+        return JsonVos.ok(gradeService.getList());
     }
 
 
@@ -96,14 +94,14 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
 
     @GetMapping("/college/{collegeId}")
     @ApiOperation("根据学院ID获取年级信息")
-    public List<GradeVo> getGradeInfoByCollegeId(@PathVariable Integer collegeId) {
-        return gradeService.getGradeInfoByCollegeId(collegeId);
+    public DataJsonVo<List<GradeVo>> getGradeInfoByCollegeId(@PathVariable Integer collegeId) {
+        return JsonVos.ok(gradeService.getGradeInfoByCollegeId(collegeId));
     }
 
     @PostMapping("/college/page")
     @ApiOperation("根据学院ID分页获取年级信息")
-    public PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(@Valid @RequestBody GradePageReqVo reqVo) {
-        return gradeService.getGradeInfoByCollegeIdWithPagination(reqVo.getCollegeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
+    public PageJsonVo<GradeVo> getGradeInfoByCollegeIdWithPagination(@Valid @RequestBody GradePageReqVo reqVo) {
+        return JsonVos.ok(gradeService.getGradeInfoByCollegeIdWithPagination(reqVo));
     }
 
     @Override
