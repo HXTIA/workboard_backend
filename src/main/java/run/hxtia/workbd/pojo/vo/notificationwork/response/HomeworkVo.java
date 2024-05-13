@@ -41,7 +41,7 @@ public class HomeworkVo {
     private String publishPlatform;
 
     @ApiModelProperty("状态")
-    private String status;
+    private Short status;
 
 
 }

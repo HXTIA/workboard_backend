@@ -26,7 +26,7 @@ public class NotificationReqVo {
     private String content;
 
     @NotNull
-    @ApiModelProperty(value = "接收者类型（用户、角色、班级等）", required = true)
+    @ApiModelProperty(value = "接收者类型（用户1、班级2等）", required = true)
     private String receiver_type;
 
     @NotNull
