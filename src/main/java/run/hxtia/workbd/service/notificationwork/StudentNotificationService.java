@@ -26,7 +26,7 @@ public interface StudentNotificationService extends IService<StudentNotification
      * @param reqVo 分页和学生ID信息
      * @return 分页后的学生通知列表
      */
-    ExtendedPageVo<NotificationVo> getNotificationListByStuId(StudentNotificationPageReqVo reqVo);
+    PageVo<NotificationVo> getNotificationListByStuId(StudentNotificationPageReqVo reqVo);
 }
 
 

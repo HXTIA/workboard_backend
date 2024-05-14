@@ -17,6 +17,6 @@ import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
 @EqualsAndHashCode(callSuper = true)
 public class StudentNotificationPageReqVo extends PageReqVo {
 
-        @ApiModelProperty("学生id")
-        private Integer studentId;
+        @ApiModelProperty("微信id")
+        private String wechatId;
 }

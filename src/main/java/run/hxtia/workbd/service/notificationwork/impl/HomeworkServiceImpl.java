@@ -218,7 +218,7 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
      * @return 分页的作业视图对象列表
      */
     @Override
-    public ExtendedPageVo<HomeworkVo> getWorkInfoByCourseIds(CourseIdWorkPageReqVo reqVo) {
+    public PageVo<HomeworkVo> getWorkInfoByCourseIds(CourseIdWorkPageReqVo reqVo) {
         // 初始化分页参数
         Page<Homework> pageParam = new Page<>(reqVo.getPage(), reqVo.getSize());
 
@@ -234,7 +234,7 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         List<HomeworkVo> homeworkVos = Streams.list2List(resultPage.getRecords(), MapStructs.INSTANCE::po2vo);
 
         // 构建扩展分页结果对象
-        ExtendedPageVo<HomeworkVo> pageVo = new ExtendedPageVo<>();
+        PageVo<HomeworkVo> pageVo = new PageVo<>();
         pageVo.setCount(resultPage.getTotal());
         pageVo.setPages(resultPage.getPages());
         pageVo.setData(homeworkVos);

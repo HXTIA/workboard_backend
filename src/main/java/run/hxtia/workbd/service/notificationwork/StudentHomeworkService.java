@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.StudentHomework;
 import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentHomeworkPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
 
@@ -42,6 +43,6 @@ public interface StudentHomeworkService extends IService<StudentHomework> {
      * @param reqVo 分页和学生ID信息
     * @return 分页后的学生作业列表
     */
-    ExtendedPageVo<HomeworkVo> getHomeworksByStudentId(StudentHomeworkPageReqVo reqVo);
+    PageVo<HomeworkVo> getHomeworksByStudentId(StudentHomeworkPageReqVo reqVo);
 
 }

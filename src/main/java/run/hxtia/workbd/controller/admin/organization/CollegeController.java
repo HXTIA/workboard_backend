@@ -9,15 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.College;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.CollegeReqVo;
 import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.CollegePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.CollegeVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.CollegeService;
 
 import javax.validation.Valid;
@@ -62,15 +59,15 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 根据ID获取学院信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取学院信息")
-    public CollegeVo getCollegeInfoById(@PathVariable Integer id) {
-        return collegeService.getCollegeInfoById(id);
+    public DataJsonVo<CollegeVo> getCollegeInfoById(@PathVariable Integer id) {
+        return JsonVos.ok(collegeService.getCollegeInfoById(id));
     }
 
     // 获取所有学院列表
     @GetMapping("/list")
     @ApiOperation("获取所有学院列表")
-    public PageVo<CollegeVo> getList() {
-        return collegeService.getList();
+    public PageJsonVo<CollegeVo> getList() {
+        return JsonVos.ok(collegeService.getList());
     }
 
     /**

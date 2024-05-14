@@ -85,5 +85,5 @@ public interface HomeworkService extends IService<Homework> {
      * @param reqVo 带 courseIds的req参数
      * @return 作业信息列表
      */
-    ExtendedPageVo<HomeworkVo> getWorkInfoByCourseIds(CourseIdWorkPageReqVo reqVo);
+    PageVo<HomeworkVo> getWorkInfoByCourseIds(CourseIdWorkPageReqVo reqVo);
 }

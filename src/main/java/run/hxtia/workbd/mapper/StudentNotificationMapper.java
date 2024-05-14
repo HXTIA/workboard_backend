@@ -16,5 +16,5 @@ public interface StudentNotificationMapper extends BaseMapper<StudentNotificatio
     @Select("SELECT n.* FROM student_notifications sn " +
         "JOIN notifications n ON sn.notification_id = n.id " +
         "WHERE sn.student_id = #{studentId}")
-    Page<NotificationVo> selectNotificationsByStudentId(Page<?> page, @Param("studentId") Long studentId);
+    Page<NotificationVo> selectNotificationsByStudentId(Page<?> page, @Param("studentId") String studentId);
 }

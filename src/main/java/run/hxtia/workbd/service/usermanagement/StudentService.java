@@ -58,7 +58,7 @@ public interface StudentService extends IService<Student> {
      * @param studentId 学生ID
      * @return 包含学院、年级和班级信息的OrganizationVo对象
      */
-    OrganizationVo getOrganizationDetailsByStudentId(Long studentId) throws Exception;
+    OrganizationVo getOrganizationDetailsByStudentId(String studentId) ;
 
     // TODO 通过学生的ID获取学生的信息
     /**

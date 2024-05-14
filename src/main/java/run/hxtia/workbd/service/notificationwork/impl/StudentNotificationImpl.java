@@ -10,6 +10,7 @@ import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.mapper.StudentNotificationMapper;
 import run.hxtia.workbd.pojo.po.StudentNotification;
 import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentNotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
 import run.hxtia.workbd.service.notificationwork.StudentNotificationService;
@@ -46,14 +47,14 @@ public class StudentNotificationImpl
     }
 
     @Override
-    public ExtendedPageVo<NotificationVo> getNotificationListByStuId(StudentNotificationPageReqVo reqVo) {
+    public PageVo<NotificationVo> getNotificationListByStuId(StudentNotificationPageReqVo reqVo) {
         Page<?> pageParam = new Page<>(reqVo.getPage(), reqVo.getSize());
 
         // 使用自定义 Mapper 方法进行联表查询
-        Page<NotificationVo> notificationPage = studentNotificationMapper.selectNotificationsByStudentId(pageParam, Long.valueOf(reqVo.getStudentId()));
+        Page<NotificationVo> notificationPage = studentNotificationMapper.selectNotificationsByStudentId(pageParam, reqVo.getWechatId());
 
         // 构建并返回分页结果
-        ExtendedPageVo<NotificationVo> pageVo = new ExtendedPageVo<>();
+        PageVo<NotificationVo> pageVo = new PageVo<>();
         pageVo.setCount(notificationPage.getTotal());  // 总记录数
         pageVo.setPages(notificationPage.getPages());  // 总页数
         pageVo.setData(notificationPage.getRecords()); // 转换为VO的数据记录

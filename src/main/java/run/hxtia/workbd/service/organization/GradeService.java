@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Grade;
 import run.hxtia.workbd.pojo.vo.organization.request.GradeEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.GradeReqVo;
+import run.hxtia.workbd.pojo.vo.organization.request.page.GradePageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
@@ -75,12 +76,10 @@ public interface GradeService extends IService<Grade> {
     // TODO 根据学院ID分页获取年级信息
     /**
      * 根据学院ID分页获取年级信息
-     * @param collegeId 学院ID
-     * @param pageNum 页码
-     * @param pageSize 每页数量
+     * @param reqVo 请求结构体
      * @return 该学院下的年级信息的分页列表
      */
-    PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(Integer collegeId, int pageNum, int pageSize);
+    PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(GradePageReqVo reqVo);
 
     /**
      * 检查年级是否存在

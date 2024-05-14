@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.Classes;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassEditReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.ClassReqVo;
 import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.ClassService;
 
 import javax.validation.Valid;
@@ -61,15 +58,15 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     // 根据ID获取班级信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取班级信息")
-    public ClassVo getClassInfoById(@PathVariable Integer id) {
-        return classService.getClassInfoById(id);
+    public DataJsonVo<ClassVo> getClassInfoById(@PathVariable Integer id) {
+        return JsonVos.ok(classService.getClassInfoById(id));
     }
 
     // 获取所有班级列表
     @GetMapping("/list")
     @ApiOperation("获取所有班级列表")
-    public PageVo<ClassVo> getList() {
-        return classService.getList();
+    public PageJsonVo<ClassVo> getList() {
+        return JsonVos.ok(classService.getList());
     }
 
     // 删除班级

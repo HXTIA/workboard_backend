@@ -190,17 +190,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public OrganizationVo getOrganizationDetailsByStudentId(Long studentId) throws Exception {
+    public OrganizationVo getOrganizationDetailsByStudentId(String studentId) {
         // 直接通过Mapper方法获取所有信息
-        OrganizationVo organizationVo = studentMapper.getOrganizationDetailsByStudentId(studentId);
-
-        // 检查是否所有必需的信息都被获取
-        if (organizationVo == null || organizationVo.getCollege() == null ||
-            organizationVo.getGrade() == null || organizationVo.getClassVo() == null) {
-            throw new Exception("One or more essential details are missing for student ID: " + studentId);
+        OrganizationVo organizationDetailsByStudentId = studentMapper.getOrganizationDetailsByStudentId(studentId);
+        if (organizationDetailsByStudentId == null) {
+            return JsonVos.raise("未找到该学生的组织信息");
         }
 
-        return organizationVo;
+        return studentMapper.getOrganizationDetailsByStudentId(studentId);
     }
 
     @Override

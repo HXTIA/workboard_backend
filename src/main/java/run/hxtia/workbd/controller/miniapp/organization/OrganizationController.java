@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CourseIdWorkPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
@@ -81,8 +82,8 @@ public class OrganizationController {
      */
     @PostMapping("/gradePage")
     @ApiOperation("根据学院ID分页获取年级信息")
-    public PageVo<GradeVo> getGradeInfoByCollegeIdWithPagination(@Valid @RequestBody GradePageReqVo reqVo) {
-        return gradeService.getGradeInfoByCollegeIdWithPagination(reqVo.getCollegeId(), reqVo.getPage().intValue(), reqVo.getSize().intValue());
+    public PageJsonVo<GradeVo> getGradeInfoByCollegeIdWithPagination(@Valid @RequestBody GradePageReqVo reqVo) {
+        return JsonVos.ok(gradeService.getGradeInfoByCollegeIdWithPagination(reqVo));
     }
 
     // 选择班级
@@ -119,24 +120,17 @@ public class OrganizationController {
      */
     @PostMapping("/workPage")
     @ApiOperation("根据课程 ids 分页获取作业列表")
-    public ExtendedPageVo<HomeworkVo> getWorkInfoByCourseIdsWithPagination(@Valid @RequestBody CourseIdWorkPageReqVo reqVo) {
-        return workService.getWorkInfoByCourseIds(reqVo);
+    public PageJsonVo<HomeworkVo> getWorkInfoByCourseIdsWithPagination(@Valid @RequestBody CourseIdWorkPageReqVo reqVo) {
+        return JsonVos.ok(workService.getWorkInfoByCourseIds(reqVo));
     }
 
-    // 整合所有
-    // TODO 通过学生的id，获取学院、年级、班级、课程、作业信息
+    // 整合所有组织
+    // TODO 通过学生的id，获取学院、年级、班级信息
 
     @PostMapping("/studentOrganizationDetails")
     @ApiOperation("根据学生ID获取学院、年级、班级信息")
-    public ResponseEntity<OrganizationVo> getStudentOrganizationDetails(@RequestBody @Valid StudentIdReqVo reqVo) {
-        try {
+    public DataJsonVo<OrganizationVo> getStudentOrganizationDetails(@RequestBody @Valid StudentIdReqVo reqVo) {
             OrganizationVo organizationVo = studentService.getOrganizationDetailsByStudentId(reqVo.getStudentId());
-            return ResponseEntity.ok(organizationVo);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+            return JsonVos.ok(organizationVo);
     }
-
-
-
 }
