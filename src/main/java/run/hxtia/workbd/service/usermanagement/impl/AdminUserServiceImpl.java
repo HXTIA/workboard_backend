@@ -97,7 +97,7 @@ public class AdminUserServiceImpl
         redises.set(Constants.Web.ADMIN_PREFIX, token, dto, Constants.Date.EXPIRE_DATS, TimeUnit.DAYS);
 
         // 将用户Token 放入 缓存
-        redises.set(Constants.Users.USER_ID, String.valueOf(userPo.getId()), Constants.Web.HEADER_TOKEN + token);
+        redises.set(Constants.Users.USER_ID, String.valueOf(userPo.getId()), Constants.Web.ADMIN_PREFIX + token);
 
         // 将 po -> vo
         AdminLoginVo vo = MapStructs.INSTANCE.po2loginVo(userPo);

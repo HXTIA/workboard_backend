@@ -43,11 +43,6 @@ public class AdminUsers implements Serializable {
     private String phone;
 
     /**
-     * 角色ID
-     */
-    private Integer roleId;
-
-    /**
      * 创建时间
      */
     private Date createdAt;

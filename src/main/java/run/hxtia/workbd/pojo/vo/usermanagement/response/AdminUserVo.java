@@ -18,8 +18,8 @@ public class AdminUserVo {
     @ApiModelProperty("头像url")
     private String avatarUrl;
 
-    @ApiModelProperty("组织ID")
-    private short orgId;
+    @ApiModelProperty("学院ID")
+    private Integer collegeId;
 
     @ApiModelProperty("姓名")
     private String nickname;

@@ -28,9 +28,9 @@ public class Role implements Serializable {
      */
     private String intro;
     /**
-     * 组织ID
+     * 学院 ID
      */
-    private Integer orgId;
+    private Integer collegeId;
 
 }
 
