@@ -23,13 +23,13 @@ public class Tokens {
         String token = request.getHeader(tokenFrom);
 
         // 如果没有Token
-        if (!StringUtils.hasLength(token)) {
+        if (!StringUtils.hasLength(token) || !redises.hasKey(prefix+token)) {
             return JsonVos.raise(CodeMsg.NO_TOKEN);
         }
 
-        // 如果Token过期了
-        if (redises.getExpire(prefix, token) < 0) {
-            return JsonVos.raise(CodeMsg.TOKEN_EXPIRED);
+        // 如果 Token 过期了
+        if (redises.getExpire(prefix, token) == -2) {
+            return JsonVos.raise(CodeMsg.NO_TOKEN);
         }
 
         // 需要刷新一下Token 信息

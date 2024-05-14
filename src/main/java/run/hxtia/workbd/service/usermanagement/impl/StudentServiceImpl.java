@@ -152,6 +152,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return ：是否成功。
      */
     private Student registerUser(String wechatId) {
+        if (wechatId == null) {
+            return JsonVos.raise(CodeMsg.AUTHORIZED_ERROR);
+        }
+
         Student po = new Student();
         po.setWechatId(wechatId);
         po.setNickname(Strings.getUUID(10));
