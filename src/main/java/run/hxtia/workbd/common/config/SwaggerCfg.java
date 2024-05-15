@@ -48,7 +48,7 @@ public class SwaggerCfg implements InitializingBean {
     public Docket adminBDocket() {
         return groupDocket(
             "【B端】_01_用户、角色、权限资源管理",
-            "/admin/userManager/(users.*|roles.*|resources.*)",
+            "/admin/userManager/(users.*|roles.*|resources.*|auth.*)",
             "用户管理模块文档",
             "获取用户、角色、资源...");
     }

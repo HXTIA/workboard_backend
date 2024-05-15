@@ -101,6 +101,13 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
     }
 
     @Override
+    public List<ClassVo> getClassInfoByGradeId(Integer gradeId) {
+        return lambdaQuery().eq(Classes::getGradeId, gradeId).list().stream()
+            .map(MapStructs.INSTANCE::po2vo)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public boolean checkClassInfo(Integer classId) {
         return getById(classId) != null;
     }

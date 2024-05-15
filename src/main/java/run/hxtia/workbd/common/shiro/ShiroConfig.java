@@ -60,7 +60,6 @@ public class ShiroConfig {
         uriMap.put("/admin/userManager/users/forgotPwd", "anon");
         uriMap.put("/admin/userManager/users/captcha", "anon");
 
-
         // 放行Swagger文档
         uriMap.put("/swagger**/**", "anon");
         uriMap.put("/v3/api-docs/**", "anon");
