@@ -18,6 +18,7 @@ import run.hxtia.workbd.mapper.AdminUserMapper;
 import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.dto.AdminUserPermissionDto;
 import run.hxtia.workbd.pojo.po.AdminUsers;
+import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.po.Resource;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.AdminLoginReqVo;
@@ -27,6 +28,7 @@ import run.hxtia.workbd.pojo.vo.usermanagement.response.AdminUserVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.*;
+import run.hxtia.workbd.service.organization.CollegeService;
 import run.hxtia.workbd.service.usermanagement.AdminUserRoleService;
 import run.hxtia.workbd.service.usermanagement.AdminUserService;
 import run.hxtia.workbd.service.usermanagement.ResourceService;
@@ -44,6 +46,7 @@ public class AdminUserServiceImpl
     private final AdminUserRoleService adminUserRoleService;
     private final RoleService roleService;
     private final ResourceService resourceService;
+    private final CollegeService collegeService;
 
     /**
      * 用户登录
@@ -121,11 +124,11 @@ public class AdminUserServiceImpl
         // 验证用户是否存在
         if (po != null) return JsonVos.raise(CodeMsg.EXIST_USERS);
 
-        // TODO：注册组织（学院）
-//        Organization defaultOrg = new Organization();
-//        if (!orgService.saveDefaultRegisterOrg(defaultOrg)) {
-//            return JsonVos.raise(CodeMsg.REGISTER_ERROR);
-//        }
+        // 注册学院
+        College defaultClg = new College();
+        if (!collegeService.saveDefaultRegisterClg(defaultClg)) {
+            return JsonVos.raise(CodeMsg.REGISTER_ERROR);
+        }
 
         // 密码加盐
         String salt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
@@ -134,7 +137,7 @@ public class AdminUserServiceImpl
         po = MapStructs.INSTANCE.reqVo2po(reqVo);
         po.setSalt(salt);
         po.setPassword(psdWithMd5);
-        // po.setOrgId(defaultOrg.getId());
+        po.setCollegeId(defaultClg.getId());
 
         // 若插入失败，得抛出异常，才能回滚事务
         if (!(baseMapper.insert(po) > 0)) return JsonVos.raise(CodeMsg.OPERATE_OK);
@@ -372,7 +375,7 @@ public class AdminUserServiceImpl
         if (!checkCode) return JsonVos.raise(CodeMsg.WRONG_CAPTCHA);
 
         LambdaQueryWrapper<AdminUsers> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(AdminUsers::getUsername, email);
+        wrapper.eq(AdminUsers::getEmail, email);
 
         return baseMapper.selectOne(wrapper);
     }

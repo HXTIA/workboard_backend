@@ -49,13 +49,13 @@ public class EmailServiceImpl implements EmailService {
             // 说明在60秒内已经发送过了
             JsonVos.raise(CodeMsg.WRONG_CODE_EXIST);
         }
-        Caches.putCode(emailCodePrefix + to, code);
 
         // 构建邮件
         buildMimeMessageHelper(mimeMessage, to, subject, code);
         // 发送邮件
         try {
             javaMailSender.send(mimeMessage);
+            Caches.putCode(emailCodePrefix + to, code);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
