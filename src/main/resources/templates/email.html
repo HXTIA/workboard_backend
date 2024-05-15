@@ -4,41 +4,67 @@
     <meta charset="UTF-8">
     <title>邮箱验证码</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #4CAF50;
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
         .content {
-            background-image: url('https://img1.imgtp.com/2022/10/06/vb3q5d6v.png');
-            background-repeat: no-repeat;
-            background-size: 95vw;
-            width: 95vw;
-            height: 100%;
+            padding: 20px;
+            text-align: center;
         }
-
         .code {
-            text-decoration: underline;
-            padding:23vw 0px 0px 34vw;
-            font-size: 8vw;
+            font-size: 36px;
             font-weight: bold;
-            color: royalblue;
+            color: #4CAF50;
+            margin: 20px 0;
+            letter-spacing: 2px;
         }
-
-        .date {
-            padding:105vw 0px 0px 26vw;
-            font-size: 3vw;
-            color: #b3b3b3;
+        .expiration {
+            color: #999999;
+            font-size: 14px;
+        }
+        .footer {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            color: #999999;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-
-<div style="background-image: url('https://img1.imgtp.com/2022/10/06/vb3q5d6v.png');
-            background-repeat: no-repeat;background-size: 95vw;
-            width: 95vw;height: 100%;">
-    <div style="text-decoration: underline;padding:23vw 0px 0px 34vw;
-                font-size: 8vw;font-weight: bold;color: royalblue;">
-        <span th:text="${code}"></span>
+<div class="container">
+    <div class="header">
+        <h1>邮箱验证码</h1>
     </div>
-    <div style="padding:100vw 0px 0px 26vw;font-size: 3vw;color: #b3b3b3;">
-        <span >到期时间:</span>
-        <span th:text="${expirationDate}"></span>
+    <div class="content">
+        <p>您的验证码是:</p>
+        <div class="code" th:text="${code}">123456</div>
+        <p class="expiration">此验证码将在 <span th:text="${expirationDate}">yyyy-MM-dd HH:mm:ss</span> 过期。</p>
+    </div>
+    <div class="footer">
+        <p>请勿回复此邮件。如果您有任何问题，请联系我们的支持团队。</p>
     </div>
 </div>
 </body>
