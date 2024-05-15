@@ -9,6 +9,8 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
+import java.util.List;
+
 /**
  * @author Xiaojin
  * @date 2024/5/6
@@ -81,5 +83,15 @@ public interface CourseService extends IService<Course> {
      * @return 该学院下的课程信息的分页列表
      */
     PageVo<CourseVo> getPage(CoursePageReqVo reqVo);
+
+    /**
+     * 根据学院ID获取课程信息
+     */
+    List<CourseVo> getCourseListByCollegeId(Integer collegeId);
+
+    /**
+     * 根据教师id获取课程信息
+     */
+    List<CourseVo> getCourseListByTeacherId(Integer teacherId);
 
 }

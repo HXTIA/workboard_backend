@@ -91,15 +91,14 @@ public class CollegeServiceImpl extends ServiceImpl<CollegeMapper, College> impl
      * @param reqVo ：分页请求参数
      * @return 分页的学院信息
      */
-        public PageVo<CollegeVo> getPageList(CollegePageReqVo pageReqVo) {
-         MpLambdaQueryWrapper<College> wrapper = new MpLambdaQueryWrapper<>();
-         wrapper.like(pageReqVo.getKeyword(), College::getName).
-             eq(College::getId, pageReqVo.getId());
+    public PageVo<CollegeVo> getPageList(CollegePageReqVo pageReqVo) {
+     MpLambdaQueryWrapper<College> wrapper = new MpLambdaQueryWrapper<>();
+     wrapper.like(pageReqVo.getKeyword(), College::getName);
 
-         return baseMapper.
-             selectPage(new MpPage<>(pageReqVo), wrapper).
-             buildVo(MapStructs.INSTANCE::po2vo);
-        }
+     return baseMapper.
+         selectPage(new MpPage<>(pageReqVo), wrapper).
+         buildVo(MapStructs.INSTANCE::po2vo);
+    }
 
 
     @Override

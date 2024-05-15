@@ -9,6 +9,8 @@ import run.hxtia.workbd.pojo.vo.organization.request.page.ClassPageReqVo;
 import run.hxtia.workbd.pojo.vo.organization.response.ClassVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
+import java.util.List;
+
 /**
  * @author Xiaojin
  * @date 2024/5/5
@@ -66,5 +68,12 @@ public interface ClassService extends IService<Classes> {
      * @return 该年级下的班级信息的分页列表
      */
     PageVo<ClassVo> listPage(ClassPageReqVo pageReqVo);
+
+    /**
+     * 根据年级ID获取班级信息
+     * @param gradeId 年级ID
+     * @return 所有该年级下的班级信息
+     */
+    List<ClassVo> getClassInfoByGradeId(Integer gradeId);
 
 }

@@ -60,14 +60,9 @@ public class ShiroConfig {
         uriMap.put("/admin/userManager/users/forgotPwd", "anon");
         uriMap.put("/admin/userManager/users/captcha", "anon");
 
-        // test
-        uriMap.put("/**", "anon");
-        uriMap.put("/wx/**", "anon");
-
-
         // 放行Swagger文档
-//        uriMap.put("/swagger**/**", "anon");
-//        uriMap.put("/v3/api-docs/**", "anon");
+        uriMap.put("/swagger**/**", "anon");
+        uriMap.put("/v3/api-docs/**", "anon");
 
         // 放行获取静态资源的URI
         uriMap.put("/" + properties.getUpload().getUploadPath() + "**", "anon");
@@ -79,6 +74,7 @@ public class ShiroConfig {
         uriMap.put("/admin/**", "token");
         // 其他 admin URI 使用自定义的 filter wxToken
         uriMap.put("/wx/**", "wxToken");
+        uriMap.put("/**", "token");
 
         filterBean.setFilterChainDefinitionMap(uriMap);
         return filterBean;

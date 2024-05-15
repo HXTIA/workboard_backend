@@ -142,4 +142,29 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             .buildVo(MapStructs.INSTANCE::po2vo);
     }
 
+    @Override
+    public List<CourseVo> getCourseListByCollegeId(Integer collegeId) {
+        // 构建查询条件
+        MpLambdaQueryWrapper<Course> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.eq(Course::getCollegeId, collegeId);
+
+        // 查询结果
+        List<Course> courses = list(wrapper);
+        // 将Course对象列表转换为CourseVo对象列表
+        return courses.stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourseVo> getCourseListByTeacherId(Integer teacherId) {
+        // 构建查询条件
+        MpLambdaQueryWrapper<Course> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.eq(Course::getTeacherId, teacherId);
+
+        // 查询结果
+        List<Course> courses = list(wrapper);
+        // 将Course对象列表转换为CourseVo对象列表
+        return courses.stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
+    }
+
+
 }
