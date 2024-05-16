@@ -34,6 +34,7 @@ public class Constants {
         public static final String HEADER_TOKEN = "Token";
         public static final String ERROR_URI = "/handleError";
         public static final String ADMIN_PREFIX = "/admin/";
+
     }
 
     /**
@@ -133,6 +134,11 @@ public class Constants {
         public static String CHECK_TOKEN = "wxa/checksession";
         public static String WX_ACCESS_TOKEN = "cgi-bin/token";
 
+    }
+
+    public static class Auth {
+        public static final String ADMIN_AUTH = "/auth/code/";
+        public static final String AuTH_Code_USER = "auth:code:user:";
     }
 
 }
