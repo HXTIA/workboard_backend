@@ -23,4 +23,7 @@ public interface AuthorizationService extends IService<Authorization> {
      * @return ：用户信息
      */
     CourseAndClassVo getCourseAndClasslistByAuth(String token);
+
+    // 根据用户选择的授权的集合(课程列表和班级列表)生成code
+
 }

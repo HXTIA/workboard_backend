@@ -28,6 +28,8 @@ import run.hxtia.workbd.pojo.vo.common.response.WxAccessTokenVo;
 import run.hxtia.workbd.pojo.vo.common.response.WxCodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.WxTokenVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.service.notificationwork.CourseService;
+import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 import run.hxtia.workbd.service.usermanagement.StudentService;
 
 import java.util.concurrent.TimeUnit;
@@ -38,10 +40,7 @@ import java.util.concurrent.TimeUnit;
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
     private final Redises redises;
-
-    @Autowired
-    private StudentMapper studentMapper;
-
+    private final StudentCourseService studentCourseService;
 
     /**
      * 根据 code验证码换取 session_key + openId
@@ -122,10 +121,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
         String openId = MiniApps.getOpenId(token);
 
-        // 从redis中读取 user 信息
-        StudentInfoDto studentInfoDto = (StudentInfoDto) redises.get(Constants.WxMiniApp.WX_USER, openId);
+        // 从redis中读取 user 信息，这里的 Key 是动态的。
+        StudentInfoDto studentInfoDto = (StudentInfoDto) redises.get(Constants.WxMiniApp.WX_USER, openId + token);
 
-        // 检查 redis中有无用户
+        // 检查 redis 中有无用户
         if (studentInfoDto != null) return studentInfoDto;
 
         // 先去数据库查询
@@ -134,6 +133,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         Student studentPo = baseMapper.selectOne(wrapper);
         studentInfoDto = new StudentInfoDto();
 
+        // TODO：调整为并行处理
         if (studentPo != null) {
             studentInfoDto.setStudentVo(MapStructs.INSTANCE.po2vo(studentPo));
         } else {
@@ -141,8 +141,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             studentInfoDto.setStudentVo(MapStructs.INSTANCE.po2vo(registerUser(openId)));
         }
 
+        // 构建其他信息
+        //  组织信息
+        studentInfoDto.setOrganizationVo(baseMapper.getOrganizationDetailsByStudentId(openId));
+        //  课程信息
+        studentInfoDto.setCourseVos(studentCourseService.getStudentCoursesByStudentId(openId));
+
         // 将最新消息缓存到 redis
-        redises.set(Constants.WxMiniApp.WX_USER, openId, studentInfoDto, Constants.Date.WX_STUDENT_EXPIRE_DATS, TimeUnit.DAYS);
+        redises.set(Constants.WxMiniApp.WX_USER, openId + token, studentInfoDto, Constants.Date.WX_STUDENT_EXPIRE_DATS, TimeUnit.DAYS);
         return studentInfoDto;
     }
 
@@ -173,9 +179,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return ：是否成功
      */
     @Override
-    public boolean update(StudentReqVo reqVo) {
-        Student po = MapStructs.INSTANCE.reqVo2po(reqVo);
-        return baseMapper.updateById(po) > 0;
+    public boolean update(StudentReqVo reqVo, String token) {
+        if (baseMapper.updateById(MapStructs.INSTANCE.reqVo2po(reqVo)) > 0) {
+            // TODO：健壮性考虑，如果删除失败了怎么处理
+            redises.del(Constants.WxMiniApp.WX_USER, reqVo.getWechatId() + token);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -184,24 +195,32 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      * @return ：是否成功
      */
     @Override
-    public boolean update(StudentAvatarReqVo reqVo) throws Exception {
+    public boolean update(StudentAvatarReqVo reqVo, String token) throws Exception {
         Student po = new Student();
         po.setWechatId(reqVo.getWechatId());
-        return Uploads.uploadOneWithPo(po,
+        boolean res = Uploads.uploadOneWithPo(po,
             new UploadReqParam(reqVo.getAvatarUrl(),
                 reqVo.getAvatarFile()),
             baseMapper, Student::setAvatarUrl);
+
+        if (res) {
+            // TODO：健壮性考虑，如果删除失败了怎么处理
+            redises.del(Constants.WxMiniApp.WX_USER, reqVo.getWechatId() + token);
+        }
+
+        return res;
     }
 
+    // TODO：这个接口可删除
     @Override
     public OrganizationVo getOrganizationDetailsByStudentId(String studentId) {
         // 直接通过Mapper方法获取所有信息
-        OrganizationVo organizationDetailsByStudentId = studentMapper.getOrganizationDetailsByStudentId(studentId);
+        OrganizationVo organizationDetailsByStudentId = baseMapper.getOrganizationDetailsByStudentId(studentId);
         if (organizationDetailsByStudentId == null) {
             return JsonVos.raise("未找到该学生的组织信息");
         }
 
-        return studentMapper.getOrganizationDetailsByStudentId(studentId);
+        return baseMapper.getOrganizationDetailsByStudentId(studentId);
     }
 
     @Override

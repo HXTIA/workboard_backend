@@ -51,8 +51,8 @@ public class StudentController {
 
     @PostMapping("/update")
     @ApiOperation("编辑完善用户信息")
-    public JsonVo update(@Valid @RequestBody StudentReqVo reqVo) {
-        if (studentService.update(reqVo)) {
+    public JsonVo update(@Valid @RequestBody StudentReqVo reqVo, HttpServletRequest request) {
+        if (studentService.update(reqVo, request.getHeader(Constants.WxMiniApp.WX_TOKEN))) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
@@ -61,8 +61,8 @@ public class StudentController {
 
     @PostMapping("/uploadAvatar")
     @ApiOperation("用户头像上传")
-    public JsonVo uploadAvatar(@Valid StudentAvatarReqVo reqVo) throws Exception  {
-        if (studentService.update(reqVo)) {
+    public JsonVo uploadAvatar(@Valid StudentAvatarReqVo reqVo, HttpServletRequest request) throws Exception  {
+        if (studentService.update(reqVo, request.getHeader(Constants.WxMiniApp.WX_TOKEN))) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
