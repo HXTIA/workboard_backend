@@ -18,6 +18,6 @@ public class SaveCoursesAndHomeworksReqVo {
     private List<Integer> courseIds;
 
     @NotNull(message = "学生ID不能为空")
-    private Integer studentId;
+    private String studentId;
 
 }

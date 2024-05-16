@@ -115,7 +115,7 @@ public class HomeWorkController {
 
     @GetMapping("/searchWorkByStuId")
     @ApiOperation("根据学生 ID 查询作业信息，stuId != null")
-    public DataJsonVo<List<StudentHomeworkDetailDto>> searchStuWorkListByStuId(@NotNull @RequestParam Long stuId) {
+    public DataJsonVo<List<StudentHomeworkDetailDto>> searchStuWorkListByStuId(@NotNull @RequestParam String stuId) {
         return JsonVos.ok(workService.getWorkInfoListByStuId(stuId));
     }
 }

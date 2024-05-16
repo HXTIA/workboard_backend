@@ -21,7 +21,7 @@ public class StudentHomework implements Serializable {
     /**
      * 学生ID
      */
-    private Long studentId;
+    private String studentId;
 
     /**
      * 作业ID

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.StudentCourse;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
@@ -31,12 +32,11 @@ public interface StudentCourseService extends IService<StudentCourse> {
     // TODO 保存课程时需要保存作业
     /**
      * 批量保存学生课程和作业信息
-     * @param courseIds 课程ID列表
-     * @param studentId 学生ID
+     * @param reqVo 课程ID列表
      * @return 是否成功
      */
     @Transactional(readOnly = false)
-    boolean saveCoursesAndHomeworks(List<Integer> courseIds, Integer studentId);
+    boolean saveCoursesAndHomeworks(SaveCoursesAndHomeworksReqVo reqVo);
 
     /**
      * 更新学生课程信息

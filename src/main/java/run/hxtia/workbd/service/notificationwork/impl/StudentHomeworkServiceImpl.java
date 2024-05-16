@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.thymeleaf.util.ListUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.Streams;
@@ -45,7 +46,7 @@ public class StudentHomeworkServiceImpl
     }
 
     @Override
-    public List<StudentHomework> listByStuId(Long stuId) {
+    public List<StudentHomework> listByStuId(String stuId) {
         MpLambdaQueryWrapper<StudentHomework> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.eq(StudentHomework::getStudentId, stuId).ne(StudentHomework::getStatus, Constants.Status.WORK_DONE);
         return baseMapper.selectList(wrapper);
@@ -57,20 +58,17 @@ public class StudentHomeworkServiceImpl
      * @param stuId 学生ID
      * @return 是否成功
      */
-    public boolean addStudentHomeworks(List<Long> workIds, Long stuId) {
-        // 批量插入
-        boolean result = saveBatch(Streams.list2List(workIds, (workId) -> {
+    public boolean addStudentHomeworks(List<Long> workIds, String stuId) {
+        if (ListUtils.isEmpty(workIds)) {
+            return true;
+        }
+
+        return saveBatch(Streams.list2List(workIds, (workId) -> {
             StudentHomework po = new StudentHomework();
             po.setStudentId(stuId);
             po.setHomeworkId(workId);
             return po;
         }));
-
-        if (!result) {
-            throw new RuntimeException("Failed to save student homework");
-        }
-
-        return true;
     }
 
     @Override

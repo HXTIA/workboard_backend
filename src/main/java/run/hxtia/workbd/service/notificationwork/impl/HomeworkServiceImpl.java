@@ -15,6 +15,7 @@ import run.hxtia.workbd.common.upload.UploadEditParam;
 import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.HomeworkMapper;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
@@ -178,7 +179,7 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
      * @return 学生的作业信息列表
      */
     @Override
-    public List<StudentHomeworkDetailDto> getWorkInfoListByStuId(Long stuId) {
+    public List<StudentHomeworkDetailDto> getWorkInfoListByStuId(String stuId) {
         // 第一步：获取学生的所有作业记录
         List<StudentHomework> studentHomeworks = studentHomeworkService.listByStuId(stuId);
         if (studentHomeworks.isEmpty()) {
@@ -204,6 +205,18 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
             return dto;
         });
     }
+
+    /**
+     * 根据学生ID查询学生的作业信息列表
+     * @param token 学生 WXToken
+     * @return 学生的作业信息列表
+     */
+    @Override
+    public List<StudentHomeworkDetailDto> getWorkInfoListByStuToken(String token) {
+        // 第一步：获取学生的所有作业记录
+        return getWorkInfoListByStuId(MiniApps.getOpenId(token));
+    }
+
 
     @Override
     public List<Long> getWorkIdsByCourseIds(List<Integer> courseIdList) {

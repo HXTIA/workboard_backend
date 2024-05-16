@@ -70,7 +70,14 @@ public interface HomeworkService extends IService<Homework> {
      * @param stuId：学生 ID
      * @return ：学生所有作业
      */
-    List<StudentHomeworkDetailDto> getWorkInfoListByStuId(Long stuId);
+    List<StudentHomeworkDetailDto> getWorkInfoListByStuId(String stuId);
+
+    /**
+     * 根据学生 token 获取学生作业
+     * @param token：学生 WXToken
+     * @return ：学生所有作业
+     */
+    List<StudentHomeworkDetailDto> getWorkInfoListByStuToken(String token);
 
     //TODO 根据课程id，获取作业id列表。传入 courseidlist ——> 获取作业idlist
     /**

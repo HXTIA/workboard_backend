@@ -91,7 +91,7 @@ public class CourseController  {
     @PostMapping("/saveCoursesAndHomeworks")
     @ApiOperation("批量保存学生课程和作业信息")
     public JsonVo saveCoursesAndHomeworks(@Valid @RequestBody SaveCoursesAndHomeworksReqVo reqVo) {
-        if (studentCourseService.saveCoursesAndHomeworks(reqVo.getCourseIds(), reqVo.getStudentId())) {
+        if (studentCourseService.saveCoursesAndHomeworks(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);

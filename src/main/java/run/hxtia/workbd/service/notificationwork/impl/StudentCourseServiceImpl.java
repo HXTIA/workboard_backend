@@ -10,11 +10,14 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.util.CollectionUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.StudentCourseMapper;
 import run.hxtia.workbd.pojo.po.Course;
 import run.hxtia.workbd.pojo.po.StudentCourse;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
@@ -159,44 +162,38 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
 
     /**
      * 批量保存学生课程和作业信息
-     * @param courseIds 课程ID列表
-     * @param studentId 学生ID
      * @return 是否成功
      */
     @Override
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public boolean saveCoursesAndHomeworks(List<Integer> courseIds, Integer studentId) {
-        try {
-            // 保存学生课程信息
-            boolean saveStudentCourse = saveBatch(courseIds.stream().map(courseId -> {
-                StudentCourse studentCourse = new StudentCourse();
-                studentCourse.setStudentId(studentId);
-                studentCourse.setCourseId(courseId);
-                return studentCourse;
-            }).collect(Collectors.toList()));
-
-            // 如果保存学生课程信息失败，抛出异常
-            if (!saveStudentCourse) {
-                throw new RuntimeException("Failed to save student course");
-            }
-
-            // 获取作业ID
-            List<Long> workIdsByCourseIds = homeworkService.getWorkIdsByCourseIds(courseIds);
-
-            // 保存学生作业信息
-            boolean saveStudentHomework = studentHomeworkService.addStudentHomeworks(workIdsByCourseIds, Long.valueOf(studentId));
-
-            // 如果保存学生作业信息失败，抛出异常
-            if (!saveStudentHomework) {
-                throw new RuntimeException("Failed to save student homework");
-            }
-
-            return true;
-        } catch (Exception e) {
-            // 如果有任何异常，回滚事务并返回false
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+    public boolean saveCoursesAndHomeworks(SaveCoursesAndHomeworksReqVo reqVo) {
+        if (reqVo == null) {
             return false;
         }
+
+        List<StudentCourse> studentCourses = Streams.list2List(reqVo.getCourseIds(), (courseId -> {
+            StudentCourse studentCourse = new StudentCourse();
+            studentCourse.setStudentId(reqVo.getStudentId());
+            studentCourse.setCourseId(courseId);
+            return studentCourse;
+        }));
+
+        // 保存学生课程信息
+        boolean saveStudentCourse = saveBatch(studentCourses);
+
+        // 如果保存学生课程信息失败，抛出异常
+        if (!saveStudentCourse) {
+            return false;
+        }
+
+        // 获取作业ID
+        List<Long> workIdsByCourseIds = homeworkService.getWorkIdsByCourseIds(reqVo.getCourseIds());
+
+        // 保存学生作业信息
+       if (!studentHomeworkService.addStudentHomeworks(workIdsByCourseIds, reqVo.getStudentId())) {
+           JsonVos.raise(CodeMsg.SAVE_ERROR);
+       }
+
+       return true;
     }
 
 

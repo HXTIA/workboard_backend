@@ -27,7 +27,7 @@ public interface StudentHomeworkService extends IService<StudentHomework> {
      * @param stuId 学生ID
      * @return 学生的作业信息列表
      */
-    List<StudentHomework> listByStuId(Long stuId);
+    List<StudentHomework> listByStuId(String stuId);
 
     /**
      * 批量添加学生作业关联
@@ -36,7 +36,7 @@ public interface StudentHomeworkService extends IService<StudentHomework> {
      * @return 是否成功
      */
     @Transactional(readOnly = false)
-    boolean addStudentHomeworks(List<Long> workIds, Long stuId);
+    boolean addStudentHomeworks(List<Long> workIds, String stuId);
 
     /**
      * 根据学生ID分页获取学生作业
