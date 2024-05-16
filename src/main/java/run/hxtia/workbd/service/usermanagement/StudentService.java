@@ -41,7 +41,7 @@ public interface StudentService extends IService<Student> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean update(StudentReqVo reqVo);
+    boolean update(StudentReqVo reqVo, String token);
 
     /**
      * 用户上传头像
@@ -49,7 +49,7 @@ public interface StudentService extends IService<Student> {
      * @return ：是否成功
      */
     @Transactional(readOnly = false)
-    boolean update(StudentAvatarReqVo reqVo) throws Exception;
+    boolean update(StudentAvatarReqVo reqVo, String token) throws Exception;
 
     // 整合组织
     // TODO 通过学生的id，获取学院、年级、班级信息

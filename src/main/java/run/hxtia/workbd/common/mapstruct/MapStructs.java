@@ -40,6 +40,7 @@ public interface MapStructs {
     （2）target：目标对象
     （3）qualifiedBy：找转换器中的方法
     */
+   @Mapping(source = "wechatId", target = "wechatId")
     StudentVo po2vo(Student po);
     AdminLoginVo po2loginVo(AdminUsers po);
     RoleVo po2vo(Role po);

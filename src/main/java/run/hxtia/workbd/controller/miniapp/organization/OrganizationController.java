@@ -127,10 +127,10 @@ public class OrganizationController {
     // 整合所有组织
     // TODO 通过学生的id，获取学院、年级、班级信息
 
-    @PostMapping("/studentOrganizationDetails")
-    @ApiOperation("根据学生ID获取学院、年级、班级信息")
-    public DataJsonVo<OrganizationVo> getStudentOrganizationDetails(@RequestBody @Valid StudentIdReqVo reqVo) {
-            OrganizationVo organizationVo = studentService.getOrganizationDetailsByStudentId(reqVo.getStudentId());
-            return JsonVos.ok(organizationVo);
-    }
+//    @PostMapping("/studentOrganizationDetails")
+//    @ApiOperation("根据学生ID获取学院、年级、班级信息")
+//    public DataJsonVo<OrganizationVo> getStudentOrganizationDetails(@RequestBody @Valid StudentIdReqVo reqVo) {
+//            OrganizationVo organizationVo = studentService.getOrganizationDetailsByStudentId(reqVo.getStudentId());
+//            return JsonVos.ok(organizationVo);
+//    }
 }

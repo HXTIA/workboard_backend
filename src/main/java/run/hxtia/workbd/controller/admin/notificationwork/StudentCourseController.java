@@ -66,10 +66,10 @@ public class StudentCourseController {
         }
     }
 
-    @PostMapping("/{studentId}")
+    @PostMapping("/{wechatId}")
     @ApiOperation("根据学生ID获取学生课程信息")
-    public DataJsonVo<List<CourseVo>> getStudentCoursesByStudentId(@PathVariable Integer studentId) {
-        List<CourseVo> courses = studentCourseService.getStudentCoursesByStudentId(studentId);
+    public DataJsonVo<List<CourseVo>> getStudentCoursesByStudentId(@PathVariable String wechatId) {
+        List<CourseVo> courses = studentCourseService.getStudentCoursesByStudentId(wechatId);
         return  JsonVos.ok(courses);
     }
 
@@ -87,7 +87,7 @@ public class StudentCourseController {
     @PostMapping("/courses")
     @ApiOperation("根据学生ID获取分页的学生课程信息")
     public ResponseEntity<IPage<CourseVo>> getStudentCoursesByStudentIdWithPagination(@Valid @RequestBody StudentCoursePageReqVo reqVo) {
-        IPage<CourseVo> courses = studentCourseService.getStudentCoursesByStudentIdWithPagination(reqVo.getStudentId(), new Page<>(reqVo.getPage(), reqVo.getSize()));
+        IPage<CourseVo> courses = studentCourseService.getStudentCoursesByStudentIdWithPagination(reqVo.getWechatId(), new Page<>(reqVo.getPage(), reqVo.getSize()));
         return ResponseEntity.ok(courses);
     }
 

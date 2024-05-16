@@ -18,8 +18,8 @@ import java.util.List;
 @Repository
 public interface StudentCourseMapper extends BaseMapper<StudentCourse> {
     @Select("SELECT c.* FROM student_courses sc JOIN courses c ON sc.course_id = c.id WHERE sc.student_id = #{studentId}")
-    List<Course> selectCoursesByStudentId(@Param("studentId") Integer studentId);
+    List<Course> selectCoursesByStudentId(@Param("studentId") String studentId);
 
     @Select("SELECT c.* FROM student_courses sc JOIN courses c ON sc.course_id = c.id WHERE sc.student_id = #{studentId}")
-    IPage<Course> selectCoursesByStudentIdWithPagination(Page<StudentCourse> page, @Param("studentId") Integer studentId);
+    IPage<Course> selectCoursesByStudentIdWithPagination(Page<StudentCourse> page, @Param("studentId") String studentId);
 }

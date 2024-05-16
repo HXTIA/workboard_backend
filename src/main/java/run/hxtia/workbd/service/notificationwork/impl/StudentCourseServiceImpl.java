@@ -116,7 +116,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
      * @return 学生课程信息列表
      */
     @Override
-    public List<CourseVo> getStudentCoursesByStudentId(Integer studentId) {
+    public List<CourseVo> getStudentCoursesByStudentId(String studentId) {
         // 使用StudentCourseMapper的selectCoursesByStudentId方法获取课程信息
         List<Course> courses = studentCourseMapper.selectCoursesByStudentId(studentId);
         // 使用MapStructs.INSTANCE.po2vo方法将课程信息转换为视图对象
@@ -128,7 +128,7 @@ public class StudentCourseServiceImpl extends ServiceImpl<StudentCourseMapper, S
      * @return 学生课程信息
      */
     @Override
-    public IPage<CourseVo> getStudentCoursesByStudentIdWithPagination(Integer studentId, Page<StudentCourse> page) {
+    public IPage<CourseVo> getStudentCoursesByStudentIdWithPagination(String studentId, Page<StudentCourse> page) {
         // 使用StudentCourseMapper的selectCoursesByStudentId方法获取课程信息
         IPage<Course> courses = studentCourseMapper.selectCoursesByStudentIdWithPagination(page, studentId);
         // 使用MapStructs.INSTANCE.po2vo方法将课程信息转换为视图对象

@@ -69,13 +69,13 @@ public interface StudentCourseService extends IService<StudentCourse> {
      * @param studentId ：学生ID
      * @return 学生课程信息列表
      */
-    List<CourseVo> getStudentCoursesByStudentId(Integer studentId);
+    List<CourseVo> getStudentCoursesByStudentId(String studentId);
 
     /**
      * 根据学生ID获取分页的学生课程信息
      * @return 学生课程信息列表
      */
-    IPage<CourseVo> getStudentCoursesByStudentIdWithPagination(Integer studentId, Page<StudentCourse> page);
+    IPage<CourseVo> getStudentCoursesByStudentIdWithPagination(String studentId, Page<StudentCourse> page);
 
     // 批量删除学生课程信息接口。传入一个课程id ——> 删除学生课程表中 course_id = 课程id 的所有记录
     /**
