@@ -4,12 +4,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentNotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
@@ -58,10 +60,22 @@ public class NotificationWorksController {
         return JsonVos.ok(workService.getWorkInfoListByStuToken(request.getHeader(Constants.WxMiniApp.WX_TOKEN)));
     }
 
-    @PostMapping("/saveCoursesAndHomeworks")
-    @ApiOperation("批量保存学生课程和作业信息")
+    @PostMapping("/saveCourses")
+    @ApiOperation("批量保存学生课程")
     public JsonVo saveCoursesAndHomeworks(@Valid @RequestBody SaveCoursesAndHomeworksReqVo reqVo) {
         if (studentCourseService.saveCoursesAndHomeworks(reqVo)) {
+            return JsonVos.ok(CodeMsg.SAVE_OK);
+        } else {
+            return JsonVos.error(CodeMsg.SAVE_ERROR);
+        }
+    }
+
+    @PostMapping("/publishWork")
+    @ApiOperation("发布作业")
+    public JsonVo create(@Valid HomeworkReqVo reqVo, HttpServletRequest request) throws Exception {
+        // 标记发布平台为 WX 后再去保存
+        reqVo.fillInfo(Constants.Status.PUBLISH_PLAT_WX, request.getHeader(Constants.WxMiniApp.WX_TOKEN));
+        if (workService.saveOrUpdateFromWx(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);

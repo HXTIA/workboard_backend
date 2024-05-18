@@ -94,7 +94,6 @@ public interface MapStructs {
     Course reqVo2po(CourseReqVo reqVo);
     Course reqVo2po(CourseEditReqVo reqVo);
     StudentCourse reqVo2po(StudentCourseReqVo reqVo);
-    @Mapping(source = "id", target = "id")
     StudentCourse reqVo2po(StudentCourseEditReqVo reqVo);
 
     @Mapping(

@@ -23,7 +23,7 @@ public class HomeworkReqVo {
 
     @NotNull
     @ApiModelProperty(value = "发布者 ID", required = true)
-    private Integer publisherId;
+    private String publisherId;
 
     @NotBlank
     @ApiModelProperty(value = "作业标题", required = true)
@@ -40,8 +40,14 @@ public class HomeworkReqVo {
     @ApiModelProperty("新图片数据")
     private List<MultipartFile> pictureFiles;
 
-    @ApiModelProperty(value = "发布平台")
+    // "发布平台" Wx、Web
     private String publishPlatform;
 
-}
+    // C 端学生想要发布作业，需要 Token
+    private String wxToken;
 
+    public void fillInfo(String publishPlatform, String wxToken) {
+        this.publishPlatform = publishPlatform;
+        this.wxToken = wxToken;
+    }
+}

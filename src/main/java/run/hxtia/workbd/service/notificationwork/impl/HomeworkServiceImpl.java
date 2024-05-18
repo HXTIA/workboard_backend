@@ -4,13 +4,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.ListUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadEditParam;
 import run.hxtia.workbd.common.upload.Uploads;
 import run.hxtia.workbd.common.util.Constants;
@@ -19,6 +23,7 @@ import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.HomeworkMapper;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
+import run.hxtia.workbd.pojo.dto.StudentInfoDto;
 import run.hxtia.workbd.pojo.po.Homework;
 import run.hxtia.workbd.pojo.po.StudentHomework;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CourseIdWorkPageReqVo;
@@ -30,7 +35,9 @@ import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
+import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
+import run.hxtia.workbd.service.usermanagement.StudentService;
 
 import java.util.*;
 import java.util.function.Function;
@@ -43,7 +50,15 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> implements HomeworkService {
 
+    private final Redises redises;
     private final StudentHomeworkService studentHomeworkService;
+    private StudentCourseService studentCourseService;
+
+    @Autowired
+    public void setStudentCourseService(@Lazy StudentCourseService studentCourseService) {
+        this.studentCourseService = studentCourseService;
+    }
+
 
     /**
      * 分页查询作业
@@ -69,6 +84,22 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
     }
 
     /**
+     * 从微信：保存 or 编辑作业
+     * @param reqVo：作业信息
+     * @return ：是否成功
+     */
+    @Override
+    public boolean saveOrUpdateFromWx(HomeworkReqVo reqVo) throws Exception {
+        // 从 Token 中解析出 Token WX ID
+        String wechatId = MiniApps.getOpenId(reqVo.getWxToken());
+
+        // 然后去学生授权表中查看有无这个课程的权限。
+        // TODO：然后去学生授权表中查看有无这个课程的权限。
+        // 去真正的保存作业
+        return saveOrUpdate(reqVo);
+    }
+
+    /**
      * 保存 or 编辑作业
      * @param reqVo：作业信息
      * @return ：是否成功
@@ -91,8 +122,24 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         }
 
         try {
-            // 保存数据
-            return saveOrUpdate(po);
+            // 保存作业数据
+            boolean res = saveOrUpdate(po);
+            if (!res) {
+                return false;
+            }
+
+            // 保存成功了，同步将这条作业插入学生的作业表中
+            // TODO：异步去插入，“补偿” 机制
+
+            // 根据课程 ID 查询学生 IDs
+            List<String> stuIds = studentCourseService.listStuIdsByCourseId(po.getCourseId());
+            boolean pushStuWorkOk = studentHomeworkService.addStudentHomeworks(stuIds, po.getId());
+            if (!pushStuWorkOk) {
+                // 对于插入失败的场景，不能回滚作业，那么需要自己开定时任务去 “补偿”
+                log.error("给学生推送作业失败");
+            }
+
+            return true;
         } catch (Exception e) {
             // 出现异常将刚上传的图片给删掉
             log.error(e.getMessage());

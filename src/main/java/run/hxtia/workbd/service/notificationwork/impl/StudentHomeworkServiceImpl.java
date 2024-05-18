@@ -2,7 +2,7 @@ package run.hxtia.workbd.service.notificationwork.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.ListUtils;
@@ -10,13 +10,13 @@ import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.StudentHomeworkMapper;
-import run.hxtia.workbd.mapper.StudentNotificationMapper;
+import run.hxtia.workbd.pojo.po.Homework;
 import run.hxtia.workbd.pojo.po.StudentHomework;
-import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentHomeworkPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
-import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
+import run.hxtia.workbd.service.notificationwork.HomeworkService;
+import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
 
 import java.util.List;
@@ -26,11 +26,9 @@ import java.util.List;
  * 后台管理用户作业模块 业务层
  */
 @Service
+@RequiredArgsConstructor
 public class StudentHomeworkServiceImpl
     extends ServiceImpl<StudentHomeworkMapper, StudentHomework> implements StudentHomeworkService {
-
-    @Autowired
-    private StudentHomeworkMapper studentHomeworkMapper;
 
     /**
      * 根据作业ID删除 用户作业
@@ -76,7 +74,7 @@ public class StudentHomeworkServiceImpl
         Page<?> pageParam = new Page<>(reqVo.getPage(), reqVo.getSize());
 
         // 使用自定义 Mapper 方法进行查询
-        Page<HomeworkVo> homeworkPage = studentHomeworkMapper.selectHomeworksByStudentId(pageParam, Long.valueOf(reqVo.getStudentId()));
+        Page<HomeworkVo> homeworkPage = baseMapper.selectHomeworksByStudentId(pageParam, Long.valueOf(reqVo.getStudentId()));
 
         // 构建并返回分页结果
         PageVo<HomeworkVo> pageVo = new PageVo<>();
@@ -87,5 +85,25 @@ public class StudentHomeworkServiceImpl
         pageVo.setPageSize(homeworkPage.getSize());        // 每页记录数
 
         return pageVo;
+    }
+
+    /**
+     * 批量添加学生作业关联
+     * @param stuIds 学生 IDs ID
+     * @param workId 作业 Id
+     * @return 是否成功
+     */
+    @Override
+    public boolean addStudentHomeworks(List<String> stuIds, Long workId) {
+        if (ListUtils.isEmpty(stuIds)) {
+            return true;
+        }
+
+        return saveBatch(Streams.list2List(stuIds, (stuId) -> {
+            StudentHomework po = new StudentHomework();
+            po.setStudentId(stuId);
+            po.setHomeworkId(workId);
+            return po;
+        }));
     }
 }

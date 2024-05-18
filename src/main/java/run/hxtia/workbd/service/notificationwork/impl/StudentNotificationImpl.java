@@ -2,6 +2,7 @@ package run.hxtia.workbd.service.notificationwork.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +20,9 @@ import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class StudentNotificationImpl
     extends ServiceImpl<StudentNotificationMapper,StudentNotification> implements StudentNotificationService{
-
-    @Autowired
-    private StudentNotificationMapper studentNotificationMapper;
 
     /**
      * 根据通知ID列表删除所有相关的学生通知记录
@@ -51,7 +50,7 @@ public class StudentNotificationImpl
         Page<?> pageParam = new Page<>(reqVo.getPage(), reqVo.getSize());
 
         // 使用自定义 Mapper 方法进行联表查询
-        Page<NotificationVo> notificationPage = studentNotificationMapper.selectNotificationsByStudentId(pageParam, reqVo.getWechatId());
+        Page<NotificationVo> notificationPage = baseMapper.selectNotificationsByStudentId(pageParam, reqVo.getWechatId());
 
         // 构建并返回分页结果
         PageVo<NotificationVo> pageVo = new PageVo<>();

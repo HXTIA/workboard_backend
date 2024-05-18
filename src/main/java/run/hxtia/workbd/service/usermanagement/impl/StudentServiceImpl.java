@@ -8,18 +8,19 @@ import org.apache.commons.codec.digest.HmacUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.util.ListUtils;
+import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.httpclient.HttpClient;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.upload.UploadReqParam;
 import run.hxtia.workbd.common.upload.Uploads;
-import run.hxtia.workbd.common.util.Constants;
-import run.hxtia.workbd.common.util.JsonVos;
-import run.hxtia.workbd.common.util.MiniApps;
-import run.hxtia.workbd.common.util.Strings;
+import run.hxtia.workbd.common.util.*;
 import run.hxtia.workbd.mapper.StudentMapper;
 import run.hxtia.workbd.pojo.dto.StudentInfoDto;
 import run.hxtia.workbd.pojo.po.Student;
+import run.hxtia.workbd.pojo.po.StudentCourse;
+import run.hxtia.workbd.pojo.po.StudentHomework;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.StudentVo;
 import run.hxtia.workbd.pojo.vo.organization.response.OrganizationVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentAvatarReqVo;
@@ -29,9 +30,12 @@ import run.hxtia.workbd.pojo.vo.common.response.WxCodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.WxTokenVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.service.notificationwork.CourseService;
+import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
+import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
 import run.hxtia.workbd.service.usermanagement.StudentService;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -41,6 +45,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     private final Redises redises;
     private final StudentCourseService studentCourseService;
+    private final StudentHomeworkService studentHomeworkService;
+    private final HomeworkService homeworkService;
 
     /**
      * 根据 code验证码换取 session_key + openId
@@ -180,13 +186,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
      */
     @Override
     public boolean update(StudentReqVo reqVo, String token) {
-        if (baseMapper.updateById(MapStructs.INSTANCE.reqVo2po(reqVo)) > 0) {
-            // TODO：健壮性考虑，如果删除失败了怎么处理
-            redises.del(Constants.WxMiniApp.WX_USER, reqVo.getWechatId() + token);
-            return true;
+        Student po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        if (baseMapper.updateById(po) <= 0) {
+            return false;
         }
 
-        return false;
+        // TODO：健壮性考虑，如果删除失败了怎么处理
+        redises.del(Constants.WxMiniApp.WX_USER+reqVo.getWechatId()+token);
+        return true;
     }
 
     /**

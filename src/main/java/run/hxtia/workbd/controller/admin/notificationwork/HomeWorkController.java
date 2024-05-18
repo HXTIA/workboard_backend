@@ -48,6 +48,9 @@ public class HomeWorkController {
     @ApiOperation("新建作业")
     @RequiresPermissions(Constants.Permission.WORK_MANAGE_CREATE)
     public JsonVo create(@Valid HomeworkReqVo reqVo) throws Exception {
+        // 填充请求信息
+        reqVo.fillInfo(Constants.Status.PUBLISH_PLAT_WEB, "");
+
         if (workService.saveOrUpdate(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
         } else {

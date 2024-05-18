@@ -66,6 +66,9 @@ public class Constants {
         // 作业是否展示
         public static final Short WORK_UNDONE = 1; // 已读未完成
         public static final Short WORK_DONE = 2; // 已完成
+
+        public static final String PUBLISH_PLAT_WX = "WX"; // 发布平台-微信
+        public static final String PUBLISH_PLAT_WEB = "WEB"; // 发布平台- Web
     }
 
     /**
