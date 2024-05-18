@@ -7,14 +7,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.ListUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
+import run.hxtia.workbd.common.enhance.MpPage;
+import run.hxtia.workbd.common.mapstruct.MapStructs;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.StudentHomeworkMapper;
 import run.hxtia.workbd.pojo.po.Homework;
+import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.po.StudentHomework;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentHomeworkPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
@@ -44,10 +49,16 @@ public class StudentHomeworkServiceImpl
     }
 
     @Override
-    public List<StudentHomework> listByStuId(String stuId) {
+    public PageVo<StudentHomework> listByStuId(StudentWorkPageReqVo pageReqVo) {
         MpLambdaQueryWrapper<StudentHomework> wrapper = new MpLambdaQueryWrapper<>();
-        wrapper.eq(StudentHomework::getStudentId, stuId).ne(StudentHomework::getStatus, Constants.Status.WORK_DONE);
-        return baseMapper.selectList(wrapper);
+        wrapper.between(pageReqVo.getCreatedTime(), StudentHomework::getCreatedAt).
+            eq(StudentHomework::getStudentId, pageReqVo.getWechatId()).
+            ne(StudentHomework::getStatus, Constants.Status.WORK_DONE);
+
+        // 构建分页结果
+        return baseMapper.
+            selectPage(new MpPage<>(pageReqVo), wrapper)
+            .buildVo();
     }
 
     /**

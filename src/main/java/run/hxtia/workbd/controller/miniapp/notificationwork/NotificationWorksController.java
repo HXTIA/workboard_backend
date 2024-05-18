@@ -15,6 +15,7 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentNotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.NotificationService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
@@ -53,11 +54,12 @@ public class NotificationWorksController {
             return JsonVos.ok(notifications);
     }
 
-    //查看作业列表        // TODO：转换为分页
-    @GetMapping("/searchWorks")
+    //查看作业列表
+    @PostMapping("/searchWorks")
     @ApiOperation("获取学生作业")
-    public DataJsonVo<List<StudentHomeworkDetailDto>> searchStuWorkList(HttpServletRequest request) {
-        return JsonVos.ok(workService.getWorkInfoListByStuToken(request.getHeader(Constants.WxMiniApp.WX_TOKEN)));
+    public PageJsonVo<StudentHomeworkDetailDto> searchStuWorkList(@RequestBody StudentWorkPageReqVo reqVo, HttpServletRequest request) {
+        reqVo.setWxToken(request.getHeader(Constants.WxMiniApp.WX_TOKEN));
+        return JsonVos.ok(workService.getWorkInfoListByStuToken(reqVo));
     }
 
     @PostMapping("/saveCourses")

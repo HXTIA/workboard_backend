@@ -11,6 +11,7 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkUploadReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
 
 import java.util.List;
 
@@ -75,17 +76,17 @@ public interface HomeworkService extends IService<Homework> {
 
     /**
      * 根据学生 ID 获取学生作业
-     * @param stuId：学生 ID
+     * @param reqVo：分页对象
      * @return ：学生所有作业
      */
-    List<StudentHomeworkDetailDto> getWorkInfoListByStuId(String stuId);
+    PageVo<StudentHomeworkDetailDto> getWorkInfoListByStuId(StudentWorkPageReqVo reqVo);
 
     /**
      * 根据学生 token 获取学生作业
-     * @param token：学生 WXToken
+     * @param reqVo：分页对象
      * @return ：学生所有作业
      */
-    List<StudentHomeworkDetailDto> getWorkInfoListByStuToken(String token);
+    PageVo<StudentHomeworkDetailDto> getWorkInfoListByStuToken(StudentWorkPageReqVo reqVo);
 
     //TODO 根据课程id，获取作业id列表。传入 courseidlist ——> 获取作业idlist
     /**

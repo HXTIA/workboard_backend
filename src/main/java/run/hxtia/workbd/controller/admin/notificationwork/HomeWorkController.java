@@ -17,6 +17,7 @@ import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageJsonVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 
 import javax.validation.Valid;
@@ -116,9 +117,9 @@ public class HomeWorkController {
         }
     }
 
-    @GetMapping("/searchWorkByStuId")
+    @PostMapping("/searchWorkByStuId")
     @ApiOperation("根据学生 ID 查询作业信息，stuId != null")
-    public DataJsonVo<List<StudentHomeworkDetailDto>> searchStuWorkListByStuId(@NotNull @RequestParam String stuId) {
-        return JsonVos.ok(workService.getWorkInfoListByStuId(stuId));
+    public DataJsonVo<List<StudentHomeworkDetailDto>> searchStuWorkListByStuId(@RequestBody StudentWorkPageReqVo reqVo) {
+        return JsonVos.ok(workService.getWorkInfoListByStuId(reqVo));
     }
 }

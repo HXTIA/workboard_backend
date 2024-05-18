@@ -6,7 +6,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
-    active: test
+    active: dev
   messages:
     encoding: UTF-8
   jackson:

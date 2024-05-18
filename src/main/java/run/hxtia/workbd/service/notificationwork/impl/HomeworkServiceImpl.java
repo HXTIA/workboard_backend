@@ -34,6 +34,7 @@ import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
@@ -222,16 +223,25 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
 
     /**
      * 根据学生ID查询学生的作业信息列表
-     * @param stuId 学生ID
+     * @param reqVo：分页对象
      * @return 学生的作业信息列表
      */
     @Override
-    public List<StudentHomeworkDetailDto> getWorkInfoListByStuId(String stuId) {
+    public PageVo<StudentHomeworkDetailDto> getWorkInfoListByStuId(StudentWorkPageReqVo reqVo) {
         // 第一步：获取学生的所有作业记录
-        List<StudentHomework> studentHomeworks = studentHomeworkService.listByStuId(stuId);
+        PageVo<StudentHomework> pages = studentHomeworkService.listByStuId(reqVo);
+        List<StudentHomework> studentHomeworks = pages.getData();
+
+        PageVo<StudentHomeworkDetailDto> resPages = new PageVo<>();
+        resPages.setPages(pages.getPages());
+        resPages.setCurrentPage(pages.getCurrentPage());
+        resPages.setPageSize(pages.getPageSize());
+        resPages.setCount(pages.getCount());
+
         if (studentHomeworks.isEmpty()) {
-            return new ArrayList<>();  // 如果没有作业记录，直接返回空列表
+            return resPages;  // 如果没有作业记录，直接返回空列表
         }
+
         // 第二步：获取所有作业ID
         List<Long> homeworkIds = Streams.list2List(studentHomeworks, StudentHomework::getHomeworkId);
 
@@ -244,24 +254,27 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         Map<Long, Homework> homeworkMap = Streams.list2Map(homeworks, Homework::getId, Function.identity());
 
         // 第五步：组装 DTO
-        return Streams.list2List(studentHomeworks, (sh) -> {
+        resPages.setData(Streams.list2List(studentHomeworks, (sh) -> {
             Homework po = homeworkMap.get(sh.getHomeworkId());
             StudentHomeworkDetailDto dto = MapStructs.INSTANCE.po2dto(po);
             dto.setStatus(sh.getStatus());
             dto.setPin(sh.getPin());
             return dto;
-        });
+        }));
+
+        return resPages;
     }
 
     /**
      * 根据学生ID查询学生的作业信息列表
-     * @param token 学生 WXToken
+     * @param reqVo：分页对象
      * @return 学生的作业信息列表
      */
     @Override
-    public List<StudentHomeworkDetailDto> getWorkInfoListByStuToken(String token) {
+    public PageVo<StudentHomeworkDetailDto> getWorkInfoListByStuToken(StudentWorkPageReqVo reqVo) {
+        reqVo.setWechatId(MiniApps.getOpenId(reqVo.getWxToken()));
         // 第一步：获取学生的所有作业记录
-        return getWorkInfoListByStuId(MiniApps.getOpenId(token));
+        return getWorkInfoListByStuId(reqVo);
     }
 
 
