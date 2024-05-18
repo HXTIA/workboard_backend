@@ -112,6 +112,10 @@ public class OrganizationController {
         return JsonVos.ok(courseService.getPage(reqVo));
     }
 
+    // TODO 根据学生id，获取课程列表，做个判断过滤，把学生已选的课程过滤，不要返回
+
+    // TODO 选课的时候，已经选了的课程就不用返回了。
+
     // 查看作业列表
     /**
      * 根据课程Ids获取作业信息列表（分页）

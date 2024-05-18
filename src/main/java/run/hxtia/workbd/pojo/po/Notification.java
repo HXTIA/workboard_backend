@@ -31,7 +31,7 @@ public class Notification implements Serializable {
     /**
      * 用户ID
      */
-    private Integer userId;
+    private String userId;
 
     /**
      * 状态
