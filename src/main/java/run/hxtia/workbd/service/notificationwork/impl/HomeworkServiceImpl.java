@@ -277,6 +277,29 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         return getWorkInfoListByStuId(reqVo);
     }
 
+    @Override
+    public StudentHomeworkDetailDto getWorkInfo(Long workId, String token) {
+        // 作业信息
+        Homework po = baseMapper.selectById(workId);
+        StudentHomeworkDetailDto dto = MapStructs.INSTANCE.po2dto(po);
+        String stuId = MiniApps.getOpenId(token);
+
+        // 学生作业
+        MpLambdaQueryWrapper<StudentHomework> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.eq(StudentHomework::getStudentId, stuId)
+            .eq(StudentHomework::getHomeworkId, workId);
+
+        StudentHomework studentHomework = studentHomeworkService.getOne(wrapper);
+        if (studentHomework == null) {
+            return dto;
+        }
+
+        dto.setStatus(studentHomework.getStatus());
+        dto.setPin(studentHomework.getPin());
+
+        return dto;
+    }
+
 
     @Override
     public List<Long> getWorkIdsByCourseIds(List<Integer> courseIdList) {

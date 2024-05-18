@@ -5,18 +5,23 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.util.ListUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
 import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.common.util.Constants;
+import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.StudentHomeworkMapper;
 import run.hxtia.workbd.pojo.po.Homework;
 import run.hxtia.workbd.pojo.po.Role;
 import run.hxtia.workbd.pojo.po.StudentHomework;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentHomeworkReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentHomeworkPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
@@ -115,5 +120,24 @@ public class StudentHomeworkServiceImpl
             po.setHomeworkId(workId);
             return po;
         }));
+    }
+
+    /**
+     * 更新学生作业状态
+     * @return 是否成功
+     */
+    @Override
+    public boolean update(StudentHomeworkReqVo reqVo) {
+        StudentHomework po = MapStructs.INSTANCE.reqVo2po(reqVo);
+        String stuId = MiniApps.getOpenId(reqVo.getWxToken());
+        if (!StringUtils.hasLength(stuId) || po.getHomeworkId() <= 0) {
+            // 必须确保 stuId 和 homeworkId 有值，要不然到时候更新错了
+            JsonVos.raise(CodeMsg.SAVE_ERROR);
+        }
+
+        MpLambdaQueryWrapper<StudentHomework> wrapper = new MpLambdaQueryWrapper<>();
+        wrapper.eq(StudentHomework::getStudentId, stuId).eq(StudentHomework::getHomeworkId, po.getHomeworkId());
+
+        return baseMapper.update(po, wrapper) > 0;
     }
 }

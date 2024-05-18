@@ -107,6 +107,7 @@ public interface MapStructs {
     Codes reqVo2po(CodeSaveReqVo reqVo);
     StudentAuthorization reqVo2po(StudentAuthorizationReqVo reqVo);
     Authorization reqVo2po(AuthorizationReqVo reqVo);
+    StudentHomework reqVo2po(StudentHomeworkReqVo reqVo);
 
     @Mapping(
         source = "deadline",
