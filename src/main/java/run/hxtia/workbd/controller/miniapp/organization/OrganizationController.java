@@ -99,6 +99,10 @@ public class OrganizationController {
         return JsonVos.ok(classService.listPage(reqVo));
     }
 
+
+
+    // TODO 根据学生id，获取课程列表，做个判断过滤，把学生已选的课程过滤，不要返回
+    // TODO 选课的时候，已经选了的课程就不用返回了。
     // 选择课程
     // 根据班级ID获取课程信息
     /**
@@ -112,9 +116,7 @@ public class OrganizationController {
         return JsonVos.ok(courseService.getPage(reqVo));
     }
 
-    // TODO 根据学生id，获取课程列表，做个判断过滤，把学生已选的课程过滤，不要返回
 
-    // TODO 选课的时候，已经选了的课程就不用返回了。
 
     // 查看作业列表
     /**
@@ -127,14 +129,4 @@ public class OrganizationController {
     public PageJsonVo<HomeworkVo> getWorkInfoByCourseIdsWithPagination(@Valid @RequestBody CourseIdWorkPageReqVo reqVo) {
         return JsonVos.ok(workService.getWorkInfoByCourseIds(reqVo));
     }
-
-    // 整合所有组织
-    // TODO 通过学生的id，获取学院、年级、班级信息
-
-//    @PostMapping("/studentOrganizationDetails")
-//    @ApiOperation("根据学生ID获取学院、年级、班级信息")
-//    public DataJsonVo<OrganizationVo> getStudentOrganizationDetails(@RequestBody @Valid StudentIdReqVo reqVo) {
-//            OrganizationVo organizationVo = studentService.getOrganizationDetailsByStudentId(reqVo.getStudentId());
-//            return JsonVos.ok(organizationVo);
-//    }
 }

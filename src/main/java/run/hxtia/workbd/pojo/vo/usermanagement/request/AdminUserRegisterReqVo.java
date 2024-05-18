@@ -30,5 +30,4 @@ public class AdminUserRegisterReqVo {
     @ApiModelProperty(value = "邮箱验证码", required = true)
     private String code;
 
-    // TODO: 可以将密钥的盐值生成，让前端来完成
 }

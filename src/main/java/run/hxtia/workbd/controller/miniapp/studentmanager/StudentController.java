@@ -75,22 +75,13 @@ public class StudentController {
     }
 
     // 新增的端点
-    @PostMapping("/getCourseAndClassByCode")
-    @ApiOperation("核销授权码,根据授权码获取课程和班级信息")
-    public DataJsonVo<CourseAndClassVo> getCourseAndClassByCode(@RequestParam @NotNull(message = "code 不能为空") String code, HttpServletRequest request) {
+    @PostMapping("/verificationCode")
+    @ApiOperation("核销授权码,核销成功会返回课程和班级信息")
+    public DataJsonVo<CourseAndClassVo> verificationCode(@RequestParam @NotNull(message = "code 不能为空") String code, HttpServletRequest request) {
         String token = request.getHeader(Constants.WxMiniApp.WX_TOKEN);
-        CourseAndClassVo courseAndClassVo = authorizationService.getCourseAndClassByCode(code, token);
+        CourseAndClassVo courseAndClassVo = authorizationService.verificationCode(code, token);
         return JsonVos.ok(courseAndClassVo);
     }
 
-
-
-
-    // 通过学生的id获取学生的信息
-    //    @GetMapping("/getStudentInfo")
-    //    @ApiOperation("通过学生的ID获取学生的信息")
-    //    public DataJsonVo<StudentVo> getStudentInfo(@NotNull(message = "学生ID不能为空") Long studentId) throws Exception {
-    //        return JsonVos.ok(studentService.getStudentById(studentId));
-    //    }
 
 }

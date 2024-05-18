@@ -90,7 +90,6 @@ public interface HomeworkService extends IService<Homework> {
 
     StudentHomeworkDetailDto getWorkInfo(Long workId, String token);
 
-    //TODO 根据课程id，获取作业id列表。传入 courseidlist ——> 获取作业idlist
     /**
      * 根据课程ID获取作业ID列表
      * @param courseIdList 课程ID列表

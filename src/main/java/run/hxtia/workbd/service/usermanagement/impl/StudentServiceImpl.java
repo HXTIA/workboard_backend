@@ -218,27 +218,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return res;
     }
 
-    // TODO：这个接口可删除
-    @Override
-    public OrganizationVo getOrganizationDetailsByStudentId(String studentId) {
-        // 直接通过Mapper方法获取所有信息
-        OrganizationVo organizationDetailsByStudentId = baseMapper.getOrganizationDetailsByStudentId(studentId);
-        if (organizationDetailsByStudentId == null) {
-            return JsonVos.raise("未找到该学生的组织信息");
-        }
-
-        return baseMapper.getOrganizationDetailsByStudentId(studentId);
-    }
-
-    @Override
-    public StudentVo getStudentById(Long studentId) throws Exception {
-        Student student = baseMapper.selectById(studentId);
-        if (student == null) {
-            throw new Exception("Student not found with ID: " + studentId);
-        }
-        return MapStructs.INSTANCE.po2vo(student);
-    }
-
 
     /**
      * 根据 wxTokenVo 构建验证登录状态的 URL

@@ -240,7 +240,7 @@ public class AuthorizationServiceImpl extends ServiceImpl<AuthorizationMapper, A
 
     @Override
     @Transactional(readOnly = false)
-    public CourseAndClassVo getCourseAndClassByCode(String code, String token) {
+    public CourseAndClassVo verificationCode(String code, String token) {
         // 检查code的状态
         Short codeStatus = codesService.checkCodeStatus(code);
         if (Objects.equals(codeStatus, Constants.Status.Code_EXIT)) {

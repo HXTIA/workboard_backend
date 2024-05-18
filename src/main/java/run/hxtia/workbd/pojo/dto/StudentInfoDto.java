@@ -22,7 +22,4 @@ public class StudentInfoDto {
     @ApiModelProperty("学生课程列表")
     private List<CourseVo> courseVos;
 
-    // TODO：可以不需要（毕竟大部分学生其实都不是学委，不需要有 C 端发布的权限）
-//    @ApiModelProperty("学生权限列表")
-//    private List<StudentAuthInfoDto> authInfos;
 }

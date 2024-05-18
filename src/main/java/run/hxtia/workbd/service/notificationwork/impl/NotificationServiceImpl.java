@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.enhance.MpLambdaQueryWrapper;
@@ -13,6 +14,7 @@ import run.hxtia.workbd.common.enhance.MpPage;
 import run.hxtia.workbd.common.mapstruct.MapStructs;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
+import run.hxtia.workbd.common.util.MiniApps;
 import run.hxtia.workbd.common.util.Streams;
 import run.hxtia.workbd.mapper.NotificationMapper;
 import run.hxtia.workbd.pojo.po.Homework;
@@ -22,17 +24,23 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.StudentAuthorizationSetVo;
 import run.hxtia.workbd.service.notificationwork.NotificationService;
 import run.hxtia.workbd.service.notificationwork.StudentNotificationService;
+import run.hxtia.workbd.service.usermanagement.StudentAuthorizationService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Notification> implements NotificationService {
     private final StudentNotificationService studentNotificationService;
+
+    private final StudentAuthorizationService studentAuthorizationService;
+
 
     /**
      * 分页查询通知
@@ -70,6 +78,7 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
      * @return ：是否成功
      */
     @Override
+    @Transactional(readOnly = false)
     public boolean removeByIds(String ids) {
         List<String> notificationIds = Arrays.asList(ids.split(","));
         if (CollectionUtils.isEmpty(notificationIds)) return false;
@@ -102,6 +111,7 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
      * @return ：是否成功
      */
     @Override
+    @Transactional(readOnly = false)
     public boolean removeHistory(String ids) {
         if (!StringUtils.hasLength(ids)) return false;
 
@@ -115,6 +125,28 @@ public class NotificationServiceImpl extends ServiceImpl<NotificationMapper, Not
             return JsonVos.raise(CodeMsg.REMOVE_ERROR);
         }
         return true;
+    }
+
+    // TODO 待完成发布通知
+    @Override
+    @Transactional(readOnly = false)
+    public boolean saveOrUpdateFromWx(NotificationReqVo reqVo) throws Exception {
+        String weChatToken = MiniApps.getOpenId(reqVo.getWxToken());
+        //StudentAuthorizationSetVo authInfo = studentAuthorizationService.getStudentAuthorizationSetById(weChatToken);
+
+        // 给用户发通知
+        if (Objects.equals(reqVo.getReceiver_type(), Constants.Status.NOTIFICATION_STATUS_USER)){
+
+        }
+
+
+
+//
+
+//        if (!authInfo.getClassId().contains(reqVo.getClassId())) {
+//            return JsonVos.raise(CodeMsg.NO_AUTHORIZATION);
+//        }
+        return saveOrUpdate(reqVo);
     }
 
 

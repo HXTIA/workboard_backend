@@ -1,11 +1,14 @@
 package run.hxtia.workbd.controller.admin.notificationwork;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
@@ -15,6 +18,7 @@ import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.CoursePageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.CourseVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentCoursePageReqVo;
 import run.hxtia.workbd.service.notificationwork.CourseService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 

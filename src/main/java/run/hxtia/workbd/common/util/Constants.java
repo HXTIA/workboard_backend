@@ -72,7 +72,14 @@ public class Constants {
         public static final Short Code_EXIT = 0; // 不存在
         public static final Short Code_UNUSE = 1; // 未使用
         public static final Short Code_USED = 2; // 已使用
-        public static final Short Code_REVOKE = 3; // 已吊销
+        public static final Short Code_REVOKE = 3;// 已吊销
+
+        public static final String STU_AUTH_NOT_COURSE = "NOT_COURSE";// 无课程
+        public static final String STU_AUTH_NOT_CLASS = "NOT_CLASS"; // 无班级
+
+        // 通知状态
+        public static final String NOTIFICATION_STATUS_USER = "1"; // 用户
+        public static final String NOTIFICATION_STATUS_CLASS = "2"; // 班级
     }
 
     /**

@@ -61,4 +61,5 @@ public interface CodesService extends IService<Codes> {
      * @return ：授权码状态
      */
     Short checkCodeStatus(String code);
+
 }

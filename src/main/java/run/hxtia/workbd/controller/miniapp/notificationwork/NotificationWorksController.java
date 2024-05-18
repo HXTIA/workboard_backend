@@ -13,6 +13,7 @@ import run.hxtia.workbd.pojo.dto.AdminUserInfoDto;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.dto.StudentHomeworkDetailDto;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkReqVo;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentHomeworkReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.StudentNotificationPageReqVo;
@@ -47,6 +48,9 @@ public class NotificationWorksController {
     private final StudentCourseService studentCourseService;
 
     private final StudentHomeworkService studentHomeworkService;
+
+    // 通知
+    private final NotificationService notificationService;
 
     // 查看通知列表   已经解决
     @PostMapping("/notifications")
@@ -102,6 +106,17 @@ public class NotificationWorksController {
         } else {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
+    }
+
+
+    // TODO 发布通知控制层
+    @PostMapping("/publishNotification")
+    @ApiOperation("发布通知")
+    public JsonVo publishNotification(@Valid @RequestBody NotificationReqVo reqVo, HttpServletRequest request) throws Exception {
+        // 标记发布平台为 WX 后再去保存
+        reqVo.fillInfo(request.getHeader(Constants.WxMiniApp.WX_TOKEN));
+        notificationService.saveOrUpdateFromWx(reqVo);
+        return JsonVos.ok();
     }
 
 }

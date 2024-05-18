@@ -31,9 +31,19 @@ public class NotificationReqVo {
 
     @NotNull
     @ApiModelProperty(value = "接收者ID列表", required = true)
-    private Array receiver_ids;
+    private String receiver_ids;
 
     @NotNull
-    @ApiModelProperty(value = " 预定发布时间（可选）", required = true)
-    private String scheduled_time;
+    @ApiModelProperty(value = "班级ID列表", required = true)
+    private String class_id;
+
+
+
+    // C 端学生想要发布通知，需要 Token
+    private String wxToken;
+
+    public void fillInfo(String wxToken) {
+        this.wxToken = wxToken;
+    }
+
 }

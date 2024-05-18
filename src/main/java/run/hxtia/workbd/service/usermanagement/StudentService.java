@@ -53,20 +53,5 @@ public interface StudentService extends IService<Student> {
     @Transactional(readOnly = false)
     boolean update(StudentAvatarReqVo reqVo, String token) throws Exception;
 
-    // 整合组织
-    // TODO 通过学生的id，获取学院、年级、班级信息
-    /**
-     * 通过学生的ID获取学院、年级、班级信息
-     * @param studentId 学生ID
-     * @return 包含学院、年级和班级信息的OrganizationVo对象
-     */
-    OrganizationVo getOrganizationDetailsByStudentId(String studentId) ;
 
-    // TODO 通过学生的ID获取学生的信息
-    /**
-     * 通过学生的ID获取学生的信息
-     * @param studentId 学生ID
-     * @return 学生信息
-     */
-    StudentVo getStudentById(Long studentId) throws Exception;
 }

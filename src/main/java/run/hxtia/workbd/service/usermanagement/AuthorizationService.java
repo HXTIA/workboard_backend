@@ -68,10 +68,10 @@ public interface AuthorizationService extends IService<Authorization> {
     /**
      * 核销code，根据code获取授权码信息
      * @param code : 授权码
-     * @return ：授权信息
+     * @return ：核销成功会返回授权信息
      */
     @Transactional(readOnly = false)
-    CourseAndClassVo getCourseAndClassByCode(String code, String token);
+    CourseAndClassVo verificationCode(String code, String token);
 
     /*
     一开始一个管理员只生成一个code，我可以直接把code set进Redis。也就是 key-value 弄 code——courseAndClass

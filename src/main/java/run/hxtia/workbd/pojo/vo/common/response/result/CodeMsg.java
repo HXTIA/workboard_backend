@@ -56,7 +56,11 @@ public enum CodeMsg {
 
 
     AUTH_CODE_USED(60009, "授权码 code 已被使用"),
-    AUTH_CODE_NOT_EXIT(600010, "授权码 code 不存在");
+    AUTH_CODE_NOT_EXIT(600010, "授权码 code 不存在"),
+
+    AUTH_NOT_PUBLISH(60011, "没有发布权限");
+
+
 
 
 

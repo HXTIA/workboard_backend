@@ -3,6 +3,7 @@ package run.hxtia.workbd.service.usermanagement;
 import com.baomidou.mybatisplus.extension.service.IService;
 import run.hxtia.workbd.pojo.po.StudentAuthorization;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentAuthorizationReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.StudentAuthorizationSetVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.response.StudentAuthorizationVo;
 
 import java.util.List;
@@ -46,8 +47,15 @@ public interface StudentAuthorizationService  extends IService<StudentAuthorizat
     StudentAuthorizationVo getStudentAuthorizationById(String studentId);
 
     /**
-     * 获取所有学生授权信息
+     * 根据学生ID获取学生授权信息
      *
+     * @param studentId 学生ID
+     * @return StudentAuthorizationVo 学生授权信息返回对象（内含切割好的 Set集合）
+     */
+    StudentAuthorizationSetVo getStudentAuthorizationSetById(String studentId);
+
+    /**
+     * 获取所有学生授权信息
      * @return List<StudentAuthorizationVo> 学生授权信息返回对象列表
      */
     List<StudentAuthorizationVo> getAllStudentAuthorizations();

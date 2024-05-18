@@ -170,9 +170,6 @@ public class AdminUserServiceImpl
         3、将其置到 待建用户的组织ID
          */
         Integer colId = baseMapper.selectById(reqVo.getOperatorId()).getCollegeId();
-        // TODO：验证组织是否存在。
-//        if (!orgService.checkOrgInfo(orgId))
-//            return JsonVos.raise(CodeMsg.PERFECT_ORG_INFO);
 
         // 密码加盐
         String salt = Strings.getUUID(Md5s.DEFAULT_SALT_LEN);
@@ -389,7 +386,6 @@ public class AdminUserServiceImpl
     @Override
     public PageVo<AdminUserVo> getList(AdminUserPageReqVo pageReqVo, String token) {
 
-        // TODO：查组织信息？？？
         MpLambdaQueryWrapper<AdminUsers> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.like(pageReqVo.getKeyword(), AdminUsers::getUsername, AdminUsers::getNickname).
             eq(AdminUsers::getCollegeId, Redises.getClgIdByToken(token));

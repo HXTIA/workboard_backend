@@ -3,6 +3,7 @@ package run.hxtia.workbd.service.notificationwork;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.Notification;
+import run.hxtia.workbd.pojo.vo.notificationwork.request.HomeworkReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.page.NotificationPageReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.NotificationReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.response.NotificationVo;
@@ -56,5 +57,16 @@ public interface NotificationService extends IService<Notification> {
      */
     @Transactional(readOnly = false)
     boolean removeHistory(String ids);
+
+
+    // TODO 发布通知接口定义
+    /**
+     * 从微信：保存 or 编辑通知
+     * @param reqVo：通知信息
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean saveOrUpdateFromWx(NotificationReqVo reqVo) throws Exception;
+
 
 }

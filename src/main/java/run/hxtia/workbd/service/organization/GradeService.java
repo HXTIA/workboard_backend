@@ -66,7 +66,6 @@ public interface GradeService extends IService<Grade> {
      */
     boolean checkGradeInfo(Integer gradeId);
 
-    // TODO 根据学院ID获取年级信息
     /**
      * 根据学院ID获取年级信息
      * @param collegeId 学院ID
@@ -74,7 +73,6 @@ public interface GradeService extends IService<Grade> {
      */
     List<GradeVo> getGradeInfoByCollegeId(Integer collegeId);
 
-    // TODO 根据学院ID分页获取年级信息
     /**
      * 根据学院ID分页获取年级信息
      * @param reqVo 请求结构体

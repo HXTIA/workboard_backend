@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,10 +35,12 @@ import run.hxtia.workbd.pojo.vo.notificationwork.response.HomeworkVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.ExtendedPageVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.StudentAuthorizationSetVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.page.StudentWorkPageReqVo;
 import run.hxtia.workbd.service.notificationwork.HomeworkService;
 import run.hxtia.workbd.service.notificationwork.StudentCourseService;
 import run.hxtia.workbd.service.notificationwork.StudentHomeworkService;
+import run.hxtia.workbd.service.usermanagement.StudentAuthorizationService;
 import run.hxtia.workbd.service.usermanagement.StudentService;
 
 import java.util.*;
@@ -54,6 +57,8 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
     private final Redises redises;
     private final StudentHomeworkService studentHomeworkService;
     private StudentCourseService studentCourseService;
+
+    private final StudentAuthorizationService studentAuthorizationService;
 
     @Autowired
     public void setStudentCourseService(@Lazy StudentCourseService studentCourseService) {
@@ -90,12 +95,16 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
      * @return ：是否成功
      */
     @Override
+    @Transactional(readOnly = false)
     public boolean saveOrUpdateFromWx(HomeworkReqVo reqVo) throws Exception {
         // 从 Token 中解析出 Token WX ID
         String wechatId = MiniApps.getOpenId(reqVo.getWxToken());
 
+        StudentAuthorizationSetVo authInfo = studentAuthorizationService.getStudentAuthorizationSetById(wechatId);
         // 然后去学生授权表中查看有无这个课程的权限。
-        // TODO：然后去学生授权表中查看有无这个课程的权限。
+        if (!authInfo.getCourseId().contains(reqVo.getCourseId().toString())) {
+            return JsonVos.raise(CodeMsg.AUTH_NOT_PUBLISH);
+        }
         // 去真正的保存作业
         return saveOrUpdate(reqVo);
     }

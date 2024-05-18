@@ -43,7 +43,6 @@ public class SwaggerCfg implements InitializingBean {
      */
     private boolean enable;
 
-    // TODO  试图拆分
     @Bean
     public Docket adminBDocket() {
         return groupDocket(
