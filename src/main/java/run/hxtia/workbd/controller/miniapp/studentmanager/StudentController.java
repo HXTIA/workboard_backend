@@ -14,6 +14,9 @@ import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentReqVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
 import run.hxtia.workbd.pojo.vo.common.response.result.DataJsonVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.CourseAndClassVo;
+import run.hxtia.workbd.service.usermanagement.AuthorizationService;
+import run.hxtia.workbd.service.usermanagement.StudentAuthorizationService;
 import run.hxtia.workbd.service.usermanagement.StudentService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,8 @@ import javax.validation.constraints.NotNull;
 @Tag(name = "WxUserController", description = "小程序用户模块")
 public class StudentController {
     private final StudentService studentService;
+
+    private final AuthorizationService authorizationService;
 
     @GetMapping("/getToken")
     @ApiOperation("根据 code 获取 token")
@@ -68,6 +73,18 @@ public class StudentController {
             return JsonVos.error(CodeMsg.SAVE_ERROR);
         }
     }
+
+    // 新增的端点
+    @PostMapping("/getCourseAndClassByCode")
+    @ApiOperation("核销授权码,根据授权码获取课程和班级信息")
+    public DataJsonVo<CourseAndClassVo> getCourseAndClassByCode(@RequestParam @NotNull(message = "code 不能为空") String code, HttpServletRequest request) {
+        String token = request.getHeader(Constants.WxMiniApp.WX_TOKEN);
+        CourseAndClassVo courseAndClassVo = authorizationService.getCourseAndClassByCode(code, token);
+        return JsonVos.ok(courseAndClassVo);
+    }
+
+
+
 
     // 通过学生的id获取学生的信息
     //    @GetMapping("/getStudentInfo")

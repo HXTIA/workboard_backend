@@ -1,6 +1,7 @@
 package run.hxtia.workbd.common.mapstruct;
 
 import cn.binarywang.wx.miniapp.bean.WxMaSubscribeMessage;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -19,7 +20,9 @@ import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.StudentReqVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.*;
 import run.hxtia.workbd.pojo.vo.usermanagement.response.AdminUserVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.AuthorizationVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.response.RoleVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.StudentAuthorizationVo;
 
 /**
  * 1、简单Java对象的转换【不用自己写很多 set、get】
@@ -51,6 +54,8 @@ public interface MapStructs {
     ClassVo po2vo(Classes po);
     CourseVo po2vo(Course po);
     StudentCourseVo po2vo(StudentCourse po);
+    AuthorizationVo po2vo(Authorization po);
+    StudentAuthorizationVo po2vo(StudentAuthorization studentAuthorization);
 
     @Mapping(
         source = "createdAt",
@@ -72,6 +77,7 @@ public interface MapStructs {
     // 通知
     NotificationVo po2vo(Notification po);
     NotificationVo po2vo(StudentNotification studentNotification);
+
 
    // reqVo -> po  【用来做数据库保存】
 
@@ -96,6 +102,12 @@ public interface MapStructs {
     StudentCourse reqVo2po(StudentCourseReqVo reqVo);
     @Mapping(source = "id", target = "id")
     StudentCourse reqVo2po(StudentCourseEditReqVo reqVo);
+
+
+    @Mapping(source = "publishId", target = "publishId")
+    Codes reqVo2po(CodeSaveReqVo reqVo);
+    StudentAuthorization reqVo2po(StudentAuthorizationReqVo reqVo);
+    Authorization reqVo2po(AuthorizationReqVo reqVo);
 
     @Mapping(
         source = "deadline",

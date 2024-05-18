@@ -19,5 +19,5 @@ public class ClassVo {
     private String name;
 
     @ApiModelProperty("所属年级id")
-    private String gradeId;
+    private Integer gradeId;
 }

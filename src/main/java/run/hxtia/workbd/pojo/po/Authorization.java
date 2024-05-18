@@ -19,29 +19,14 @@ public class Authorization implements Serializable {
     private Integer id;
 
     /**
-     * 申请者ID
-     */
-    private Integer applicantId;
-
-    /**
      * 权限描述
      */
     private String permissions;
 
     /**
-     * 授权原因
-     */
-    private String reason;
-
-    /**
-     * 授权状态
-     */
-    private String status;
-
-    /**
      * 审核者ID
      */
-    private Integer reviewerId;
+    private Integer publicId;
 
     /**
      * 创建时间

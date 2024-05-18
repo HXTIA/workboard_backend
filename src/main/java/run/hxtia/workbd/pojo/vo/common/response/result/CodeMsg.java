@@ -52,7 +52,13 @@ public enum CodeMsg {
     CHECK_OK(60005,"校验通过"),
     CHECK_ERROR(60006,"校验失败"),
     CHECK_TOKEN_ERR(60007, "Token Check 失效"),
-    GET_ACCESS_TOKEN_ERR(60008, "获取 ACCESS Token 失败");
+    GET_ACCESS_TOKEN_ERR(60008, "获取 ACCESS Token 失败"),
+
+
+    AUTH_CODE_USED(60009, "授权码 code 已被使用"),
+    AUTH_CODE_NOT_EXIT(600010, "授权码 code 不存在");
+
+
 
     /**
      *     状态码

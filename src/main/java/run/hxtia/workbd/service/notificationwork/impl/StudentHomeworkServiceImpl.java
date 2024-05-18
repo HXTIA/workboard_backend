@@ -62,7 +62,6 @@ public class StudentHomeworkServiceImpl
         if (ListUtils.isEmpty(workIds)) {
             return true;
         }
-
         return saveBatch(Streams.list2List(workIds, (workId) -> {
             StudentHomework po = new StudentHomework();
             po.setStudentId(stuId);

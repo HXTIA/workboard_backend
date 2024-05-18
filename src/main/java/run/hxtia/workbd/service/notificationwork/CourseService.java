@@ -94,4 +94,11 @@ public interface CourseService extends IService<Course> {
      */
     List<CourseVo> getCourseListByTeacherId(Integer teacherId);
 
+    /**
+     * 根据多个课程ID获取课程信息
+     * @param courseIds 课程ID列表
+     * @return 课程信息列表
+     */
+    List<CourseVo> getCoursesByIds(List<Integer> courseIds);
+
 }

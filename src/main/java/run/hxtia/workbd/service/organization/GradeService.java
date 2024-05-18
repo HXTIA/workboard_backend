@@ -10,6 +10,7 @@ import run.hxtia.workbd.pojo.vo.organization.response.GradeVo;
 import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Xiaojin
@@ -88,5 +89,13 @@ public interface GradeService extends IService<Grade> {
      * @return 如果年级存在，则为true，否则为false。
      */
     boolean checkGradeExists(String gradeName, Integer collegeId);
+
+    /**
+     * 根据多个年级ID获取年级名称
+     *
+     * @param gradeIds 年级ID列表
+     * @return 年级ID与名称的映射
+     */
+    Map<Integer, String> getGradeNamesByIds(List<Integer> gradeIds);
 
 }

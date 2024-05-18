@@ -1,5 +1,6 @@
 package run.hxtia.workbd.service.notificationwork.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -166,5 +167,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return courses.stream().map(MapStructs.INSTANCE::po2vo).collect(Collectors.toList());
     }
 
-
+    @Override
+    @Transactional(readOnly = true)
+    public List<CourseVo> getCoursesByIds(List<Integer> courseIds) {
+        LambdaQueryWrapper<Course> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Course::getId, courseIds);
+        List<Course> courses = list(wrapper);
+        return courses.stream()
+            .map(MapStructs.INSTANCE::po2vo)
+            .collect(Collectors.toList());
+    }
 }

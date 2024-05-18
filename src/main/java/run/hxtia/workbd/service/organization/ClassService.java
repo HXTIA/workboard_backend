@@ -76,4 +76,11 @@ public interface ClassService extends IService<Classes> {
      */
     List<ClassVo> getClassInfoByGradeId(Integer gradeId);
 
+    /**
+     * 根据多个班级ID获取班级信息
+     * @param classIds 班级ID列表
+     * @return 班级信息列表
+     */
+    List<ClassVo> getClassesByIds(List<Integer> classIds);
+
 }

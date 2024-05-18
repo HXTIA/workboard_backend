@@ -34,7 +34,6 @@ public class Constants {
         public static final String HEADER_TOKEN = "Token";
         public static final String ERROR_URI = "/handleError";
         public static final String ADMIN_PREFIX = "/admin/";
-
     }
 
     /**
@@ -66,6 +65,11 @@ public class Constants {
         // 作业是否展示
         public static final Short WORK_UNDONE = 1; // 已读未完成
         public static final Short WORK_DONE = 2; // 已完成
+
+        public static final Short Code_EXIT = 0; // 不存在
+        public static final Short Code_UNUSE = 1; // 未使用
+        public static final Short Code_USED = 2; // 已使用
+        public static final Short Code_REVOKE = 3; // 已吊销
     }
 
     /**
@@ -137,8 +141,8 @@ public class Constants {
     }
 
     public static class Auth {
-        public static final String ADMIN_AUTH = "/auth/code/";
-        public static final String AuTH_Code_USER = "auth:code:user:";
+        public static final String AUTH_CODE = "/auth/code/";
+        public static final String AUTH_Code_USER = "auth:code:user:";
     }
 
 }

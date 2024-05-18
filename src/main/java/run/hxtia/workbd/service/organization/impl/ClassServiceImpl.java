@@ -1,5 +1,6 @@
 package run.hxtia.workbd.service.organization.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -50,10 +51,6 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
     public boolean update(ClassEditReqVo reqVo) {
         // 检查在同一个年级下是否已经存在相同的班级名称
         boolean exists = lambdaQuery().eq(Classes::getName, reqVo.getName()).eq(Classes::getGradeId, reqVo.getGradeId()).one() != null;
-        if (exists) {
-            // 如果存在，那么抛出一个异常
-            throw new RuntimeException("A class with the same name already exists in the same grade.");
-        }
 
         // 如果不存在，那么更新班级信息
         Classes po = MapStructs.INSTANCE.reqVo2po(reqVo);
@@ -103,6 +100,17 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Classes> implemen
     @Override
     public List<ClassVo> getClassInfoByGradeId(Integer gradeId) {
         return lambdaQuery().eq(Classes::getGradeId, gradeId).list().stream()
+            .map(MapStructs.INSTANCE::po2vo)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClassVo> getClassesByIds(List<Integer> classIds) {
+        LambdaQueryWrapper<Classes> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Classes::getId, classIds);
+        List<Classes> classes = list(wrapper);
+        return classes.stream()
             .map(MapStructs.INSTANCE::po2vo)
             .collect(Collectors.toList());
     }

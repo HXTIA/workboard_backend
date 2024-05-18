@@ -1,7 +1,6 @@
 package run.hxtia.workbd.service.organization.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,7 @@ import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.service.organization.GradeService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,10 +48,6 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
     public boolean update(GradeEditReqVo reqVo) {
         // 检查在同一个学院下是否已经存在相同的name
         boolean exists = lambdaQuery().eq(Grade::getName, reqVo.getName()).eq(Grade::getCollegeId, reqVo.getCollegeId()).one() != null;
-        if (exists) {
-            // 如果存在，那么抛出一个异常或者返回一个错误
-            throw new RuntimeException("A grade with the same name already exists in the same college.");
-        }
 
         // 如果不存在，那么更新年级信息
         Grade po = MapStructs.INSTANCE.reqVo2po(reqVo);
@@ -114,5 +110,15 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
         // 检查名称是否已经存在
         boolean exists = lambdaQuery().eq(Grade::getName, gradeName).eq(Grade::getCollegeId, collegeId).one() != null;
         return exists;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<Integer, String> getGradeNamesByIds(List<Integer> gradeIds) {
+        LambdaQueryWrapper<Grade> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Grade::getId, gradeIds);
+        List<Grade> grades = list(wrapper);
+        return grades.stream()
+            .collect(Collectors.toMap(Grade::getId, Grade::getName));
     }
 }

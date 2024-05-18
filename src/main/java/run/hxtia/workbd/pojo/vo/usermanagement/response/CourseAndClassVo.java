@@ -19,6 +19,7 @@ import java.util.Map;
 public class CourseAndClassVo {
     @ApiModelProperty("课程列表")
     private List<CourseVo> courseList;
+
     @ApiModelProperty("年级及其班级列表")
     private Map<String, List<ClassVo>> gradList;
 }

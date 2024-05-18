@@ -2,9 +2,12 @@ package run.hxtia.workbd.service.usermanagement;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
+import run.hxtia.workbd.common.redis.Redises;
 import run.hxtia.workbd.pojo.po.Authorization;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.AuthCourseAndClassIdReqVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.request.AuthCourseAndClassInfoReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.request.AuthorizationReqVo;
+import run.hxtia.workbd.pojo.vo.usermanagement.response.AuthorizationVo;
 import run.hxtia.workbd.pojo.vo.usermanagement.response.CourseAndClassVo;
 
 /**
@@ -12,8 +15,25 @@ import run.hxtia.workbd.pojo.vo.usermanagement.response.CourseAndClassVo;
  * @date 2024/5/14
  */
 
-@Transactional(readOnly = true)
 public interface AuthorizationService extends IService<Authorization> {
+
+
+
+    // 保存授权信息
+    /**
+     * 保存授权信息
+     * @param authorizationReqVo ：授权信息
+     * @return ：是否成功
+     */
+    boolean save(AuthorizationReqVo authorizationReqVo);
+
+    // 查询授权信息
+    /**
+     * 查询授权信息
+     * @param permission ：权限信息
+     * @return ：授权信息
+     */
+    AuthorizationVo getAuthorizationByPermission(String permission);
 
 
     // 根据第投权的列表(课程、班级)
@@ -46,11 +66,12 @@ public interface AuthorizationService extends IService<Authorization> {
     String generateCodeByCourseAndClassInfo(AuthCourseAndClassInfoReqVo reqVo, String token);
 
     /**
-     * 根据Token
-     * @param code：授权码
+     * 核销code，根据code获取授权码信息
+     * @param code : 授权码
      * @return ：授权信息
      */
-
+    @Transactional(readOnly = false)
+    CourseAndClassVo getCourseAndClassByCode(String code, String token);
 
     /*
     一开始一个管理员只生成一个code，我可以直接把code set进Redis。也就是 key-value 弄 code——courseAndClass

@@ -16,8 +16,8 @@ public class AuthCourseAndClassIdReqVo {
 
 
     @ApiModelProperty("课程ID列表")
-    private List<Integer> courseIds;
+    private String courseIds;
 
     @ApiModelProperty("班级ID列表")
-    private List<Integer> classIds;
+    private String classIds;
 }

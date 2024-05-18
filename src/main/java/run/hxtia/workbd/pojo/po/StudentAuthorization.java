@@ -2,6 +2,8 @@ package run.hxtia.workbd.pojo.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -15,10 +17,15 @@ public class StudentAuthorization implements Serializable {
     /**
      * 学生ID
      */
-    private Integer studentId;
+    private String studentId;
 
     /**
-     * 授权ID
+     * 课程ID
      */
-    private Integer authorizationId;
+    private String courseId;
+
+    /**
+     * 班级ID
+     */
+    private String classId;
 }

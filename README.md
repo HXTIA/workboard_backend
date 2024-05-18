@@ -79,7 +79,7 @@ homework-board:
 ```
 * 定义通用配置、工具 —— 请在Common模块定义
 * 内部集成了Swagger文档，若添加了新模块 —— 请到`SwaggerCfg.java`中配置新模块
-* 项目启动后：[📝接口文档访问地址](https://localhost:8080/swagger-ui/index.html)
+* 项目启动后：[📝接口文档访问地址](http://localhost:8080/swagger-ui/index.html)
 * PS：项目 URL + /swagger-ui/index.html
 ```java
     // 参照文件中前两个配置
