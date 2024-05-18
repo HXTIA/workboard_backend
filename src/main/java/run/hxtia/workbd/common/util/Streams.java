@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 集合工具类
@@ -22,6 +23,14 @@ public class Streams {
      */
     public static <T, R> List<R> list2List(Collection<T> list, Function<T, R> function) {
         return list.stream().map(function).collect(Collectors.toList());
+    }
+
+    public static <T, R> List<R> list2List(Collection<T> list, Function<T, R> function, Predicate<R> predicate) {
+        Stream<R> stream = list.stream().map(function);
+        if (predicate != null) {
+            stream = stream.filter(predicate);
+        }
+        return stream.collect(Collectors.toList());
     }
 
     /**

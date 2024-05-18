@@ -266,7 +266,7 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
             dto.setStatus(sh.getStatus());
             dto.setPin(sh.getPin());
             return dto;
-        }));
+        }, Objects::nonNull));
 
         return resPages;
     }
