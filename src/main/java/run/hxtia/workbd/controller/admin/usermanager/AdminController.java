@@ -96,7 +96,7 @@ public class  AdminController extends BaseController<AdminUsers, AdminUserReqVo>
 
     @Override
     @ApiOperation("添加用户【必须有操纵者ID】")
-    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_CREATE)
+    @RequiresPermissions(Constants.Permission.ADMIN_CREATE)
     public JsonVo create(@Valid @RequestBody AdminUserReqVo reqVo) {
         if (adminUserService.save(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -107,7 +107,7 @@ public class  AdminController extends BaseController<AdminUsers, AdminUserReqVo>
 
     @PostMapping("/edit")
     @ApiOperation("编辑用户【必须有待编辑者ID】")
-    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_UPDATE)
+    @RequiresPermissions(Constants.Permission.ADMIN_UPDATE)
     public JsonVo edit(@Valid @RequestBody AdminUserEditReqVo reqVo) {
         if (adminUserService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -141,7 +141,7 @@ public class  AdminController extends BaseController<AdminUsers, AdminUserReqVo>
 
     @PostMapping("/updateMemberPwd")
     @ApiOperation("修改组织成员密码【当成员忘记密码时】")
-    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_FORGOT)
+    @RequiresPermissions(Constants.Permission.ADMIN_FORGOT)
     public JsonVo updateMemberPwd(@Valid @RequestBody AdminUserMemberPwdReqVo reqVo) {
         // 检验图形验证码是否正确
         if (!Captchas.ver(reqVo.getVerifyKey(), reqVo.getCaptcha()))
@@ -161,15 +161,13 @@ public class  AdminController extends BaseController<AdminUsers, AdminUserReqVo>
     }
 
 
-
-
     @PostMapping("/searchListPage")
     @ApiOperation("获取用户基本信息【分页】")
+    @RequiresPermissions(Constants.Permission.ADMIN_READ)
     public PageJsonVo<AdminUserVo> searchUserListPage(@RequestBody AdminUserPageReqVo pageReqVo, HttpServletRequest request){
         String token = request.getHeader(Constants.Web.HEADER_TOKEN);
         return JsonVos.ok(adminUserService.getList(pageReqVo, token));
     }
-
 
 
     @GetMapping("/captcha")
@@ -185,7 +183,7 @@ public class  AdminController extends BaseController<AdminUsers, AdminUserReqVo>
     }
 
     @Override
-    @RequiresPermissions(Constants.Permission.SYS_ADMIN_USER_DELETE)
+    @RequiresPermissions(Constants.Permission.ADMIN_DELETE)
     public JsonVo remove(String ids) {
         return super.remove(ids);
     }

@@ -39,7 +39,7 @@ public class RoleController {
 
     @PostMapping("/searchListPage")
     @ApiOperation("角色列表【关键字、分页】")
-    @RequiresPermissions(Constants.Permission.SYS_ROLE_READ)
+    @RequiresPermissions(Constants.Permission.ROLE_READ)
     public PageJsonVo<RoleVo> searchListPage(@RequestBody RolePageReqVo pageReqVo, HttpServletRequest request) {
         String token = request.getHeader(Constants.Web.HEADER_TOKEN);
         return JsonVos.ok(roleService.list(pageReqVo, token));
@@ -47,7 +47,7 @@ public class RoleController {
 
     @GetMapping("/searchList")
     @ApiOperation("获取所有角色")
-    @RequiresPermissions(Constants.Permission.SYS_ROLE_READ)
+    @RequiresPermissions(Constants.Permission.ROLE_READ)
     public DataJsonVo<List<RoleVo>> searchList(HttpServletRequest request) {
         String token = request.getHeader(Constants.Web.HEADER_TOKEN);
         return JsonVos.ok(Streams.list2List(roleService.list(token), MapStructs.INSTANCE::po2vo));
@@ -55,7 +55,7 @@ public class RoleController {
 
     @PostMapping("/create")
     @ApiOperation("添加")
-    @RequiresPermissions(Constants.Permission.SYS_ROLE_CREATE)
+    @RequiresPermissions(Constants.Permission.ROLE_CREATE)
     public JsonVo create(@Valid @RequestBody RoleReqVo reqVo, HttpServletRequest request) {
         String token = request.getHeader(Constants.Web.HEADER_TOKEN);
         if (roleService.saveOrUpdate(reqVo, token)) {
@@ -67,14 +67,14 @@ public class RoleController {
 
     @PostMapping("/update")
     @ApiOperation("更新")
-    @RequiresPermissions(Constants.Permission.SYS_ROLE_UPDATE)
+    @RequiresPermissions(Constants.Permission.ROLE_UPDATE)
     public JsonVo update(@Valid @RequestBody RoleReqVo reqVo, HttpServletRequest request) {
         return create(reqVo, request);
     }
 
     @PostMapping("/remove")
     @ApiOperation("删除一条或者多条数据【多个ID间用逗号(,)隔开】")
-    @RequiresPermissions(Constants.Permission.SYS_ROLE_DELETE)
+    @RequiresPermissions(Constants.Permission.ROLE_DELETE)
     public JsonVo remove(String ids) {
         if (roleService.removeByIds(Arrays.asList(ids.split(",")))) {
             return JsonVos.ok(CodeMsg.REMOVE_OK);
