@@ -58,7 +58,8 @@ public class StudentHomeworkServiceImpl
         MpLambdaQueryWrapper<StudentHomework> wrapper = new MpLambdaQueryWrapper<>();
         wrapper.between(pageReqVo.getCreatedTime(), StudentHomework::getCreatedAt).
             eq(StudentHomework::getStudentId, pageReqVo.getWechatId()).
-            ne(StudentHomework::getStatus, Constants.Status.WORK_DONE);
+            eq(StudentHomework::getStatus, pageReqVo.getStatus()).
+            eq(StudentHomework::getPin, pageReqVo.getPin());
 
         // 构建分页结果
         return baseMapper.

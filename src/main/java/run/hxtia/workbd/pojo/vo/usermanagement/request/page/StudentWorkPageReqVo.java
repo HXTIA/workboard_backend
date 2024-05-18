@@ -32,6 +32,12 @@ public class StudentWorkPageReqVo extends KeywordPageReqVo {
     @ApiModelProperty("发布者ID")
     private Integer publisherId;
 
+    @ApiModelProperty("筛选作业状态【不传值：全量数据 0：未读未完成，1：已读未完成，2：已读已完成】")
+    private Short status;
+
+    @ApiModelProperty("筛选置顶【0：不置顶，1：置顶】")
+    private Short pin;
+
     // 学生 WXToken
     @JsonIgnore
     private String wxToken;

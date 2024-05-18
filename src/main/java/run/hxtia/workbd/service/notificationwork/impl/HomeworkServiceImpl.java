@@ -247,7 +247,10 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
 
         // 第三步：一次性查询所有作业详细信息
         MpLambdaQueryWrapper<Homework> wrapper = new MpLambdaQueryWrapper<>();
-        wrapper.eq(Homework::getStatus, Constants.Status.WORK_ENABLE).in(Homework::getId, homeworkIds);
+        wrapper.like(reqVo.getKeyword(), Homework::getTitle, Homework::getDescription).
+            between(reqVo.getDeadline(), Homework::getDeadline).
+            eq(Homework::getStatus, Constants.Status.WORK_ENABLE).in(Homework::getId, homeworkIds);
+
         List<Homework> homeworks = baseMapper.selectList(wrapper);
 
         // 第四步：将 Homeworks 映射为 Map 以便快速查找
@@ -257,6 +260,9 @@ public class HomeworkServiceImpl extends ServiceImpl<HomeworkMapper, Homework> i
         resPages.setData(Streams.list2List(studentHomeworks, (sh) -> {
             Homework po = homeworkMap.get(sh.getHomeworkId());
             StudentHomeworkDetailDto dto = MapStructs.INSTANCE.po2dto(po);
+            if (po == null) {
+                return dto;
+            }
             dto.setStatus(sh.getStatus());
             dto.setPin(sh.getPin());
             return dto;
