@@ -5,8 +5,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.College;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
@@ -36,6 +38,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 创建学院
     @PostMapping("/create")
     @ApiOperation("创建学院")
+    @RequiresPermissions(Constants.Permission.COLLEGE_CREATE)
     public JsonVo create(@Valid @RequestBody CollegeReqVo reqVo) {
         if (collegeService.save(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -47,6 +50,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 编辑学院
     @PostMapping("/edit")
     @ApiOperation("编辑学院")
+    @RequiresPermissions(Constants.Permission.COLLEGE_UPDATE)
     public JsonVo edit(@Valid @RequestBody CollegeEditReqVo reqVo) {
         if (collegeService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -59,6 +63,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 根据ID获取学院信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取学院信息")
+    @RequiresPermissions(Constants.Permission.COLLEGE_READ)
     public DataJsonVo<CollegeVo> getCollegeInfoById(@PathVariable Integer id) {
         return JsonVos.ok(collegeService.getCollegeInfoById(id));
     }
@@ -66,6 +71,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 获取所有学院列表
     @GetMapping("/list")
     @ApiOperation("获取所有学院列表")
+    @RequiresPermissions(Constants.Permission.COLLEGE_READ)
     public PageJsonVo<CollegeVo> getList() {
         return JsonVos.ok(collegeService.getList());
     }
@@ -77,6 +83,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
      */
     @PostMapping("/listPage")
     @ApiOperation("分页获取学院信息")
+    @RequiresPermissions(Constants.Permission.COLLEGE_READ)
     public PageJsonVo<CollegeVo> getPageList(@Valid @RequestBody CollegePageReqVo reqVo) {
         return JsonVos.ok(collegeService.getPageList(reqVo));
     }
@@ -85,6 +92,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
     // 删除学院
     @DeleteMapping("/remove/{id}")
     @ApiOperation("删除学院")
+    @RequiresPermissions(Constants.Permission.COLLEGE_DELETE)
     public JsonVo remove(@PathVariable Integer id) {
         if (collegeService.removeById(id)) {
             return JsonVos.ok(CodeMsg.REMOVE_OK);
@@ -105,6 +113,7 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
 
     @GetMapping("/check/{id}")
     @ApiOperation("验证学院是否存在")
+    @RequiresPermissions(Constants.Permission.COLLEGE_READ)
     public JsonVo checkClgInfo(@PathVariable Integer id) {
         boolean exists = collegeService.checkClgInfo(id);
         if (exists) {
@@ -113,16 +122,4 @@ public class CollegeController extends BaseController<College, CollegeReqVo> {
             return JsonVos.error(CodeMsg.CHECK_ERROR);
         }
     }
-
-    @PostMapping("/register")
-    @ApiOperation("注册默认学院")
-    public JsonVo saveDefaultRegisterClg(@Valid @RequestBody College collegeInfo) {
-        boolean saved = collegeService.saveDefaultRegisterClg(collegeInfo);
-        if (saved) {
-            return JsonVos.ok(CodeMsg.SAVE_OK);
-        } else {
-            return JsonVos.error(CodeMsg.SAVE_ERROR);
-        }
-    }
-
 }

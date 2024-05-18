@@ -20,10 +20,6 @@ import javax.validation.constraints.NotNull;
 @ApiModel("【编辑】学生课程表实体")
 public class StudentCourseEditReqVo {
 
-    @NotNull
-    @ApiModelProperty(value = "学生课程id", required = true)
-    private Integer id;
-
     @ApiModelProperty(value = "学生id", required = true)
     private Integer studentId;
 

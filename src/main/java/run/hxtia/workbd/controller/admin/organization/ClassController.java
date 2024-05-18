@@ -5,8 +5,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.Classes;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
@@ -35,6 +37,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     // 创建班级
     @PostMapping("/create")
     @ApiOperation("创建班级")
+    @RequiresPermissions(Constants.Permission.CLASS_CREATE)
     public JsonVo create(@Valid @RequestBody ClassReqVo reqVo) {
         Integer gradeId = Integer.parseInt(reqVo.getGradeId());
         if (classService.save(reqVo, gradeId)) {
@@ -47,6 +50,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     // 编辑班级
     @PostMapping("/edit")
     @ApiOperation("编辑班级")
+    @RequiresPermissions(Constants.Permission.CLASS_UPDATE)
     public JsonVo edit(@Valid @RequestBody ClassEditReqVo reqVo) {
         if (classService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -58,6 +62,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     // 根据ID获取班级信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取班级信息")
+    @RequiresPermissions(Constants.Permission.CLASS_READ)
     public DataJsonVo<ClassVo> getClassInfoById(@PathVariable Integer id) {
         return JsonVos.ok(classService.getClassInfoById(id));
     }
@@ -65,6 +70,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     // 获取所有班级列表
     @GetMapping("/list")
     @ApiOperation("获取所有班级列表")
+    @RequiresPermissions(Constants.Permission.CLASS_READ)
     public PageJsonVo<ClassVo> getList() {
         return JsonVos.ok(classService.getList());
     }
@@ -72,6 +78,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
     // 删除班级
     @DeleteMapping("/remove/{id}")
     @ApiOperation("删除班级")
+    @RequiresPermissions(Constants.Permission.CLASS_DELETE)
     public JsonVo remove(@PathVariable Integer id) {
         if (classService.delete(id)) {
             return JsonVos.ok(CodeMsg.REMOVE_OK);
@@ -92,6 +99,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
 
     @GetMapping("/check/{id}")
     @ApiOperation("验证班级是否存在")
+    @RequiresPermissions(Constants.Permission.CLASS_READ)
     public JsonVo checkClassInfo(@PathVariable Integer id) {
         boolean exists = classService.checkClassInfo(id);
         if (exists) {
@@ -103,6 +111,7 @@ public class ClassController extends BaseController<Classes, ClassReqVo> {
 
     @PostMapping("/grade/page")
     @ApiOperation("根据年级ID分页获取班级信息")
+    @RequiresPermissions(Constants.Permission.CLASS_READ)
     public PageJsonVo<ClassVo> getClassInfoByGradeIdWithPagination(@Valid @RequestBody ClassPageReqVo reqVo) {
         return JsonVos.ok(classService.listPage(reqVo));
     }

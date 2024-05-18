@@ -50,7 +50,7 @@ public class Homework implements Serializable {
     /**
      * 发布者ID
      */
-    private Integer publisherId;
+    private String publisherId;
 
     /**
      * 发布平台

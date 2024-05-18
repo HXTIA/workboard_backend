@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import run.hxtia.workbd.pojo.po.StudentCourse;
-import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.SaveCoursesAndHomeworksReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseEditReqVo;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.StudentCourseReqVo;
@@ -94,4 +93,10 @@ public interface StudentCourseService extends IService<StudentCourse> {
     @Transactional(readOnly = false)
     boolean removeByCourseId(List<String> courseIds);
 
+    /**
+     * 根据课程 ID 查询选了这个课的学生 IDs
+     * @param courseId 学生 ID
+     * @return 课程 Id list
+     */
+    List<String> listStuIdsByCourseId(Integer courseId);
 }

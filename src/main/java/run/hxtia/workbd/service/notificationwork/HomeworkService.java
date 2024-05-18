@@ -37,6 +37,14 @@ public interface HomeworkService extends IService<Homework> {
     boolean saveOrUpdate(HomeworkReqVo reqVo) throws Exception;
 
     /**
+     * 从微信：保存 or 编辑作业
+     * @param reqVo：作业信息
+     * @return ：是否成功
+     */
+    @Transactional(readOnly = false)
+    boolean saveOrUpdateFromWx(HomeworkReqVo reqVo) throws Exception;
+
+    /**
      * 多图片编辑，编辑作业的图片
      * @param uploadReqVo ：所需参数
      * @return ：是否成功

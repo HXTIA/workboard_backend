@@ -4,7 +4,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.web.bind.annotation.*;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
 import run.hxtia.workbd.pojo.vo.notificationwork.request.CourseEditReqVo;
@@ -33,6 +36,7 @@ public class CourseController  {
 
     @PostMapping("/create")
     @ApiOperation("创建课程")
+    @RequiresPermissions(Constants.Permission.COURSE_CREATE)
     public JsonVo create(@Valid @RequestBody CourseReqVo reqVo) {
         if (courseService.save(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -43,6 +47,7 @@ public class CourseController  {
 
     @PostMapping("/edit")
     @ApiOperation("编辑课程")
+    @RequiresPermissions(Constants.Permission.COURSE_UPDATE)
     public JsonVo edit(@Valid @RequestBody CourseEditReqVo reqVo) {
         if (courseService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -53,6 +58,7 @@ public class CourseController  {
 
     @GetMapping("/{courseId}")
     @ApiOperation("根据ID获取课程信息")
+    @RequiresPermissions(Constants.Permission.COURSE_READ)
     public DataJsonVo<CourseVo> getCourseInfoById(@PathVariable Integer courseId) {
         return JsonVos.ok(courseService.getCourseInfoById(courseId));
     }
@@ -60,18 +66,21 @@ public class CourseController  {
     @GetMapping("/list")
     @ApiOperation("获取所有课程列表")
     // TODO：这个接口暂时用不到，到时候再修改返回值。
+    @RequiresPermissions(Constants.Permission.COURSE_READ)
     public PageJsonVo<CourseVo> getList() {
         return JsonVos.ok(courseService.getList());
     }
 
     @DeleteMapping("/remove")
     @ApiOperation("删除一条或者多条课程")
+    @RequiresPermissions(Constants.Permission.COURSE_DELETE)
     public boolean remove(@RequestParam String ids) {
         return courseService.removeHistory(ids);
     }
 
     @PostMapping("/check")
     @ApiOperation("验证课程是否存在")
+    @RequiresPermissions(Constants.Permission.COURSE_READ)
     public JsonVo checkCourseExists(@RequestParam String courseName, @RequestParam Integer collegeId) {
         boolean exists = courseService.checkCourseExists(courseName, collegeId);
         if (exists) {
@@ -83,6 +92,7 @@ public class CourseController  {
 
     @PostMapping("/college/page")
     @ApiOperation("根据学院ID分页获取课程信息")
+    @RequiresPermissions(Constants.Permission.COURSE_READ)
     public PageJsonVo<CourseVo> getCourseInfoByCollegeIdWithPagination(@Valid @RequestBody CoursePageReqVo reqVo) {
         return JsonVos.ok(courseService.getPage(reqVo));
     }
@@ -90,6 +100,7 @@ public class CourseController  {
 
     @PostMapping("/saveCoursesAndHomeworks")
     @ApiOperation("批量保存学生课程和作业信息")
+    @RequiresPermissions(Constants.Permission.COURSE_CREATE)
     public JsonVo saveCoursesAndHomeworks(@Valid @RequestBody SaveCoursesAndHomeworksReqVo reqVo) {
         if (studentCourseService.saveCoursesAndHomeworks(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);

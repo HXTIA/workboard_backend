@@ -5,8 +5,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import run.hxtia.workbd.common.commoncontroller.BaseController;
+import run.hxtia.workbd.common.util.Constants;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.pojo.po.Grade;
 import run.hxtia.workbd.pojo.vo.common.response.result.*;
@@ -36,6 +38,7 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     // 创建年级
     @PostMapping("/create")
     @ApiOperation("创建年级")
+    @RequiresPermissions(Constants.Permission.GRADE_CREATE)
     public JsonVo create(@Valid @RequestBody GradeReqVo reqVo) {
         if (gradeService.save(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -47,6 +50,7 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     // 编辑年级
     @PostMapping("/edit")
     @ApiOperation("编辑年级")
+    @RequiresPermissions(Constants.Permission.GRADE_UPDATE)
     public JsonVo edit(@Valid @RequestBody GradeEditReqVo reqVo) {
         if (gradeService.update(reqVo)) {
             return JsonVos.ok(CodeMsg.SAVE_OK);
@@ -58,6 +62,7 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     // 根据ID获取年级信息
     @GetMapping("/{id}")
     @ApiOperation("根据ID获取年级信息")
+    @RequiresPermissions(Constants.Permission.GRADE_READ)
     public DataJsonVo<GradeVo> getCollegeInfoById(@PathVariable Integer id) {
         return JsonVos.ok(gradeService.getGradeInfoById(id));
     }
@@ -65,6 +70,7 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     // 获取所有年级列表
     @GetMapping("/list")
     @ApiOperation("获取所有年级列表")
+    @RequiresPermissions(Constants.Permission.GRADE_READ)
     public PageJsonVo<GradeVo> getList() {
         return JsonVos.ok(gradeService.getList());
     }
@@ -73,6 +79,7 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
     // 删除年级
     @DeleteMapping("/remove/{id}")
     @ApiOperation("删除年级")
+    @RequiresPermissions(Constants.Permission.GRADE_DELETE)
     public JsonVo remove(@PathVariable Integer id) {
         if (gradeService.removeById(id)) {
             return JsonVos.ok(CodeMsg.REMOVE_OK);
@@ -83,6 +90,7 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
 
     @GetMapping("/check")
     @ApiOperation("验证年级是否存在")
+    @RequiresPermissions(Constants.Permission.GRADE_READ)
     public JsonVo checkGradeExists(@Valid @RequestBody GradeReqVo reqVo) {
         boolean exists = gradeService.checkGradeExists(reqVo.getName(), reqVo.getCollegeId());
         if (exists) {
@@ -94,12 +102,14 @@ public class GradeController extends BaseController<Grade, GradeReqVo> {
 
     @GetMapping("/college/{collegeId}")
     @ApiOperation("根据学院ID获取年级信息")
+    @RequiresPermissions(Constants.Permission.GRADE_READ)
     public DataJsonVo<List<GradeVo>> getGradeInfoByCollegeId(@PathVariable Integer collegeId) {
         return JsonVos.ok(gradeService.getGradeInfoByCollegeId(collegeId));
     }
 
     @PostMapping("/college/page")
     @ApiOperation("根据学院ID分页获取年级信息")
+    @RequiresPermissions(Constants.Permission.GRADE_READ)
     public PageJsonVo<GradeVo> getGradeInfoByCollegeIdWithPagination(@Valid @RequestBody GradePageReqVo reqVo) {
         return JsonVos.ok(gradeService.getGradeInfoByCollegeIdWithPagination(reqVo));
     }

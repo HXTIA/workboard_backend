@@ -45,4 +45,11 @@ public interface StudentHomeworkService extends IService<StudentHomework> {
     */
     PageVo<HomeworkVo> getHomeworksByStudentId(StudentHomeworkPageReqVo reqVo);
 
+    /**
+     * 批量添加学生作业关联
+     * @param stuIds 学生 IDs ID
+     * @param workId 作业 Id
+     * @return 是否成功
+     */
+    boolean addStudentHomeworks(List<String> stuIds, Long workId);
 }
