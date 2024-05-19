@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import run.hxtia.workbd.common.util.JsonVos;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.vo.result.CodeMsg;
-import run.hxtia.workbd.pojo.vo.result.JsonVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.CodeMsg;
+import run.hxtia.workbd.pojo.vo.common.response.result.JsonVo;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -81,7 +81,7 @@ public class CommonExceptionHandler {
      * 处理后端验证【ConstraintViolationException】异常
      */
     private JsonVo handle(ConstraintViolationException cve) {
-        List<String> msgs = Streams.map(cve.getConstraintViolations(), ConstraintViolation::getMessage);
+        List<String> msgs = Streams.list2List(cve.getConstraintViolations(), ConstraintViolation::getMessage);
         String msg = StringUtils.collectionToDelimitedString(msgs, ", ");
         return JsonVos.error(msg);
     }
@@ -111,7 +111,7 @@ public class CommonExceptionHandler {
             1、利用Map将 List<ObjectError> -> List<String>
             2、ObjectError::getDefaultMessage：lambda的方法引用
          */
-        List<String> defaultMsgs = Streams.map(errors, (err) ->
+        List<String> defaultMsgs = Streams.list2List(errors, (err) ->
             Objects.requireNonNull(err.getCodes())[1] + ":" + err.getDefaultMessage());
         return  StringUtils.collectionToDelimitedString(defaultMsgs, ", ");
     }

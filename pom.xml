@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>run.hxtia</groupId>
-    <artifactId>work-board</artifactId>
+    <artifactId>homework-board</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -137,6 +137,13 @@
             <artifactId>springfox-boot-starter</artifactId>
             <version>${springfox.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
         <!-- 解决Swagger访问主页时的NumberFormatException问题 -->
         <dependency>
             <groupId>io.swagger</groupId>
@@ -207,7 +214,7 @@
 
     <build>
         <!-- 打包后的文件名 -->
-        <finalName>hxtia-work-board</finalName>
+        <finalName>hxtia-homework-board</finalName>
         <!-- 使用maven启动插件 -->
         <plugins>
             <plugin>

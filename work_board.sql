@@ -138,16 +138,16 @@ CREATE TABLE `resources`  (
 INSERT INTO `resources` VALUES (1, '系统数据', '/main/data', '', 1, 0, '', 0);
 INSERT INTO `resources` VALUES (2, '系统管理', '/main/system', '', 1, 0, '', 0);
 INSERT INTO `resources` VALUES (3, '班级中心', '/class/center', '', 1, 0, '', 0);
-INSERT INTO `resources` VALUES (4, '作业中心', '/work/center', '', 1, 0, '', 0);
+INSERT INTO `resources` VALUES (4, '作业中心', '/homework/center', '', 1, 0, '', 0);
 INSERT INTO `resources` VALUES (5, '系统总揽', '/main/system/overall', '', 2, 0, '', 1);
 INSERT INTO `resources` VALUES (6, '班级统计', '/main/system/classStatistics', '', 2, 0, '', 1);
 INSERT INTO `resources` VALUES (7, '组织管理', '/main/system/organization', '', 2, 0, '', 2);
 INSERT INTO `resources` VALUES (8, 'B端用户管理', '/main/system/adminUser', '', 2, 0, '', 2);
-INSERT INTO `resources` VALUES (9, 'C端用户管理', '/main/system/user', '', 2, 0, '', 2);
+INSERT INTO `resources` VALUES (9, 'C端用户管理', '/main/system/student', '', 2, 0, '', 2);
 INSERT INTO `resources` VALUES (10, '角色管理', '/main/system/role', '', 2, 0, '', 2);
 INSERT INTO `resources` VALUES (11, '行政班级', '/class/center/executive', '', 2, 0, '', 3);
 INSERT INTO `resources` VALUES (12, '教学班级', '/class/center/education', '', 2, 0, '', 3);
-INSERT INTO `resources` VALUES (13, '作业管理', '/work/center/manage', '', 2, 0, '', 4);
+INSERT INTO `resources` VALUES (13, '作业管理', '/homework/center/manage', '', 2, 0, '', 4);
 INSERT INTO `resources` VALUES (14, '查询组织', '', 'sysOrganization:read', 3, 0, '', 7);
 INSERT INTO `resources` VALUES (15, '修改组织', '', 'sysOrganization:update', 3, 0, '', 7);
 INSERT INTO `resources` VALUES (16, '查询B端用户', '', 'sysAdminUser:read', 3, 0, '', 8);
@@ -328,10 +328,10 @@ CREATE TABLE `users_works`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for work
+-- Table structure for homework
 -- ----------------------------
-DROP TABLE IF EXISTS `work`;
-CREATE TABLE `work`  (
+DROP TABLE IF EXISTS `homework`;
+CREATE TABLE `homework`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '作业ID',
   `course_id` smallint UNSIGNED NOT NULL DEFAULT 0 COMMENT '课程ID',
   `semester_id` smallint UNSIGNED NOT NULL DEFAULT 0 COMMENT '学期ID',
@@ -346,7 +346,7 @@ CREATE TABLE `work`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '作业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of work
+-- Records of homework
 -- ----------------------------
 
 -- ----------------------------

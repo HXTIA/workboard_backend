@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * B端用户表(AdminUsers)实体类
@@ -14,41 +15,67 @@ import java.io.Serializable;
 @Data
 @TableName("admin_users")
 public class AdminUsers implements Serializable {
-    private static final long serialVersionUID = 166963919420133360L;
+    private static final long serialVersionUID = 1L;
+
     /**
      * 用户ID
      */
     private Long id;
+
     /**
      * 用户名
-     * 1. 超管暂时使用邮箱验证
-     * 2、超管创建的管理员是自定义的账号格式（如：tju2021）
      */
     private String username;
+
     /**
-     * 密码
+     * 用户密码
      */
     private String password;
+
+    /**
+     * 用户邮箱
+     */
+    private String email;
+
+    /**
+     * 用户电话
+     */
+    private String phone;
+
+    /**
+     * 创建时间
+     */
+    private Date createdAt;
+
+    /**
+     * 更新时间
+     */
+    private Date updatedAt;
+
+    /**
+     * 用户头像URL
+     */
+    private String avatarUrl;
+
+    /**
+     * 所属学院ID
+     */
+    private Integer collegeId;
+
     /**
      * 密码的盐值
      */
     private String salt;
-    /**
-     * 头像url
-     */
-    private String avatarUrl;
-    /**
-     * 姓名
-     */
-    private String nickname;
-    /**
-     * 组织ID
-     */
-    private Short orgId;
+
     /**
      * 用户状态【1：可用 0：禁用】
      */
     private Short status;
+
+    /**
+     * 姓名
+     */
+    private String nickname;
 
 }
 

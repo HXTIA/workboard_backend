@@ -7,10 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import run.hxtia.workbd.WorkBoardApplication;
-import run.hxtia.workbd.pojo.po.AdminUserRole;
 import run.hxtia.workbd.pojo.po.Role;
-import run.hxtia.workbd.service.admin.AdminUserRoleService;
-import run.hxtia.workbd.service.admin.RoleService;
+import run.hxtia.workbd.service.usermanagement.AdminUserRoleService;
+import run.hxtia.workbd.service.usermanagement.RoleService;
 
 import java.util.List;
 

@@ -1,18 +1,11 @@
 package run.hxtia.workbd.common.redis;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.Cursor;
-import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -74,14 +67,14 @@ public class Redises implements ApplicationContextAware {
     }
 
     /**
-     * 根据组织token获取用户组织ID
+     * 根据组织 token 获取用户 学院ID
      * @param token：用户Token
-     * @return ：该用户组织ID
+     * @return ：该用户学院ID
      */
-    public static Short getOrgIdByToken(String token) {
+    public static Integer getClgIdByToken(String token) {
         if (!StringUtils.hasLength(token)) return 0;
         AdminUserPermissionDto dto = getRedises().getT(Constants.Web.ADMIN_PREFIX + token);
-        return dto == null ? 0 : dto.getUsers().getOrgId();
+        return dto == null ? 0 : dto.getUsers().getCollegeId();
     }
 
     /**
@@ -286,7 +279,7 @@ public class Redises implements ApplicationContextAware {
      * @return true成功 false 失败
      */
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
-        return set("", key, value, time, TimeUnit.SECONDS);
+        return set("", key, value, time, timeUnit);
     }
 
     /**

@@ -8,7 +8,7 @@
 * 主要配置以下内容，其余的保留`template`中的即可
 ```yaml
 # 自定义配置项
-work-board:
+homework-board:
   cfg:
     # 跨域相关配置
     cors-origins:
@@ -17,14 +17,14 @@ work-board:
 
   # 文件上传路径【可以修改路径，不要修改前面的key】
   upload:
-    base-path: /home/work-board/
+    base-path: /home/homework-board/
     upload-path: upload/
     image-path: image/
     video-path: video/
 
   # Mysql 数据库相关信息
   mysql-cfg:
-    user: 你的mysql用户
+    student: 你的mysql用户
     psd: 你的mysql密码
     db-ip: 你的mysql服务器IP
     db-name: work_board_test【数据库名字】
@@ -79,7 +79,7 @@ work-board:
 ```
 * 定义通用配置、工具 —— 请在Common模块定义
 * 内部集成了Swagger文档，若添加了新模块 —— 请到`SwaggerCfg.java`中配置新模块
-* 项目启动后：[📝接口文档访问地址](http://localhost:8888/swagger-ui/index.html)
+* 项目启动后：[📝接口文档访问地址](http://localhost:8080/swagger-ui/index.html)
 * PS：项目 URL + /swagger-ui/index.html
 ```java
     // 参照文件中前两个配置
@@ -97,7 +97,7 @@ work-board:
 ## 项目结构
 
 ```text
-work-board.src.main
+homework-board.src.main
 ├── java.run.hxtia.workbd
 │   ├── common                   # 集成第三方库、工具
 │   │   ├── commoncontroller       # 提供增删改查功能

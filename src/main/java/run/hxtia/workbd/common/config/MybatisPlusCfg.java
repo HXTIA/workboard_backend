@@ -18,7 +18,7 @@ public class MybatisPlusCfg {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         PaginationInnerInterceptor innerInterceptor = new PaginationInnerInterceptor(DbType.MYSQL);
         // 当页数超过总页数时，自动跳回第一页
-        innerInterceptor.setOverflow(true);
+        // innerInterceptor.setOverflow(true);
         interceptor.addInnerInterceptor(innerInterceptor);
         return interceptor;
     }

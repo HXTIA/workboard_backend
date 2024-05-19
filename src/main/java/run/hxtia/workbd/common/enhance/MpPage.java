@@ -2,8 +2,8 @@ package run.hxtia.workbd.common.enhance;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import run.hxtia.workbd.common.util.Streams;
-import run.hxtia.workbd.pojo.vo.request.page.base.PageReqVo;
-import run.hxtia.workbd.pojo.vo.result.PageVo;
+import run.hxtia.workbd.pojo.vo.common.request.page.PageReqVo;
+import run.hxtia.workbd.pojo.vo.common.response.result.PageVo;
 
 import java.util.List;
 import java.util.function.Function;
@@ -29,7 +29,7 @@ public class MpPage<T> extends Page<T> {
      * @return ：分页结果
      */
     public <R> PageVo<R> buildVo(Function<T, R> function) {
-        return commonBuildVo(Streams.map(getRecords(), function));
+        return commonBuildVo(Streams.list2List(getRecords(), function));
     }
 
     /**
@@ -55,6 +55,8 @@ public class MpPage<T> extends Page<T> {
         PageVo<R> pageVo = new PageVo<>();
         pageVo.setCount(getTotal());
         pageVo.setPages(getPages());
+        pageVo.setCurrentPage(getCurrent());
+        pageVo.setPageSize(getSize());
         pageVo.setData(data);
 
         return pageVo;

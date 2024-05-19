@@ -44,58 +44,60 @@ public class SwaggerCfg implements InitializingBean {
     private boolean enable;
 
     @Bean
-    public Docket adminUserDocket() {
+    public Docket adminBDocket() {
         return groupDocket(
-            "01_用户、组织【管理】",              // 分组模块
-            "/admin/(users.*|organizations.*)",             // 正则表达式，想要的模块。
-            "用户、组织模块文档",          // 模块标题
-            "测试文档");        // 描述信息
+            "【B端】_01_用户、角色、权限资源管理",
+            "/admin/userManager/(users.*|roles.*|resources.*|auth.*)",
+            "用户管理模块文档",
+            "获取用户、角色、资源...");
     }
 
     @Bean
-    public Docket adminSkillDocket() {
+    public Docket orgBDocket() {
         return groupDocket(
-                "02_角色、资源【管理】",
-                "/admin/(roles.*|resources.*)",
-                "角色、资源模块文档",
-                "角色、资源文档");
+            "【B端】_02_组织、数据管理",
+            "/admin/organization/(colleges.*|grades.*|classes.*|courses.*)",
+            "组织管理模块文档",
+            "获取学院、年级、班级...");
     }
 
     @Bean
-    public Docket adminWorkDocket() {
+    public Docket notiworkdBDocket() {
         return groupDocket(
-            "03_作业【管理】",
-            "/admin/works.*",
-            "作业模块文档",
-            "作业的增删改查、图片编辑...文档");
+            "【B端】_03_通知、作业、课程管理",
+            "/admin/notificationWork/(works.*|notification.*|courses.*)",
+            "通知和作业管理模块文档",
+            "获取通知、作业...");
     }
 
     @Bean
-    public Docket wxUserDocket() {
+    public Docket userCDocket() {
         return groupDocket(
-            "04_用户【小程序】",
-            "/wx/users.*",
-            "小程序用户模块文档",
-            "小程序用户文档");
+            "【C端】_01_用户管理",
+            "/wx/studentManager/(student.*|grades.*|classes.*|courses.*|studentCourses.*)",
+            "用户管理模块文档",
+            "获取学生信息...");
     }
 
     @Bean
-    public Docket wxMsgDocket() {
+    public Docket orgCDocket() {
         return groupDocket(
-            "05_消息【小程序】",
-            "/wx/messages.*",
-            "小程序消息模块文档",
-            "小程序消息文档");
+            "【C端】_02_组织管理",
+            "/wx/organization/(complexAll.*)",
+            "组织管理模块文档",
+            "获取组织...");
     }
 
     @Bean
-    public Docket wxWorkDocket() {
+    public Docket notificationWorksCDocket() {
         return groupDocket(
-            "06_作业【小程序】",
-            "/wx/(works.*|userWork.*)",
-            "作业模块文档",
-            "获取所有作业、获取历史作业...");
+            "【C端】_03_通知作业管理",
+            "/wx/notificationWork/(messages.*|notifyAndWork.*)",
+            "通知作业管理模块文档",
+            "获取作业、通知...");
     }
+
+
 
 
     // 构建分组模块

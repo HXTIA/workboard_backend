@@ -46,19 +46,19 @@ public class ShiroConfig {
         // 添加自定义 Filter
         Map<String, Filter> filterMap = new HashMap<>();
         filterMap.put("token", new TokenFilter());
+        filterMap.put("wxToken", new WxTokenFilter());
         filterBean.setFilters(filterMap);
 
         // 添加 URI 映射
         Map<String, String> uriMap = new LinkedHashMap<>();
 
         // 放行登录&注册接口&发送验证码&忘记密码
-        uriMap.put("/admin/users/login", "anon");
-        uriMap.put("/admin/users/register", "anon");
-        uriMap.put("/admin/users/sendEmail", "anon");
-        uriMap.put("/admin/users/sendTest", "anon");
-        uriMap.put("/wx/users/getSessionId", "anon");
-        uriMap.put("/admin/users/forgotPwd", "anon");
-        uriMap.put("/admin/users/captcha", "anon");
+        uriMap.put("/admin/userManager/users/login", "anon");
+        uriMap.put("/admin/userManager/users/register", "anon");
+        uriMap.put("/admin/userManager/users/sendEmail", "anon");
+        uriMap.put("/wx/studentManager/student/getToken", "anon");
+        uriMap.put("/admin/userManager/users/forgotPwd", "anon");
+        uriMap.put("/admin/userManager/users/captcha", "anon");
 
         // 放行Swagger文档
         uriMap.put("/swagger**/**", "anon");
@@ -70,7 +70,10 @@ public class ShiroConfig {
         // 放行处理Filter内部异常的请求
         uriMap.put(Constants.Web.ERROR_URI, "anon");
 
-        // 其他 URI 使用自定义的 filter
+        // 其他 admin URI 使用自定义的 filter token
+        uriMap.put("/admin/**", "token");
+        // 其他 admin URI 使用自定义的 filter wxToken
+        uriMap.put("/wx/**", "wxToken");
         uriMap.put("/**", "token");
 
         filterBean.setFilterChainDefinitionMap(uriMap);

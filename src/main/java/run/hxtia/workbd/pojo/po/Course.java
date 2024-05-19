@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 教学班表(Course)实体类
@@ -12,29 +13,44 @@ import java.io.Serializable;
  * @since 2022-09-21 10:23:51
  */
 @Data
-@TableName("course")
+@TableName("courses")
 public class Course implements Serializable {
-    private static final long serialVersionUID = -51971139414152132L;
+    private static final long serialVersionUID = 1L;
+
     /**
      * 课程ID
      */
     private Integer id;
-    /**
-     * 学期ID
-     */
-    private Integer semesterId;
-    /**
-     * 用户ID
-     */
-    private Long userId;
+
     /**
      * 课程名称
      */
-    private String courseName;
+    private String name;
+
     /**
-     * 课程类型【0：选修，1：必修】
+     * 课程描述
      */
-    private Short courseType;
+    private String description;
+
+    /**
+     * 教师ID
+     */
+    private Integer teacherId;
+
+    /**
+     * 所属学院ID
+     */
+    private Integer collegeId;
+
+    /**
+     * 创建时间
+     */
+    private Date createdAt;
+
+    /**
+     * 更新时间
+     */
+    private Date updatedAt;
 
 }
 

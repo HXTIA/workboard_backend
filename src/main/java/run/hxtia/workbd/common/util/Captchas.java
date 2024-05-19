@@ -1,15 +1,13 @@
 package run.hxtia.workbd.common.util;
 
 import com.pig4cloud.captcha.ArithmeticCaptcha;
-import com.pig4cloud.captcha.base.Captcha;
 import org.springframework.util.StringUtils;
 import run.hxtia.workbd.common.cache.Caches;
-import run.hxtia.workbd.pojo.vo.response.CaptchaVo;
+import run.hxtia.workbd.pojo.vo.common.response.CaptchaVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * 图形验证码工具类
